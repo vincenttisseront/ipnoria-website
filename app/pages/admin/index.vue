@@ -14,6 +14,9 @@ const filter = ref<'ouverts' | 'traites' | 'tous'>('ouverts')
 const { data: list, refresh, status } = await useFetch<{ messages: Message[], stats: { open: number, total: number, subscribers: number } }>(
   '/api/admin/messages', { query: { filtre: filter }, immediate: Boolean(me.value?.user), watch: [filter] },
 )
+const { data: overview } = await useFetch<{ bookings: Array<{ id: string, starts_at: string, name: string, email: string, company: string, notes: string }>, votes: Array<{ id: string, title: string, votes: number, pending: number }> }>(
+  '/api/admin/overview', { immediate: Boolean(me.value?.user) },
+)
 const selectedId = ref<string | null>(null)
 const selected = computed(() => list.value?.messages.find(m => m.id === selectedId.value) ?? list.value?.messages[0] ?? null)
 
@@ -152,6 +155,28 @@ watch(confirmDelete, async (open) => { if (open) { await nextTick(); confirmBtn.
               </button>
             </form>
           </article>
+        </div>
+        <div v-if="overview" class="mt-14 grid gap-6 lg:grid-cols-2">
+          <section class="panel p-6">
+            <h2 class="text-lg font-semibold">Démonstrations à venir</h2>
+            <p v-if="!overview.bookings.length" class="mt-3 text-muted">Aucune démonstration réservée.</p>
+            <ul v-else class="mt-3 divide-y divide-line">
+              <li v-for="b in overview.bookings" :key="b.id" class="py-3">
+                <p class="font-medium">{{ fmt(b.starts_at) }}</p>
+                <p class="text-sm text-muted">{{ b.name }}<template v-if="b.company">, {{ b.company }}</template>, <a :href="`mailto:${b.email}`" class="link">{{ b.email }}</a></p>
+                <p v-if="b.notes" class="mt-1 whitespace-pre-wrap text-sm">{{ b.notes }}</p>
+              </li>
+            </ul>
+          </section>
+          <section class="panel p-6">
+            <h2 class="text-lg font-semibold">Votes de la feuille de route</h2>
+            <table class="mt-3 w-full text-sm">
+              <thead><tr class="text-left text-muted"><th class="py-1.5 font-medium">Élément</th><th class="py-1.5 font-medium">Votes</th><th class="py-1.5 font-medium">En attente</th></tr></thead>
+              <tbody>
+                <tr v-for="v in overview.votes" :key="v.id" class="border-t border-line"><td class="py-1.5">{{ v.title }}</td><td class="py-1.5 font-mono">{{ v.votes }}</td><td class="py-1.5 font-mono text-muted">{{ v.pending }}</td></tr>
+              </tbody>
+            </table>
+          </section>
         </div>
       </template>
     </main>

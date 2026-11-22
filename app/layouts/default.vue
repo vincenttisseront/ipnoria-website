@@ -13,5 +13,6 @@ const { t } = useI18n()
       <slot />
     </main>
     <SiteFooter />
+    <SearchPalette />
   </div>
 </template>

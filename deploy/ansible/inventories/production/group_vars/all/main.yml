@@ -18,6 +18,14 @@ website_legal_address: ""
 website_legal_email: ""
 website_legal_host: ""
 website_demo_url: ""
+
+# Réservation de démonstrations (/rendez-vous) : nécessite le SMTP. Agenda et clé du flux dans le coffre
+# (vault_booking_busy_ics_url, vault_booking_feed_key).
+website_booking_enabled: false
+website_booking_timezone: Europe/Paris
+website_booking_days: [1, 2, 3, 4, 5]
+website_booking_times: ["10:00", "14:00", "16:00"]
+website_booking_meeting_url: ""
 website_demo_user: ""
 website_demo_password: ""
 

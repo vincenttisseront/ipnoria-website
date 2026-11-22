@@ -28,7 +28,10 @@ function getTransport(): Transporter {
 }
 
 /** Envoi d'un e-mail en texte brut. Les champs viennent de données validées (aucun retour à la ligne dans les en-têtes). */
-export async function sendMail(msg: { to: string, subject: string, text: string, replyTo?: { name: string, address: string }, headers?: Record<string, string> }) {
+export async function sendMail(msg: {
+  to: string, subject: string, text: string, replyTo?: { name: string, address: string }, headers?: Record<string, string>
+  icalEvent?: { method: string, content: string, filename?: string }
+}) {
   const { smtp } = useRuntimeConfig()
   await getTransport().sendMail({ from: smtp.from, ...msg })
 }

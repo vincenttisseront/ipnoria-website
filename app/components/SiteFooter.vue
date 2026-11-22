@@ -30,7 +30,10 @@ const year = new Date().getFullYear()
         <ul class="mt-4 space-y-2.5 text-sm text-muted">
           <li><NuxtLink :to="localePath('documentation')" class="hover:text-fg">{{ t('nav.docs') }}</NuxtLink></li>
           <li><NuxtLink :to="localePath('guides')" class="hover:text-fg">{{ t('nav.guides') }}</NuxtLink></li>
+          <li><NuxtLink :to="localePath('outils')" class="hover:text-fg">{{ t('nav.tools') }}</NuxtLink></li>
+          <li><NuxtLink :to="localePath('visite')" class="hover:text-fg">{{ t('tour.title') }}</NuxtLink></li>
           <li><NuxtLink :to="localePath('comparatif')" class="hover:text-fg">{{ t('nav.compare') }}</NuxtLink></li>
+          <li><NuxtLink :to="localePath('feuille-de-route')" class="hover:text-fg">{{ t('nav.roadmap') }}</NuxtLink></li>
           <li><NuxtLink :to="localePath('nouveautes')" class="hover:text-fg">{{ t('nav.releases') }}</NuxtLink></li>
           <li><a href="/rss.xml" class="hover:text-fg">{{ t('footer.rss') }}</a></li>
         </ul>
@@ -38,6 +41,7 @@ const year = new Date().getFullYear()
       <nav :aria-label="t('footer.site')">
         <h2 class="text-sm font-medium">{{ t('footer.site') }}</h2>
         <ul class="mt-4 space-y-2.5 text-sm text-muted">
+          <li><NuxtLink :to="localePath('rendez-vous')" class="hover:text-fg">{{ t('booking.title') }}</NuxtLink></li>
           <li><NuxtLink :to="localePath('demo')" class="hover:text-fg">{{ t('nav.demo') }}</NuxtLink></li>
           <li><NuxtLink :to="localePath('contact')" class="hover:text-fg">{{ t('nav.contact') }}</NuxtLink></li>
           <li><NuxtLink :to="localePath('mentions-legales')" class="hover:text-fg">{{ t('footer.legal') }}</NuxtLink></li>

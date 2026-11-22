@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { githubLinks, docLinks } from '#shared/links'
+import { PROFILES } from '#shared/profiles'
 
-const { t, tm, rt } = useI18n()
+const { t, tm, rt, locale } = useI18n()
 const localePath = useLocalePath()
 const { data: release } = await useRelease()
 
@@ -43,6 +44,8 @@ const tiles: Array<[number, string]> = [
 const modules = computed(() => (tm('modules.items') as Array<{ name: Msg, text: Msg }>).map(i => ({ name: rt(i.name), text: rt(i.text) })))
 const moduleIcons: Icon[] = ['network', 'globe', 'server', 'filter', 'wifi', 'key', 'import', 'activity', 'shield']
 const blocks = computed(() => (tm('blocks.items') as Array<{ name: Msg, role: Msg }>).map(i => ({ name: rt(i.name), role: rt(i.role) })))
+const lang = computed(() => (locale.value === 'en' ? 'en' : 'fr') as 'fr' | 'en')
+const profiles = computed(() => PROFILES[lang.value])
 const steps = computed(() => (tm('quickstart.steps') as Msg[]).map(s => rt(s)))
 const terminal = computed(() => [
   `git clone ${githubLinks.clone} && cd ipnoria`,
@@ -61,12 +64,12 @@ const terminal = computed(() => [
         <a
           :href="release?.version ? docLinks.changelog : docLinks.licenseDoc"
           rel="noopener"
-          class="inline-flex items-center gap-2 rounded-full border border-line-strong bg-white/[0.03] px-3 py-1 text-[0.8rem] text-muted no-underline transition-colors hover:text-fg"
+          class="inline-flex items-center gap-2 rounded-full border border-line-strong bg-tint/[0.03] px-3 py-1 text-[0.8rem] text-muted no-underline transition-colors hover:text-fg"
         >
           <span class="size-1.5 rounded-full bg-ok" aria-hidden="true" />
           {{ release?.version ? t('hero.badge', { version: release.version }) : t('hero.badgeFallback') }}
         </a>
-        <h1 class="mx-auto mt-6 max-w-4xl bg-gradient-to-b from-white to-white/65 bg-clip-text text-display text-transparent">
+        <h1 class="mx-auto mt-6 max-w-4xl bg-gradient-to-b from-fg to-fg/65 bg-clip-text text-display text-transparent">
           {{ t('hero.title') }}
         </h1>
         <p class="mx-auto mt-6 max-w-2xl text-lg text-muted">{{ t('hero.lead') }}</p>
@@ -83,7 +86,10 @@ const terminal = computed(() => [
         <div class="hero-shot">
           <ConsoleGallery />
         </div>
-        <p class="mt-4 text-center text-sm text-muted">{{ t('gallery.lead') }}</p>
+        <p class="mt-4 text-center text-sm text-muted">
+          {{ t('gallery.lead') }}
+          <NuxtLink :to="localePath('visite')" class="link ml-1">{{ t('tour.cta') }}</NuxtLink>
+        </p>
       </div>
     </section>
 
@@ -152,6 +158,22 @@ const terminal = computed(() => [
       </div>
     </section>
 
+    <!-- Pour qui -->
+    <section class="wrap py-20">
+      <div class="max-w-2xl">
+        <h2 class="text-h2">{{ t('profiles.title') }}</h2>
+        <p class="mt-4 text-lg text-muted">{{ t('profiles.lead') }}</p>
+      </div>
+      <ul class="mt-12 grid gap-4 md:grid-cols-3">
+        <li v-for="p in profiles" :key="p.id">
+          <NuxtLink :to="localePath({ name: 'pour-profil', params: { profil: p.slug[lang] } })" class="panel block h-full p-6 no-underline hover:border-line-strong">
+            <span class="block text-lg font-semibold tracking-tight text-fg">{{ p.title }}</span>
+            <span class="mt-2 block text-[0.95rem] text-muted">{{ p.lead }}</span>
+          </NuxtLink>
+        </li>
+      </ul>
+    </section>
+
     <!-- Modules de la console -->
     <section class="wrap py-20">
       <div class="max-w-2xl">
@@ -196,7 +218,8 @@ const terminal = computed(() => [
           <h2 class="text-h2">{{ t('cta.title') }}</h2>
           <p class="mx-auto mt-4 max-w-xl text-lg text-muted">{{ t('cta.text') }}</p>
           <div class="mt-8 flex flex-wrap justify-center gap-3">
-            <NuxtLink :to="localePath('contact')" class="btn btn-primary"><AppIcon name="mail" :size="16" />{{ t('cta.button') }}</NuxtLink>
+            <NuxtLink :to="localePath('rendez-vous')" class="btn btn-primary"><AppIcon name="mail" :size="16" />{{ t('booking.cta') }}</NuxtLink>
+            <NuxtLink :to="localePath('contact')" class="btn btn-secondary">{{ t('cta.button') }}</NuxtLink>
             <NuxtLink :to="localePath('documentation')" class="btn btn-secondary"><AppIcon name="book" :size="16" />{{ t('cta.docs') }}</NuxtLink>
           </div>
           <p class="mx-auto mt-10 max-w-2xl border-t border-line pt-6 text-sm text-muted">

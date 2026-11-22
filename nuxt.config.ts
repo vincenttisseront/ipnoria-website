@@ -28,6 +28,19 @@ export default defineNuxtConfig({
     docsLocalDir: '',                // NUXT_DOCS_LOCAL_DIR : clone local du dépôt produit (tests, hors ligne) au lieu de GitHub
     sessionPassword: '',             // NUXT_SESSION_PASSWORD : 32 caractères au moins, chiffre les cookies de session
     adminEmails: '',                 // NUXT_ADMIN_EMAILS : adresses autorisées dans /admin, séparées par des virgules
+    // Démonstrations sur rendez-vous (NUXT_BOOKING_*) : actif seulement avec la base et le SMTP
+    booking: {
+      enabled: false,                // NUXT_BOOKING_ENABLED
+      timezone: 'Europe/Paris',
+      days: '1,2,3,4,5',             // 1 = lundi
+      times: '10:00,14:00,16:00',
+      durationMin: 30,
+      horizonDays: 14,
+      minNoticeHours: 24,
+      meetingUrl: '',                // lien de visio fixe, ajouté aux e-mails et à l'invitation
+      busyIcsUrl: '',                // adresse iCalendar (secrète) de votre agenda : ses occupations bloquent les créneaux
+      feedKey: '',                   // clé du flux /api/booking/feed.ics à ajouter dans votre agenda
+    },
     oidc: {
       issuer: '',                    // NUXT_OIDC_ISSUER : URL du fournisseur OpenID Connect
       clientId: '',                  // NUXT_OIDC_CLIENT_ID
@@ -77,6 +90,15 @@ export default defineNuxtConfig({
       'nouveautes/index': { fr: '/nouveautes', en: '/releases' },
       'nouveautes/[version]': { fr: '/nouveautes/[version]', en: '/releases/[version]' },
       'comparatif': { fr: '/comparatif', en: '/comparison' },
+      'outils/index': { fr: '/outils', en: '/tools' },
+      'outils/checklist': { fr: '/outils/checklist', en: '/tools/checklist' },
+      'outils/dimensionnement': { fr: '/outils/dimensionnement', en: '/tools/sizing' },
+      'outils/import-dhcp': { fr: '/outils/import-dhcp', en: '/tools/dhcp-import-preview' },
+      'outils/sous-reseaux': { fr: '/outils/sous-reseaux', en: '/tools/subnets' },
+      'feuille-de-route': { fr: '/feuille-de-route', en: '/roadmap' },
+      'visite': { fr: '/visite', en: '/tour' },
+      'pour/[profil]': { fr: '/pour/[profil]', en: '/for/[profil]' },
+      'rendez-vous': { fr: '/rendez-vous', en: '/book-a-demo' },
       'admin/index': false,
       'mentions-legales': { fr: '/mentions-legales', en: '/legal-notice' },
       'confidentialite': { fr: '/confidentialite', en: '/privacy' },
@@ -126,6 +148,9 @@ export default defineNuxtConfig({
     // Le message n'est jamais rendu en HTML (texte brut en base et dans l'e-mail) : le filtre XSS générique refuserait à tort « a < b »
     '/api/contact': { security: { rateLimiter: { tokensPerInterval: 5, interval: 600000 }, xssValidator: false } },
     '/api/newsletter': { security: { rateLimiter: { tokensPerInterval: 5, interval: 600000 } } },
+    '/api/roadmap/vote': { security: { rateLimiter: { tokensPerInterval: 10, interval: 600000 } } },
+    '/api/booking': { security: { rateLimiter: { tokensPerInterval: 5, interval: 600000 }, xssValidator: false } },
+    '/api/booking/cancel': { security: { rateLimiter: { tokensPerInterval: 10, interval: 600000 } } },
     '/auth/**': { security: { rateLimiter: { tokensPerInterval: 30, interval: 300000 } }, headers: { 'cache-control': 'no-store' } },
     '/admin': { headers: { 'cache-control': 'no-store', 'x-robots-tag': 'noindex, nofollow' } },
     '/api/admin/**': { headers: { 'cache-control': 'no-store' }, security: { xssValidator: false } },

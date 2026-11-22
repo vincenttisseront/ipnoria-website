@@ -15,19 +15,21 @@
   ok/warn  états (succès, adresse allouée) ; alert erreurs
 */
 @theme {
-  --color-bg: #07090f;
-  --color-surface: #0d111a;
-  --color-raised: #141a28;
-  --color-line: rgb(255 255 255 / 0.08);
-  --color-line-strong: rgb(255 255 255 / 0.16);
-  --color-fg: #edf0f7;
-  --color-muted: #9aa3b8;
-  --color-accent: #5b8cff;
-  --color-accent-strong: #3f72f5;
-  --color-accent-soft: rgb(91 140 255 / 0.14);
-  --color-ok: #3dd6a3;
-  --color-warn: #f5b544;
-  --color-alert: #ff6b6b;
+  --color-bg: var(--t-bg);
+  --color-surface: var(--t-surface);
+  --color-raised: var(--t-raised);
+  --color-tint: var(--t-tint);
+  --color-line: color-mix(in srgb, var(--t-tint) 9%, transparent);
+  --color-line-strong: color-mix(in srgb, var(--t-tint) 17%, transparent);
+  --color-fg: var(--t-fg);
+  --color-muted: var(--t-muted);
+  --color-accent: var(--t-accent);
+  --color-accent-strong: var(--t-accent-strong);
+  --color-accent-soft: color-mix(in srgb, var(--t-accent) 14%, transparent);
+  --color-ok: var(--t-ok);
+  --color-warn: var(--t-warn);
+  --color-alert: var(--t-alert);
+  --color-code: #05070c;
 
   --font-sans: "Geist Variable", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "Geist Mono Variable", ui-monospace, monospace;
@@ -43,9 +45,42 @@
   --text-h3--letter-spacing: -0.01em;
 }
 
+/*
+  Thèmes : sombre par défaut ; clair choisi (data-theme="light") ou demandé par le système quand aucun choix n'est fait.
+  « tint » est la couleur des voiles et des traits (blanc sur fond sombre, encre sur fond clair).
+*/
+:root {
+  --t-bg: #07090f; --t-surface: #0d111a; --t-raised: #141a28; --t-tint: #ffffff;
+  --t-fg: #edf0f7; --t-muted: #9aa3b8; --t-accent: #5b8cff; --t-accent-strong: #3f72f5;
+  --t-ok: #3dd6a3; --t-warn: #f5b544; --t-alert: #ff6b6b;
+  color-scheme: dark;
+}
+:root[data-theme="light"] {
+  --t-bg: #f6f7fa; --t-surface: #ffffff; --t-raised: #eceff5; --t-tint: #0b1222;
+  --t-fg: #0d1321; --t-muted: #4c566b; --t-accent: #2a5bd7; --t-accent-strong: #2350c4;
+  --t-ok: #0b7d58; --t-warn: #9a6200; --t-alert: #c42b2b;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --t-bg: #f6f7fa; --t-surface: #ffffff; --t-raised: #eceff5; --t-tint: #0b1222;
+    --t-fg: #0d1321; --t-muted: #4c566b; --t-accent: #2a5bd7; --t-accent-strong: #2350c4;
+    --t-ok: #0b7d58; --t-warn: #9a6200; --t-alert: #c42b2b;
+    color-scheme: light;
+  }
+}
+
+/* Zones toujours sombres (terminaux, blocs de commandes), quel que soit le thème */
+.theme-dark {
+  --t-bg: #07090f; --t-surface: #0d111a; --t-raised: #141a28; --t-tint: #ffffff;
+  --t-fg: #edf0f7; --t-muted: #9aa3b8; --t-accent: #5b8cff; --t-accent-strong: #3f72f5;
+  --t-ok: #3dd6a3; --t-warn: #f5b544; --t-alert: #ff6b6b;
+  color-scheme: dark;
+  color: var(--t-fg);
+}
+
 @layer base {
   html {
-    color-scheme: dark;
     background-color: var(--color-bg);
     color: var(--color-fg);
     font-family: var(--font-sans);
@@ -58,7 +93,7 @@
     scroll-behavior: smooth;
   }
 
-  ::selection { background-color: rgb(91 140 255 / 0.35); }
+  ::selection { background-color: color-mix(in srgb, var(--t-accent) 35%, transparent); }
 
   :focus-visible {
     outline: 2px solid var(--color-accent);
@@ -98,7 +133,7 @@
 
   /* Trame de points très discrète, rappel d'un plan d'adressage */
   .dots {
-    background-image: radial-gradient(rgb(255 255 255 / 0.07) 1px, transparent 1px);
+    background-image: radial-gradient(color-mix(in srgb, var(--t-tint) 8%, transparent) 1px, transparent 1px);
     background-size: 22px 22px;
     mask-image: radial-gradient(70% 60% at 50% 0%, #000 30%, transparent 80%);
   }
@@ -118,11 +153,11 @@
   }
   .btn-primary {
     background-color: var(--color-fg); color: var(--color-bg);
-    box-shadow: 0 0 0 1px rgb(255 255 255 / 0.1), 0 8px 24px -8px rgb(91 140 255 / 0.55);
+    box-shadow: 0 0 0 1px var(--color-line), 0 8px 24px -8px color-mix(in srgb, var(--t-accent) 55%, transparent);
   }
-  .btn-primary:hover { background-color: #ffffff; }
-  .btn-secondary { background-color: rgb(255 255 255 / 0.04); color: var(--color-fg); border-color: var(--color-line-strong); }
-  .btn-secondary:hover { background-color: rgb(255 255 255 / 0.08); }
+  .btn-primary:hover { background-color: color-mix(in srgb, var(--t-fg) 88%, var(--t-accent)); }
+  .btn-secondary { background-color: color-mix(in srgb, var(--t-tint) 4%, transparent); color: var(--color-fg); border-color: var(--color-line-strong); }
+  .btn-secondary:hover { background-color: color-mix(in srgb, var(--t-tint) 8%, transparent); }
   .btn-accent { background-color: var(--color-accent-strong); color: #fff; }
   .btn-accent:hover { background-color: var(--color-accent); }
   .btn[disabled] { opacity: 0.6; cursor: progress; }
@@ -137,9 +172,9 @@
     border: 1px solid var(--color-line-strong); border-radius: 0.625rem;
     transition: border-color 150ms, box-shadow 150ms;
   }
-  .field::placeholder { color: rgb(154 163 184 / 0.6); }
-  .field:hover { border-color: rgb(255 255 255 / 0.24); }
-  .field:focus-visible { outline: none; border-color: var(--color-accent); box-shadow: 0 0 0 3px rgb(91 140 255 / 0.3); }
+  .field::placeholder { color: color-mix(in srgb, var(--t-muted) 65%, transparent); }
+  .field:hover { border-color: color-mix(in srgb, var(--t-tint) 26%, transparent); }
+  .field:focus-visible { outline: none; border-color: var(--color-accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--t-accent) 30%, transparent); }
   .field[aria-invalid="true"] { border-color: var(--color-alert); }
   .field-error { color: var(--color-alert); font-size: 0.875rem; margin-top: 0.35rem; }
 }
@@ -151,16 +186,16 @@
   .prose-doc h1 { font-size: var(--text-h2); line-height: 1.1; letter-spacing: -0.03em; margin-bottom: 0.4em; }
   .prose-doc h2 { font-size: 1.5rem; letter-spacing: -0.02em; margin-top: 2.2em; padding-top: 0.2em; scroll-margin-top: 5rem; }
   .prose-doc h3 { font-size: 1.15rem; margin-top: 1.8em; scroll-margin-top: 5rem; }
-  .prose-doc p, .prose-doc li { color: rgb(237 240 247 / 0.86); }
+  .prose-doc p, .prose-doc li { color: color-mix(in srgb, var(--t-fg) 86%, transparent); }
   .prose-doc strong { color: var(--color-fg); font-weight: 600; }
-  .prose-doc a { color: var(--color-accent); text-decoration: underline; text-decoration-color: rgb(91 140 255 / 0.4); }
+  .prose-doc a { color: var(--color-accent); text-decoration: underline; text-decoration-color: color-mix(in srgb, var(--t-accent) 40%, transparent); }
   .prose-doc a:hover { text-decoration-color: var(--color-accent); }
   .prose-doc ul { list-style: disc; padding-left: 1.3em; }
   .prose-doc ol { list-style: decimal; padding-left: 1.4em; }
   .prose-doc li + li { margin-top: 0.45em; }
   .prose-doc li::marker { color: var(--color-muted); }
-  .prose-doc code { font-family: var(--font-mono); font-size: 0.86em; background: rgb(255 255 255 / 0.06); border: 1px solid var(--color-line); border-radius: 5px; padding: 0.1em 0.35em; }
-  .prose-doc pre { background: #05070c; border: 1px solid var(--color-line-strong); border-radius: 0.75rem; padding: 1rem 1.2rem; overflow-x: auto; font-size: 0.85rem; line-height: 1.6; }
+  .prose-doc code { font-family: var(--font-mono); font-size: 0.86em; background: color-mix(in srgb, var(--t-tint) 6%, transparent); border: 1px solid var(--color-line); border-radius: 5px; padding: 0.1em 0.35em; }
+  .prose-doc pre { background: var(--color-code); color: #edf0f7; border: 1px solid var(--color-line-strong); border-radius: 0.75rem; padding: 1rem 1.2rem; overflow-x: auto; font-size: 0.85rem; line-height: 1.6; }
   .prose-doc pre code { background: none; border: 0; padding: 0; font-size: inherit; }
   .prose-doc blockquote { border-left: 2px solid var(--color-accent); padding: 0.2em 0 0.2em 1em; color: var(--color-muted); }
   .prose-doc hr { border: 0; border-top: 1px solid var(--color-line); margin: 2.5em 0; }
@@ -172,4 +207,26 @@
   .prose-doc tr:last-child td { border-bottom: 0; }
   .prose-doc .doc-plain { white-space: pre-wrap; font-size: 0.8rem; }
   .prose-doc .doc-img-missing { color: var(--color-muted); font-style: italic; }
+}
+
+/* Impression et PDF (guides, documentation, checklist, plans) : encre sur papier, sans navigation */
+@media print {
+  :root, :root[data-theme] {
+    --t-bg: #ffffff; --t-surface: #ffffff; --t-raised: #f2f4f8; --t-tint: #000000;
+    --t-fg: #000000; --t-muted: #3a4250; --t-accent: #1f4fc6; --t-accent-strong: #1f4fc6;
+    --t-ok: #0b6b4b; --t-warn: #7a4e00; --t-alert: #a11c1c;
+    color-scheme: light;
+  }
+  html { font-size: 10.5pt; background: #fff; }
+  header, footer, nav, .no-print, [role="dialog"], .glow, .dots { display: none !important; }
+  main { padding: 0 !important; }
+  .wrap { max-width: none; padding: 0; }
+  .panel { box-shadow: none !important; border-color: #c9ced8 !important; }
+  .theme-dark, .prose-doc pre { background: #f2f4f8 !important; color: #000 !important; border-color: #c9ced8 !important; }
+  .theme-dark * { color: #000 !important; }
+  .prose-doc a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 0.8em; color: #3a4250; word-break: break-all; }
+  h1, h2, h3 { break-after: avoid; }
+  li, tr, pre, .panel, section { break-inside: avoid; }
+  input[type="checkbox"] { accent-color: #000; }
+  @page { margin: 16mm 14mm; }
 }

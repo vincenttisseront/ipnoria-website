@@ -15,7 +15,9 @@
     "guides": "Guides",
     "compare": "Comparatif",
     "releases": "Nouveautés",
-    "demo": "Démo"
+    "demo": "Démo",
+    "tools": "Outils",
+    "roadmap": "Feuille de route"
   },
   "hero": {
     "title": "DNS, DHCP, IPAM, RADIUS et PKI. Une seule appliance.",
@@ -314,7 +316,7 @@
     "title": "Confidentialité",
     "intro": "Ce site ne dépose aucun cookie de mesure d'audience ni de publicité, et ne charge aucune ressource depuis un tiers : polices et images sont servies par le site lui-même.",
     "cookieTitle": "Cookie",
-    "cookie": "Un seul cookie, « lang », retient la langue choisie. Il est strictement nécessaire au fonctionnement du site et ne demande donc pas de consentement.",
+    "cookie": "Deux cookies de préférence : « lang » retient la langue choisie, « theme » le thème d'affichage. Ils servent seulement à afficher le site comme vous l'avez demandé et ne demandent donc pas de consentement.",
     "formTitle": "Formulaire de contact",
     "form": "Les données saisies (nom, e-mail, organisation, sujet, message) servent uniquement à répondre à votre demande. Base légale : votre consentement. Elles sont conservées {days} jours puis supprimées automatiquement.",
     "ip": "Pour limiter les abus, une empreinte non réversible de votre adresse IP est enregistrée avec le message. L'adresse elle-même n'est jamais stockée.",
@@ -323,7 +325,13 @@
     "newsletterTitle": "Alertes de version",
     "newsletter": "Si vous vous inscrivez, votre adresse e-mail sert uniquement à annoncer les nouvelles versions. Elle n'est utilisée qu'après confirmation par un lien reçu par e-mail ; sans confirmation, elle est effacée au bout de 7 jours. La désinscription l'efface aussitôt.",
     "analyticsTitle": "Statistiques de visite",
-    "analytics": "Si elles sont activées, les statistiques sont mesurées par un outil auto-hébergé (Umami), sans cookie ni identifiant personnel, et respectent le réglage « Ne pas me pister » de votre navigateur. Aucune donnée n'est transmise à un tiers."
+    "analytics": "Si elles sont activées, les statistiques sont mesurées par un outil auto-hébergé (Umami), sans cookie ni identifiant personnel, et respectent le réglage « Ne pas me pister » de votre navigateur. Aucune donnée n'est transmise à un tiers.",
+    "votesTitle": "Votes de la feuille de route",
+    "votes": "Votre adresse e-mail sert seulement à envoyer le lien de confirmation. Elle n'est pas conservée : seule une empreinte non réversible est gardée pour éviter les doublons. Un vote non confirmé est supprimé au bout de 7 jours.",
+    "bookingTitle": "Démonstrations",
+    "booking": "Nom, adresse e-mail, organisation et contexte servent uniquement à organiser la démonstration (confirmation, rappel la veille, annulation). Ils sont effacés 90 jours après le rendez-vous.",
+    "toolsTitle": "Outils",
+    "tools": "La checklist, le dimensionnement, l'aperçu d'import DHCP et la calculatrice fonctionnent dans votre navigateur. Ce que vous saisissez et les fichiers que vous déposez ne sont jamais envoyés ; la checklist et le plan sont gardés dans le stockage local du navigateur."
   },
   "footer": {
     "tagline": "Appliance DDI libre : IPAM, DNS, DHCP, RADIUS et PKI.",
@@ -404,5 +412,244 @@
         "text": "Il a déjà servi, ou il a expiré au bout de 7 jours. Inscrivez-vous de nouveau depuis la page Nouveautés."
       }
     }
+  },
+  "theme": {
+    "label": "Thème",
+    "system": "Thème du système",
+    "light": "Thème clair",
+    "dark": "Thème sombre"
+  },
+  "search": {
+    "title": "Recherche",
+    "open": "Rechercher dans le site",
+    "placeholder": "Rechercher : DHCP, cluster, NPS, ports…",
+    "empty": "Aucun résultat. Essayez un terme plus court ou plus général.",
+    "hint": "Pages, outils, guides, documentation, nouveautés. Flèches pour choisir, Entrée pour ouvrir.",
+    "kind": {
+      "page": "Page",
+      "doc": "Documentation",
+      "guide": "Guide",
+      "tool": "Outil",
+      "release": "Version",
+      "compare": "Comparatif",
+      "roadmap": "Feuille de route",
+      "profile": "Pour qui",
+      "tour": "Visite"
+    }
+  },
+  "print": {
+    "button": "Imprimer ou PDF"
+  },
+  "tools": {
+    "title": "Outils",
+    "lead": "Préparer un déploiement d'Ipnoria : vérifier les prérequis, dimensionner, voir ce que donnerait l'import de votre DHCP, planifier vos réseaux.",
+    "privacy": "Ces outils fonctionnent dans votre navigateur : rien de ce que vous saisissez n'est envoyé au serveur.",
+    "back": "Tous les outils",
+    "checklist": {
+      "title": "Checklist avant installation",
+      "lead": "Tout ce qu'il faut avoir sous la main avant d'installer : machine, réseau, pare-feu, Active Directory, reprise de l'existant.",
+      "cluster": "Je prévois un cluster",
+      "reset": "Tout décocher",
+      "resetConfirm": "Tout décocher et effacer les notes ?",
+      "resetYes": "Oui, effacer",
+      "resetNo": "Annuler",
+      "progress": "{done} sur {total} prêts",
+      "progressLabel": "Avancement de la checklist",
+      "noStorage": "Votre navigateur ne permet pas de garder l'avancement : il sera perdu en quittant la page.",
+      "note": "Note",
+      "notePlaceholder": "Note (adresse, nom, responsable…)",
+      "storage": "L'avancement et les notes restent dans ce navigateur. Imprimez la liste ou enregistrez-la en PDF pour la partager."
+    },
+    "sizing": {
+      "title": "Dimensionnement",
+      "lead": "Une estimation des machines à prévoir, selon le nombre d'appareils et les services utilisés.",
+      "devices": "Appareils qui prennent une adresse",
+      "devicesHint": "Postes, téléphones, imprimantes, bornes, objets connectés.",
+      "sites": "Nombre de sites",
+      "services": "Services utilisés",
+      "opt": {
+        "wifi8021x": "Wi‑Fi 802.1X ou VPN par RADIUS",
+        "pki": "PKI intégrée (certificats de postes, SCEP)",
+        "dnsFiltering": "Filtrage DNS avec journal des requêtes",
+        "highAvailability": "Haute disponibilité (cluster)"
+      },
+      "result": "Recommandation",
+      "topoCluster": "Cluster : deux nœuds de données et un arbitre",
+      "topoSingle": "Une appliance",
+      "machine": "Machine",
+      "ram": "Mémoire",
+      "disk": "Disque",
+      "gb": "Go",
+      "role": {
+        "single": "appliance",
+        "data": "nœud de données",
+        "witness": "arbitre"
+      },
+      "note": {
+        "pki": "La PKI tourne dans un conteneur Java : 2 Go de mémoire sont ajoutés.",
+        "radius": "RADIUS est léger ; le nombre d'authentifications par seconde compte plus que le nombre d'appareils.",
+        "dnslog": "Le disque inclut le journal des requêtes DNS, proportionnel au nombre d'appareils.",
+        "large": "Au-delà de 30 000 appareils, faites un essai de charge avant de figer le dimensionnement.",
+        "relays": "Plusieurs sites : les relais DHCP de chaque site pointent vers l'appliance (ou vers les deux nœuds d'un cluster).",
+        "cluster": "Prévoyez un réseau dédié entre les trois machines et une adresse virtuelle pour le service."
+      },
+      "disclaimer": "Ordre de grandeur, à confirmer par un essai sur votre charge réelle. Point de départ documenté : 2 vCPU, 4 Go, 40 Go.",
+      "copy": "Copier le résumé"
+    },
+    "dhcp": {
+      "title": "Aperçu de l'import DHCP Windows",
+      "lead": "Déposez l'export de votre serveur DHCP Windows : vous voyez tout de suite ce qu'Ipnoria créerait, et ce qu'il faudrait reprendre à la main.",
+      "step1": "Sur le serveur DHCP Windows, en administrateur",
+      "drop": "Déposez dhcp-export.xml ici",
+      "local": "Le fichier est lu dans votre navigateur. Il n'est jamais envoyé.",
+      "choose": "Choisir le fichier",
+      "tooLarge": "Ce fichier dépasse 20 Mo. Exportez sans l'option -Leases.",
+      "readError": "Le fichier n'a pas pu être lu.",
+      "result": "Ce qu'Ipnoria créerait à partir de {file}",
+      "total": {
+        "scopes": "Étendues",
+        "pools": "Plages",
+        "reservations": "Réservations",
+        "inactive": "Étendues inactives"
+      },
+      "warnings": "{n} point(s) à vérifier",
+      "w": {
+        "xml_invalid": "Ce fichier n'est pas un XML valide.",
+        "no_ipv4_section": "Pas de section IPv4 : est-ce bien un export Export-DhcpServer ?",
+        "scope_invalid": "étendue ignorée : adresse ou masque invalide.",
+        "reservation_invalid": "réservation ignorée : adresse ou MAC invalide ({detail}).",
+        "option_unmapped": "option {detail} non reprise (seules 3, 6, 15, 42, 66, 67 et 119 le sont)."
+      },
+      "notImported": "Présent dans l'export, à recréer à la main :",
+      "ni": {
+        "ipv6": "étendues IPv6",
+        "policies": "stratégies DHCP",
+        "classes": "classes de fournisseur ou d'utilisateur",
+        "filters": "filtres d'adresses MAC",
+        "failover": "basculement DHCP Windows (remplacé par la haute disponibilité du cluster)",
+        "superscopes": "superétendues",
+        "multicast": "étendues multicast"
+      },
+      "col": {
+        "network": "Réseau",
+        "name": "Nom",
+        "pools": "Plages distribuées",
+        "reservations": "Réservations",
+        "lease": "Bail"
+      },
+      "details": "Détails",
+      "inactive": "inactive",
+      "options": "Options",
+      "exclusions": "Exclusions",
+      "days": "{n} j",
+      "next": "Prêt à migrer ? Le guide détaille l'import, la reprise des baux, la coexistence et la bascule."
+    },
+    "subnets": {
+      "title": "Calculatrice de sous-réseaux",
+      "lead": "Découpez un bloc d'adresses en réseaux et VLAN, selon vos besoins en nombre de machines ou en parts égales. Exportez le plan en CSV.",
+      "block": "Bloc à découper",
+      "blockError": "Saisissez un bloc CIDR, par exemple 10.20.0.0/16.",
+      "addresses": "adresses utilisables",
+      "mode": "Méthode",
+      "modes": {
+        "vlsm": "Selon les besoins",
+        "equal": "Parts égales"
+      },
+      "count": "Nombre de sous-réseaux",
+      "needs": "Besoins (nom, VLAN, machines)",
+      "name": "Nom",
+      "vlan": "VLAN",
+      "hosts": "Machines",
+      "remove": "Retirer {name}",
+      "add": "Ajouter un besoin",
+      "plan": "Plan d'adressage",
+      "unplaced": "Ne tiennent pas dans le bloc : {names}. Agrandissez le bloc ou réduisez les besoins.",
+      "col": {
+        "name": "Nom",
+        "vlan": "VLAN",
+        "cidr": "Réseau",
+        "range": "Adresses utilisables",
+        "broadcast": "Diffusion",
+        "hosts": "Machines"
+      },
+      "need": "besoin : {n}",
+      "free": "Reste libre :",
+      "subnet": "Sous-réseau",
+      "sample": {
+        "desktops": "Postes",
+        "guests": "Wi‑Fi invités",
+        "servers": "Serveurs",
+        "printers": "Imprimantes",
+        "admin": "Administration"
+      }
+    }
+  },
+  "roadmap": {
+    "title": "Feuille de route",
+    "lead": "Ce qui pourrait arriver ensuite. Votez pour ce qui compte pour vous : les votes orientent les prochaines versions.",
+    "banner": {
+      "confirmed": "Merci, votre vote est compté.",
+      "invalid": "Ce lien de confirmation n'est plus valable : il a déjà servi, ou il a expiré au bout de 7 jours."
+    },
+    "closed": "Les votes ouvrent bientôt. La liste reste consultable.",
+    "votes": "{n} vote(s)",
+    "vote": "Voter",
+    "footnote": "Un vote par adresse e-mail et par élément, compté après confirmation par e-mail. L'adresse n'est pas conservée.",
+    "dialogTitle": "Voter pour « {title} »",
+    "dialogLead": "Un e-mail de confirmation vous est envoyé : le vote compte quand vous cliquez sur son lien.",
+    "consent": "J'accepte de recevoir cet e-mail de confirmation. Mon adresse n'est pas conservée.",
+    "cancel": "Annuler",
+    "send": "Envoyer le vote",
+    "sent": "Vérifiez votre boîte : cliquez sur le lien reçu pour que le vote compte.",
+    "close": "Fermer"
+  },
+  "tour": {
+    "title": "Visite guidée",
+    "lead": "Quatre parcours dans la console, étape par étape, sur des captures réelles.",
+    "scenarios": "Parcours",
+    "goto": "Étape {n} : {title}",
+    "stepOf": "Étape {n} sur {total}",
+    "prev": "Précédent",
+    "next": "Suivant",
+    "book": "Voir la console en vrai",
+    "keys": "Flèches gauche et droite pour avancer.",
+    "note": "Captures de la console avec des données de démonstration fictives.",
+    "cta": "Faire la visite guidée"
+  },
+  "profiles": {
+    "title": "Pour qui",
+    "lead": "Les mêmes services, des priorités différentes selon votre organisation.",
+    "needs": "Vos besoins",
+    "answers": "Ce qu'Ipnoria y apporte",
+    "start": "Par où commencer",
+    "others": "Voir aussi :"
+  },
+  "booking": {
+    "title": "Réserver une démonstration",
+    "lead": "30 minutes en visio, sur vos cas : migration DHCP, Wi‑Fi 802.1X, PKI, cluster. Choisissez un créneau.",
+    "cta": "Réserver une démonstration",
+    "cancelDone": "Le rendez-vous est annulé. Un e-mail vous le confirme.",
+    "cancelMissing": "Ce rendez-vous n'existe plus, est déjà annulé, ou a déjà eu lieu.",
+    "cancelTitle": "Annuler votre démonstration ?",
+    "cancelText": "Le créneau sera libéré et un e-mail vous le confirmera.",
+    "cancelButton": "Annuler le rendez-vous",
+    "sent": "Démonstration réservée",
+    "sentText": "Une confirmation et l'invitation pour votre agenda viennent de partir par e-mail. Le lien d'annulation s'y trouve.",
+    "closedTitle": "Réservation en ligne bientôt ouverte",
+    "closedText": "En attendant, écrivez-nous : nous vous proposons un créneau.",
+    "pick": "Choisir un créneau",
+    "tz": "Heures affichées dans votre fuseau ({tz}). Durée : {min} minutes.",
+    "none": "Aucun créneau libre pour le moment. Écrivez-nous, nous en trouverons un.",
+    "day": "Jour",
+    "time": "Heure",
+    "errors": {
+      "slot": "Choisissez un créneau.",
+      "taken": "Ce créneau vient d'être pris. Choisissez-en un autre.",
+      "server": "La réservation n'a pas abouti. Réessayez, ou écrivez-nous."
+    },
+    "notes": "Votre contexte",
+    "notesHint": "Taille du parc, services à remplacer, questions.",
+    "consent": "J'accepte que ces informations servent uniquement à organiser cette démonstration.",
+    "submit": "Réserver ce créneau"
   }
 }

@@ -3,9 +3,10 @@ const { t } = useI18n()
 const head = useLocaleHead({ seo: true })
 const config = useRuntimeConfig()
 const route = useRoute()
+const { choice: theme } = useTheme()
 
 useHead({
-  htmlAttrs: { lang: () => head.value.htmlAttrs?.lang },
+  htmlAttrs: { 'lang': () => head.value.htmlAttrs?.lang, 'data-theme': () => (theme.value === 'system' ? undefined : theme.value) },
   link: () => [...(head.value.link || []), { rel: 'alternate', type: 'application/rss+xml', title: 'Ipnoria', href: '/rss.xml' }],
   meta: () => [...(head.value.meta || [])],
   titleTemplate: (title?: string) => (title ? `${title} | Ipnoria` : t('meta.title')),

@@ -4,7 +4,7 @@ const switchLocalePath = useSwitchLocalePath()
 </script>
 
 <template>
-  <ul :aria-label="t('nav.language')" class="flex items-center rounded-lg border border-line p-0.5 text-[0.8rem] font-medium">
+  <ul :aria-label="t('nav.language')" class="ml-1.5 flex items-center rounded-lg border border-line p-0.5 text-[0.8rem] font-medium">
     <li v-for="l in locales" :key="l.code">
       <span
         v-if="l.code === locale"

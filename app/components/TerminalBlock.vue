@@ -20,11 +20,11 @@ onBeforeUnmount(() => clearTimeout(timer))
 </script>
 
 <template>
-  <div class="overflow-hidden rounded-2xl border border-line-strong bg-[#05070c]">
+  <div class="theme-dark overflow-hidden rounded-2xl border border-line-strong bg-code">
     <div class="flex items-center gap-1.5 border-b border-line px-4 py-3" aria-hidden="true">
-      <span class="size-2.5 rounded-full bg-white/15" />
-      <span class="size-2.5 rounded-full bg-white/15" />
-      <span class="size-2.5 rounded-full bg-white/15" />
+      <span class="size-2.5 rounded-full bg-tint/15" />
+      <span class="size-2.5 rounded-full bg-tint/15" />
+      <span class="size-2.5 rounded-full bg-tint/15" />
     </div>
     <ol class="space-y-4 p-5 font-mono text-[0.85rem] leading-6">
       <li v-for="(l, i) in lines" :key="l.command" class="group">

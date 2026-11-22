@@ -18,10 +18,13 @@ onBeforeUnmount(() => window.removeEventListener('scroll', onScroll))
 const items = computed(() => [
   { to: localePath('documentation'), label: t('nav.docs'), hash: false },
   { to: localePath('guides'), label: t('nav.guides'), hash: false },
-  { to: localePath('comparatif'), label: t('nav.compare'), hash: false },
-  { to: localePath('nouveautes'), label: t('nav.releases'), hash: false },
+  { to: localePath('outils'), label: t('nav.tools'), hash: false },
+  { to: localePath('feuille-de-route'), label: t('nav.roadmap'), hash: false },
   { to: localePath('contact'), label: t('nav.contact'), hash: false },
 ])
+const searchOpen = useState('search-open', () => false)
+const isMac = ref(false)
+onMounted(() => { isMac.value = /Mac|iPhone|iPad/.test(navigator.platform) })
 </script>
 
 <template>
@@ -44,14 +47,29 @@ const items = computed(() => [
           :active-class="item.hash ? '' : '!text-fg'"
           :exact-active-class="item.hash ? '' : '!text-fg'"
         >{{ item.label }}</NuxtLink>
+        <button
+          type="button"
+          class="ml-2 flex items-center gap-2 rounded-lg border border-line px-2.5 py-1.5 text-sm text-muted transition-colors hover:border-line-strong hover:text-fg"
+          :aria-label="t('search.open')"
+          aria-keyshortcuts="Control+K Meta+K"
+          @click="searchOpen = true"
+        >
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" /></svg>
+          <kbd class="font-mono text-[0.7rem]">{{ isMac ? '⌘K' : 'Ctrl K' }}</kbd>
+        </button>
         <span class="mx-2 h-5 w-px bg-line" aria-hidden="true" />
+        <ThemeSwitcher />
         <LangSwitcher />
         <a :href="githubLinks.repo" class="btn btn-secondary ml-2 !min-h-9 !px-3 !py-1.5" rel="noopener">
           <AppIcon name="github" :size="16" />{{ t('nav.github') }}
         </a>
       </nav>
 
-      <details ref="menu" class="relative lg:hidden">
+      <div class="flex items-center gap-2 lg:hidden">
+      <button type="button" class="btn btn-secondary !px-3" :aria-label="t('search.open')" @click="searchOpen = true">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" /></svg>
+      </button>
+      <details ref="menu" class="relative">
         <summary class="btn btn-secondary cursor-pointer list-none [&::-webkit-details-marker]:hidden">
           <AppIcon name="menu" /><span class="sr-only">{{ t('nav.menu') }}</span>
         </summary>
@@ -68,9 +86,10 @@ const items = computed(() => [
           <a :href="githubLinks.repo" class="flex items-center gap-2 rounded-lg px-3 py-2.5 text-fg no-underline hover:bg-raised" rel="noopener">
             <AppIcon name="github" :size="16" />{{ t('nav.github') }}
           </a>
-          <div class="mt-1 border-t border-line px-1 pt-2"><LangSwitcher /></div>
+          <div class="mt-1 flex items-center justify-between border-t border-line px-1 pt-2"><LangSwitcher /><ThemeSwitcher /></div>
         </nav>
       </details>
+      </div>
     </div>
   </header>
 </template>

@@ -13,6 +13,13 @@ Site vitrine d'[Ipnoria](https://github.com/vincenttisseront/ipnoria), en franç
 | Nouveautés | Journal des modifications par version, flux RSS (`/rss.xml`), alertes par e-mail en double opt-in |
 | Guides | Migrer un DHCP Windows, remplacer un NPS : commandes exactes, coexistence, bascule, retour arrière |
 | Comparatif | Ipnoria face aux rôles DNS, DHCP, NPS et AD CS de Windows Server, honnête dans les deux sens |
+| Recherche | Palette `Ctrl+K` / `⌘K` / `/` sur pages, outils, guides, documentation, versions |
+| Outils | Checklist avant installation (gardée dans le navigateur, imprimable), dimensionnement, aperçu de l'import DHCP Windows (fichier lu dans le navigateur, mêmes règles que la console), calculatrice de sous-réseaux avec export CSV |
+| Visite guidée | Quatre parcours annotés sur captures de la console, au clavier |
+| Pour qui | Pages PME, collectivités, enseignement |
+| Feuille de route | Votes confirmés par e-mail, une voix par adresse et par élément, adresse non conservée (empreinte HMAC) |
+| Rendez-vous | Réservation de démonstration : créneaux, invitation iCalendar, rappel la veille, annulation, flux d'agenda privé |
+| Thème | Sombre, clair ou celui du système (cookie de préférence, sans flash) ; styles d'impression et PDF |
 | Démo | S'active dès que `NUXT_PUBLIC_DEMO_URL` est défini |
 | Contact | Formulaire protégé (origine, débit, piège à robots), stockage PostgreSQL, notification SMTP, purge RGPD |
 | Administration | `/admin` : connexion OpenID Connect (PKCE), lecture, réponse par e-mail, marquage, effacement |

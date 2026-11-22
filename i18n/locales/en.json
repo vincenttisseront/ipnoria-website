@@ -15,7 +15,9 @@
     "guides": "Guides",
     "compare": "Comparison",
     "releases": "Releases",
-    "demo": "Demo"
+    "demo": "Demo",
+    "tools": "Tools",
+    "roadmap": "Roadmap"
   },
   "hero": {
     "title": "DNS, DHCP, IPAM, RADIUS and PKI. One appliance.",
@@ -314,7 +316,7 @@
     "title": "Privacy",
     "intro": "This site sets no analytics or advertising cookies and loads nothing from third parties: fonts and images are served by the site itself.",
     "cookieTitle": "Cookie",
-    "cookie": "A single cookie, “lang”, remembers the language you chose. It is strictly necessary for the site to work and therefore requires no consent.",
+    "cookie": "Two preference cookies: “lang” remembers the language you chose, “theme” the display theme. They only serve to show the site the way you asked, and therefore require no consent.",
     "formTitle": "Contact form",
     "form": "The data you enter (name, email, organization, topic, message) is used only to answer your request. Legal basis: your consent. It is kept for {days} days and then deleted automatically.",
     "ip": "To limit abuse, a non-reversible fingerprint of your IP address is stored with the message. The address itself is never stored.",
@@ -323,7 +325,13 @@
     "newsletterTitle": "Release alerts",
     "newsletter": "If you subscribe, your email address is used only to announce new releases. It is used only after you confirm through a link sent by email; unconfirmed addresses are deleted after 7 days. Unsubscribing deletes it at once.",
     "analyticsTitle": "Visit statistics",
-    "analytics": "If enabled, statistics are measured by a self-hosted tool (Umami), without cookies or personal identifiers, and they honour your browser's Do Not Track setting. No data is passed to third parties."
+    "analytics": "If enabled, statistics are measured by a self-hosted tool (Umami), without cookies or personal identifiers, and they honour your browser's Do Not Track setting. No data is passed to third parties.",
+    "votesTitle": "Roadmap votes",
+    "votes": "Your email address is used only to send the confirmation link. It is not kept: only a non-reversible fingerprint is stored to prevent duplicates. Unconfirmed votes are deleted after 7 days.",
+    "bookingTitle": "Demos",
+    "booking": "Name, email address, organization and context are used only to organize the demo (confirmation, reminder the day before, cancellation). They are deleted 90 days after the meeting.",
+    "toolsTitle": "Tools",
+    "tools": "The checklist, sizing calculator, DHCP import preview and subnet calculator run in your browser. What you enter and the files you drop are never sent; the checklist and the plan are kept in the browser's local storage."
   },
   "footer": {
     "tagline": "Open-source DDI appliance: IPAM, DNS, DHCP, RADIUS and PKI.",
@@ -404,5 +412,244 @@
         "text": "It was already used, or it expired after 7 days. Subscribe again from the Releases page."
       }
     }
+  },
+  "theme": {
+    "label": "Theme",
+    "system": "System theme",
+    "light": "Light theme",
+    "dark": "Dark theme"
+  },
+  "search": {
+    "title": "Search",
+    "open": "Search the site",
+    "placeholder": "Search: DHCP, cluster, NPS, ports…",
+    "empty": "No results. Try a shorter or broader term.",
+    "hint": "Pages, tools, guides, documentation, releases. Arrows to choose, Enter to open.",
+    "kind": {
+      "page": "Page",
+      "doc": "Documentation",
+      "guide": "Guide",
+      "tool": "Tool",
+      "release": "Release",
+      "compare": "Comparison",
+      "roadmap": "Roadmap",
+      "profile": "Who it's for",
+      "tour": "Tour"
+    }
+  },
+  "print": {
+    "button": "Print or PDF"
+  },
+  "tools": {
+    "title": "Tools",
+    "lead": "Prepare an Ipnoria deployment: check prerequisites, size it, see what importing your DHCP would produce, plan your networks.",
+    "privacy": "These tools run in your browser: nothing you enter is sent to the server.",
+    "back": "All tools",
+    "checklist": {
+      "title": "Pre-install checklist",
+      "lead": "Everything to have at hand before installing: machine, network, firewall, Active Directory, migration.",
+      "cluster": "I'm planning a cluster",
+      "reset": "Uncheck all",
+      "resetConfirm": "Uncheck everything and clear notes?",
+      "resetYes": "Yes, clear",
+      "resetNo": "Cancel",
+      "progress": "{done} of {total} ready",
+      "progressLabel": "Checklist progress",
+      "noStorage": "Your browser can't keep the progress: it will be lost when you leave the page.",
+      "note": "Note",
+      "notePlaceholder": "Note (address, name, owner…)",
+      "storage": "Progress and notes stay in this browser. Print the list or save it as PDF to share it."
+    },
+    "sizing": {
+      "title": "Sizing calculator",
+      "lead": "An estimate of the machines you need, based on the number of devices and the services you use.",
+      "devices": "Devices that get an address",
+      "devicesHint": "Workstations, phones, printers, access points, IoT.",
+      "sites": "Number of sites",
+      "services": "Services used",
+      "opt": {
+        "wifi8021x": "802.1X Wi‑Fi or VPN through RADIUS",
+        "pki": "Built-in PKI (workstation certificates, SCEP)",
+        "dnsFiltering": "DNS filtering with query log",
+        "highAvailability": "High availability (cluster)"
+      },
+      "result": "Recommendation",
+      "topoCluster": "Cluster: two data nodes and a witness",
+      "topoSingle": "One appliance",
+      "machine": "Machine",
+      "ram": "Memory",
+      "disk": "Disk",
+      "gb": "GB",
+      "role": {
+        "single": "appliance",
+        "data": "data node",
+        "witness": "witness"
+      },
+      "note": {
+        "pki": "The PKI runs in a Java container: 2 GB of memory are added.",
+        "radius": "RADIUS is light; authentications per second matter more than the number of devices.",
+        "dnslog": "Disk includes the DNS query log, proportional to the number of devices.",
+        "large": "Beyond 30,000 devices, run a load test before settling the sizing.",
+        "relays": "Several sites: each site's DHCP relays point to the appliance (or to both nodes of a cluster).",
+        "cluster": "Plan a dedicated network between the three machines and a virtual address for the service."
+      },
+      "disclaimer": "An order of magnitude, to confirm with a test on your real load. Documented starting point: 2 vCPU, 4 GB, 40 GB.",
+      "copy": "Copy the summary"
+    },
+    "dhcp": {
+      "title": "Windows DHCP import preview",
+      "lead": "Drop the export of your Windows DHCP server: see right away what Ipnoria would create, and what would need to be redone by hand.",
+      "step1": "On the Windows DHCP server, as an administrator",
+      "drop": "Drop dhcp-export.xml here",
+      "local": "The file is read in your browser. It is never sent.",
+      "choose": "Choose the file",
+      "tooLarge": "This file is larger than 20 MB. Export without the -Leases option.",
+      "readError": "The file couldn't be read.",
+      "result": "What Ipnoria would create from {file}",
+      "total": {
+        "scopes": "Scopes",
+        "pools": "Ranges",
+        "reservations": "Reservations",
+        "inactive": "Inactive scopes"
+      },
+      "warnings": "{n} item(s) to check",
+      "w": {
+        "xml_invalid": "This file is not valid XML.",
+        "no_ipv4_section": "No IPv4 section: is this really an Export-DhcpServer export?",
+        "scope_invalid": "scope skipped: invalid address or mask.",
+        "reservation_invalid": "reservation skipped: invalid address or MAC ({detail}).",
+        "option_unmapped": "option {detail} not imported (only 3, 6, 15, 42, 66, 67 and 119 are)."
+      },
+      "notImported": "In the export, to recreate by hand:",
+      "ni": {
+        "ipv6": "IPv6 scopes",
+        "policies": "DHCP policies",
+        "classes": "vendor or user classes",
+        "filters": "MAC address filters",
+        "failover": "Windows DHCP failover (replaced by the cluster's high availability)",
+        "superscopes": "superscopes",
+        "multicast": "multicast scopes"
+      },
+      "col": {
+        "network": "Network",
+        "name": "Name",
+        "pools": "Served ranges",
+        "reservations": "Reservations",
+        "lease": "Lease"
+      },
+      "details": "Details",
+      "inactive": "inactive",
+      "options": "Options",
+      "exclusions": "Exclusions",
+      "days": "{n} d",
+      "next": "Ready to migrate? The guide covers import, lease takeover, coexistence and switchover."
+    },
+    "subnets": {
+      "title": "Subnet calculator",
+      "lead": "Split an address block into networks and VLANs, by number of hosts or in equal parts. Export the plan as CSV.",
+      "block": "Block to split",
+      "blockError": "Enter a CIDR block, for example 10.20.0.0/16.",
+      "addresses": "usable addresses",
+      "mode": "Method",
+      "modes": {
+        "vlsm": "By need",
+        "equal": "Equal parts"
+      },
+      "count": "Number of subnets",
+      "needs": "Needs (name, VLAN, hosts)",
+      "name": "Name",
+      "vlan": "VLAN",
+      "hosts": "Hosts",
+      "remove": "Remove {name}",
+      "add": "Add a need",
+      "plan": "Addressing plan",
+      "unplaced": "Don't fit in the block: {names}. Enlarge the block or reduce the needs.",
+      "col": {
+        "name": "Name",
+        "vlan": "VLAN",
+        "cidr": "Network",
+        "range": "Usable addresses",
+        "broadcast": "Broadcast",
+        "hosts": "Hosts"
+      },
+      "need": "need: {n}",
+      "free": "Still free:",
+      "subnet": "Subnet",
+      "sample": {
+        "desktops": "Workstations",
+        "guests": "Guest Wi‑Fi",
+        "servers": "Servers",
+        "printers": "Printers",
+        "admin": "Management"
+      }
+    }
+  },
+  "roadmap": {
+    "title": "Roadmap",
+    "lead": "What could come next. Vote for what matters to you: votes shape the next releases.",
+    "banner": {
+      "confirmed": "Thanks, your vote is counted.",
+      "invalid": "This confirmation link is no longer valid: it was already used, or it expired after 7 days."
+    },
+    "closed": "Voting opens soon. The list stays available.",
+    "votes": "{n} vote(s)",
+    "vote": "Vote",
+    "footnote": "One vote per email address and item, counted after email confirmation. The address is not kept.",
+    "dialogTitle": "Vote for “{title}”",
+    "dialogLead": "A confirmation email is sent to you: the vote counts when you click its link.",
+    "consent": "I agree to receive this confirmation email. My address is not kept.",
+    "cancel": "Cancel",
+    "send": "Send the vote",
+    "sent": "Check your inbox: click the link you received for the vote to count.",
+    "close": "Close"
+  },
+  "tour": {
+    "title": "Guided tour",
+    "lead": "Four walkthroughs of the console, step by step, on real screenshots.",
+    "scenarios": "Walkthroughs",
+    "goto": "Step {n}: {title}",
+    "stepOf": "Step {n} of {total}",
+    "prev": "Previous",
+    "next": "Next",
+    "book": "See the console for real",
+    "keys": "Left and right arrows to move.",
+    "note": "Console screenshots with fictitious demonstration data.",
+    "cta": "Take the guided tour"
+  },
+  "profiles": {
+    "title": "Who it's for",
+    "lead": "The same services, different priorities depending on your organization.",
+    "needs": "Your needs",
+    "answers": "What Ipnoria brings",
+    "start": "Where to start",
+    "others": "See also:"
+  },
+  "booking": {
+    "title": "Book a demo",
+    "lead": "30 minutes on a video call, on your cases: DHCP migration, 802.1X Wi‑Fi, PKI, cluster. Pick a slot.",
+    "cta": "Book a demo",
+    "cancelDone": "The meeting is cancelled. An email confirms it.",
+    "cancelMissing": "This meeting no longer exists, is already cancelled, or has already taken place.",
+    "cancelTitle": "Cancel your demo?",
+    "cancelText": "The slot will be freed and an email will confirm it.",
+    "cancelButton": "Cancel the meeting",
+    "sent": "Demo booked",
+    "sentText": "A confirmation and the calendar invitation are on their way by email. The cancellation link is in it.",
+    "closedTitle": "Online booking opens soon",
+    "closedText": "Meanwhile, write to us: we'll offer you a slot.",
+    "pick": "Pick a slot",
+    "tz": "Times shown in your time zone ({tz}). Length: {min} minutes.",
+    "none": "No free slot right now. Write to us and we'll find one.",
+    "day": "Day",
+    "time": "Time",
+    "errors": {
+      "slot": "Pick a slot.",
+      "taken": "This slot was just taken. Pick another one.",
+      "server": "The booking didn't go through. Try again, or write to us."
+    },
+    "notes": "Your context",
+    "notesHint": "Fleet size, services to replace, questions.",
+    "consent": "I agree that this information is used only to organize this demo.",
+    "submit": "Book this slot"
   }
 }

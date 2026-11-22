@@ -1,5 +1,5 @@
-// Toutes les heures : si une nouvelle version est publiée sur GitHub, e-mail aux abonnés confirmés.
-// Purge aussi les inscriptions jamais confirmées depuis plus de 7 jours.
+// Toutes les heures : si une nouvelle version est publiée sur GitHub, e-mail aux abonnés confirmés ;
+// rappel des démonstrations du lendemain ; purge des inscriptions et votes jamais confirmés depuis plus de 7 jours.
 const HOUR = 60 * 60 * 1000
 
 export default defineNitroPlugin((nitro) => {
@@ -8,6 +8,10 @@ export default defineNitroPlugin((nitro) => {
     try {
       const pool = useDb()
       await pool.query(`DELETE FROM newsletter_subscribers WHERE confirmed_at IS NULL AND created_at < now() - interval '7 days'`)
+      await pool.query(`DELETE FROM roadmap_votes WHERE confirmed_at IS NULL AND created_at < now() - interval '7 days'`)
+      // Rendez-vous passés depuis plus de 90 jours : effacés (données personnelles)
+      await pool.query(`DELETE FROM bookings WHERE ends_at < now() - interval '90 days'`)
+      await remindBookings(pool)
       const [latest] = await fetchReleases()
       if (!latest) return
       const entry = (await loadChangelog().catch(() => [])).find(e => e.version === latest.version)

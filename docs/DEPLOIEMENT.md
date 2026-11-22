@@ -38,6 +38,13 @@ Avec Ansible : `ansible-playbook site.yml --ask-vault-pass --tags website` (tire
 2. Renseigner `website_oidc_issuer`, `website_oidc_client_id`, `website_admin_emails` et, dans le vault, `vault_oidc_client_secret` et `vault_session_password` (32 caractères au moins).
 3. Seules les adresses listées (e-mail vérifié par le fournisseur) entrent ; la liste est relue à chaque requête.
 
+## Réservation de démonstrations (`/rendez-vous`)
+
+1. Le SMTP doit fonctionner (confirmation, rappel la veille, annulation, invitation jointe).
+2. `website_booking_enabled: true`, puis régler jours, heures, fuseau et lien de visio (`website_booking_*`).
+3. Facultatif, dans le vault : `vault_booking_busy_ics_url` (adresse iCalendar secrète de votre agenda : ses occupations retirent les créneaux) et `vault_booking_feed_key` (`openssl rand -hex 24`). Abonnez ensuite votre agenda à `https://<domaine>/api/booking/feed.ics?key=<clé>` pour y voir les démonstrations réservées.
+4. Les rendez-vous sont effacés 90 jours après leur date ; ils apparaissent aussi dans `/admin`.
+
 ## Statistiques (Umami)
 
 1. `website_analytics_enabled: true`, secrets `vault_umami_db_password` et `vault_umami_app_secret`, puis un passage du playbook.

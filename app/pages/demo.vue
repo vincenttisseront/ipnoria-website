@@ -30,8 +30,8 @@ useSeoMeta({ title: () => t('demo.pageTitle'), description: () => t('demo.pageLe
       <p class="font-semibold">{{ t('demo.soonTitle') }}</p>
       <p class="mt-2 text-muted">{{ t('demo.soonText') }}</p>
       <div class="mt-6 flex flex-wrap gap-3">
-        <NuxtLink :to="localePath('contact')" class="btn btn-primary"><AppIcon name="mail" :size="16" />{{ t('demo.private') }}</NuxtLink>
-        <NuxtLink :to="localePath('/')" class="btn btn-secondary">{{ t('demo.tour') }}</NuxtLink>
+        <NuxtLink :to="localePath('rendez-vous')" class="btn btn-primary"><AppIcon name="mail" :size="16" />{{ t('demo.private') }}</NuxtLink>
+        <NuxtLink :to="localePath('visite')" class="btn btn-secondary">{{ t('demo.tour') }}</NuxtLink>
       </div>
     </div>
   </div>

@@ -95,7 +95,7 @@ const cellClass: Record<CellState, string> = {
   broadcast: 'bg-[repeating-linear-gradient(135deg,rgb(255_255_255/0.12)_0_1.5px,transparent_1.5px_4px)] cursor-not-allowed',
   gateway: 'bg-warn cursor-not-allowed',
   used: 'bg-accent/70 cursor-not-allowed',
-  free: 'bg-white/[0.04] ring-1 ring-inset ring-white/10 hover:bg-white/15 hover:ring-white/40 cursor-pointer',
+  free: 'bg-tint/[0.04] ring-1 ring-inset ring-tint/10 hover:bg-tint/15 hover:ring-tint/40 cursor-pointer',
   new: 'bg-ok shadow-[0_0_12px_2px_rgb(61_214_163/0.55)] cell-new',
 }
 </script>
@@ -131,7 +131,7 @@ const cellClass: Record<CellState, string> = {
 
     <ul class="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-[0.8rem] text-muted">
       <li class="flex items-center gap-1.5"><span class="size-2.5 rounded-[2px] bg-accent/70" aria-hidden="true" />{{ t('demo.legendUsed') }}</li>
-      <li class="flex items-center gap-1.5"><span class="size-2.5 rounded-[2px] bg-white/[0.04] ring-1 ring-inset ring-white/15" aria-hidden="true" />{{ t('demo.legendFree') }}</li>
+      <li class="flex items-center gap-1.5"><span class="size-2.5 rounded-[2px] bg-tint/[0.04] ring-1 ring-inset ring-tint/15" aria-hidden="true" />{{ t('demo.legendFree') }}</li>
       <li class="flex items-center gap-1.5"><span class="size-2.5 rounded-[2px] bg-warn" aria-hidden="true" />{{ t('demo.legendGateway') }}</li>
       <li class="flex items-center gap-1.5"><span class="size-2.5 rounded-[2px] bg-ok" aria-hidden="true" />{{ t('demo.legendNew') }}</li>
     </ul>

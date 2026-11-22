@@ -34,7 +34,7 @@ const nodes = computed(() => [
           <span
             v-for="s in n.services"
             :key="s"
-            class="rounded-md border border-line bg-white/[0.03] px-1.5 py-0.5 font-mono text-[0.7rem] text-fg/85"
+            class="rounded-md border border-line bg-tint/[0.03] px-1.5 py-0.5 font-mono text-[0.7rem] text-fg/85"
           >{{ s }}</span>
         </p>
       </li>

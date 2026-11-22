@@ -1,5 +1,6 @@
 import { DOCS } from '#shared/docs'
 import { GUIDES } from '#shared/guides'
+import { PROFILES } from '#shared/profiles'
 
 // Plan du site avec alternatives de langue (hreflang). Pages FR à la racine, EN sous /en.
 const PAGES: Array<[fr: string, en: string, priority: string]> = [
@@ -8,6 +9,14 @@ const PAGES: Array<[fr: string, en: string, priority: string]> = [
   ['/comparatif', '/en/comparison', '0.8'],
   ['/guides', '/en/guides', '0.8'],
   ['/nouveautes', '/en/releases', '0.7'],
+  ['/outils', '/en/tools', '0.7'],
+  ['/outils/checklist', '/en/tools/checklist', '0.6'],
+  ['/outils/dimensionnement', '/en/tools/sizing', '0.6'],
+  ['/outils/import-dhcp', '/en/tools/dhcp-import-preview', '0.6'],
+  ['/outils/sous-reseaux', '/en/tools/subnets', '0.6'],
+  ['/visite', '/en/tour', '0.7'],
+  ['/feuille-de-route', '/en/roadmap', '0.6'],
+  ['/rendez-vous', '/en/book-a-demo', '0.5'],
   ['/demo', '/en/demo', '0.5'],
   ['/contact', '/en/contact', '0.6'],
   ['/confidentialite', '/en/privacy', '0.2'],
@@ -17,6 +26,7 @@ export default defineEventHandler(async (event) => {
   const site = useRuntimeConfig().public.siteUrl.replace(/\/$/, '')
   const pairs: Array<[string, string, string]> = [...PAGES]
   for (const d of DOCS) pairs.push([`/documentation/${d.slug}`, `/en/docs/${d.slug}`, '0.6'])
+  for (const p of PROFILES.fr) pairs.push([`/pour/${p.slug.fr}`, `/en/for/${p.slug.en}`, '0.7'])
   for (const g of GUIDES.fr) pairs.push([`/guides/${g.slug}`, `/en/guides/${g.slug}`, '0.7'])
   try {
     for (const r of (await loadChangelog()).slice(0, 30)) pairs.push([`/nouveautes/${r.version}`, `/en/releases/${r.version}`, '0.4'])

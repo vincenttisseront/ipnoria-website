@@ -29,7 +29,7 @@ async function copy(i: number, code: string) {
           <h2 class="pt-0.5 text-lg font-semibold tracking-tight">{{ s.title }}</h2>
           <p class="mt-2 text-muted">{{ s.text }}</p>
           <p v-if="s.warn" class="mt-3 rounded-lg border border-warn/40 bg-warn/10 px-3 py-2 text-sm text-fg">{{ s.warn }}</p>
-          <div v-if="s.code" class="mt-3 overflow-hidden rounded-xl border border-line-strong bg-[#05070c]">
+          <div v-if="s.code" class="theme-dark mt-3 overflow-hidden rounded-xl border border-line-strong bg-code">
             <div class="flex items-center justify-between border-b border-line px-4 py-2">
               <span class="text-[0.75rem] text-muted">PowerShell</span>
               <button type="button" class="flex items-center gap-1.5 rounded-md border border-line px-2 py-1 text-[0.75rem] text-muted hover:text-fg" @click="copy(i, s.code)">

@@ -34,9 +34,9 @@ function onKey(e: KeyboardEvent) {
     <!-- barre de fenêtre -->
     <div class="flex items-center gap-4 border-b border-line bg-raised/60 px-4 py-2.5">
       <span class="flex gap-1.5" aria-hidden="true">
-        <span class="size-2.5 rounded-full bg-white/15" />
-        <span class="size-2.5 rounded-full bg-white/15" />
-        <span class="size-2.5 rounded-full bg-white/15" />
+        <span class="size-2.5 rounded-full bg-tint/15" />
+        <span class="size-2.5 rounded-full bg-tint/15" />
+        <span class="size-2.5 rounded-full bg-tint/15" />
       </span>
       <span class="hidden flex-1 truncate rounded-md bg-bg/70 px-3 py-1 text-center font-mono text-[0.75rem] text-muted sm:block" aria-hidden="true">
         https://ddi.exemple.lan/{{ current.path }}
