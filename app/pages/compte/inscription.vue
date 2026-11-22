@@ -79,7 +79,7 @@ const githubHref = computed(() => `/api/account/github/start?locale=${locale.val
           </div>
           <p v-if="has('consent')" class="field-error">{{ t('account.err.consent') }}</p>
         </div>
-        <button type="submit" class="btn btn-primary w-full" :disabled="busy">
+        <button type="submit" class="btn btn-primary w-full" :disabled="busy" data-umami-event="signup">
           <span v-if="busy" class="size-4 animate-spin rounded-full border-2 border-bg/30 border-t-bg" aria-hidden="true" />{{ t('account.signUp.submit') }}
         </button>
         <a v-if="state?.github" :href="githubHref" class="btn btn-secondary w-full"><AppIcon name="github" :size="16" />{{ t('account.signIn.github.button') }}</a>

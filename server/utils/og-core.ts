@@ -66,7 +66,7 @@ export function ogSvg(c: OgCard, site: string): string {
 ${c.image ? '' : `<g>${dots.join('')}</g><rect x="920" y="40" width="160" height="260" fill="url(#fade)"/>`}
 <g transform="translate(80 70) scale(2.2)">${MARK}</g>
 <text x="150" y="108" font-family="Geist" font-weight="600" font-size="34" fill="#edf0f7">Ipnoria</text>
-<text x="80" y="${titleY - titleSize - 14}" font-family="Geist" font-weight="600" font-size="26" fill="#5b8cff">${esc(c.kicker)}</text>
+${c.kicker ? `<text x="80" y="${titleY - titleSize - 14}" font-family="Geist" font-weight="600" font-size="26" fill="#5b8cff">${esc(c.kicker)}</text>` : ''}
 ${title.map((l, i) => `<text x="80" y="${titleY + i * lh}" font-family="Geist" font-weight="600" font-size="${titleSize}" letter-spacing="-1.5" fill="#edf0f7">${esc(l)}</text>`).join('\n')}
 ${sub.map((l, i) => `<text x="80" y="${subY + 10 + i * 38}" font-family="Geist" font-size="28" fill="#9aa3b8">${esc(l)}</text>`).join('\n')}
 ${c.image ? `<rect x="880" y="200" width="240" height="160" rx="22" fill="${c.image.dark ? '#0d111a' : '#ffffff'}" stroke="#ffffff" stroke-opacity=".12"/><image href="${c.image.href}" x="904" y="224" width="192" height="112" preserveAspectRatio="xMidYMid meet"/>` : ''}

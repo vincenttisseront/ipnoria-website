@@ -64,7 +64,7 @@ async function submit() {
           <select id="ip-locale" v-model="form.locale" class="field !w-auto"><option value="fr">Français</option><option value="en">English</option></select>
         </div>
         <p v-if="error" role="alert" class="field-error">{{ error }}</p>
-        <button type="submit" class="btn btn-primary" :disabled="busy || !user?.emailVerified">
+        <button type="submit" class="btn btn-primary" :disabled="busy || !user?.emailVerified" data-umami-event="idea-propose">
           <span v-if="busy" class="size-4 animate-spin rounded-full border-2 border-bg/30 border-t-bg" aria-hidden="true" />{{ t('ideas.form.submit') }}
         </button>
       </form>

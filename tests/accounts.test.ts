@@ -155,3 +155,14 @@ describe('référencement', async () => {
     }
   })
 })
+
+describe('réseaux sociaux', async () => {
+  const { releaseHighlights, slideSvg } = await import('../server/utils/carousel-core')
+  it('extrait les points forts d\'une note de version', () => {
+    const md = '### Nouveautés\n- **Import NPS.** Reprise des clients RADIUS.\n- Simulation d\'une authentification depuis la console. Détails.\n- `x`\n'
+    expect(releaseHighlights(md)).toEqual(['Import NPS', 'Simulation d\'une authentification depuis la console'])
+  })
+  it('dessine des diapositives sans HTML injecté', () => {
+    expect(slideSvg({ kind: 'cover', kicker: 'K', title: '<b>T</b>' }, 'x.test', '1 / 3')).toContain('&lt;b&gt;T&lt;/b&gt;')
+  })
+})

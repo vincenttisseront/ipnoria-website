@@ -181,6 +181,7 @@ watch(confirmDelete, async (open) => { if (open) { await nextTick(); confirmBtn.
         <AdminIdeas class="mt-14" />
         <AdminReferences class="mt-14" />
         <AdminSecurity class="mt-14" />
+        <AdminSocial class="mt-14" />
       </template>
     </main>
 

@@ -8,6 +8,7 @@ import type { OgCard } from './og-core'
 // Le moteur lit les polices depuis des fichiers : elles sont extraites une fois dans le dossier temporaire
 // (seul emplacement inscriptible du conteneur, monté en tmpfs).
 let fontFiles: Promise<string[]> | null = null
+export function ogFontFiles(): Promise<string[]> { return loadFonts() }
 function loadFonts(): Promise<string[]> {
   fontFiles ??= (async () => {
     const s = useStorage('assets:fonts')

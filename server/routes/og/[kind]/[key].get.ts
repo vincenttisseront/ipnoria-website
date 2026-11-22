@@ -19,7 +19,7 @@ const PAGES: Record<string, Record<L, [string, string]>> = {
 
 const card = defineCachedFunction(async (kind: string, key: string, l: L): Promise<OgCard | null> => {
   const K = { fr: { guide: 'Guide', doc: 'Documentation', release: 'Nouvelle version', idea: 'Feuille de route', ref: 'Référence client', term: 'Glossaire', article: 'Article' }, en: { guide: 'Guide', doc: 'Documentation', release: 'New release', idea: 'Roadmap', ref: 'Customer story', term: 'Glossary', article: 'Article' } }[l]
-  if (kind === 'page') { const p = PAGES[key]?.[l]; return p ? { kicker: 'Ipnoria', title: p[0], subtitle: p[1] } : null }
+  if (kind === 'page') { const p = PAGES[key]?.[l]; return p ? { kicker: '', title: p[0], subtitle: p[1] } : null }
   if (kind === 'guide') { const g = GUIDES[l].find(x => x.slug === key); return g ? { kicker: K.guide, title: g.title, subtitle: g.summary } : null }
   if (kind === 'doc') { const d = DOCS.find(x => x.slug === key); return d ? { kicker: K.doc, title: d.title[l], subtitle: d.summary?.[l] } : null }
   if (kind === 'term') { const x = GLOSSARY[l].find(t => t.id === key); return x ? { kicker: K.term, title: x.term, subtitle: x.short } : null }

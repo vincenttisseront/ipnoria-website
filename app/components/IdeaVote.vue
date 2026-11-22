@@ -31,6 +31,7 @@ async function toggle() {
     :class="[large ? 'h-20 w-20' : 'h-16 w-14', voted ? 'border-accent bg-accent-soft text-accent' : 'border-line-strong text-fg hover:border-accent/60']"
     :aria-pressed="voted" :disabled="busy || (closed && !voted)"
     :aria-label="voted ? t('ideas.unvote', { n: votes }) : t('ideas.vote', { n: votes })"
+    data-umami-event="idea-vote"
     @click="toggle"
   >
     <span v-if="busy" class="size-4 animate-spin rounded-full border-2 border-line-strong border-t-accent" aria-hidden="true" />

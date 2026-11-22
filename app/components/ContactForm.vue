@@ -165,7 +165,7 @@ function again() {
         <p v-if="has('consent')" id="err-consent" class="field-error">{{ t('contact.errors.consent') }}</p>
       </div>
 
-      <button type="submit" class="btn btn-primary" :disabled="status === 'sending'" :aria-busy="status === 'sending'">
+      <button type="submit" class="btn btn-primary" data-umami-event="contact" :disabled="status === 'sending'" :aria-busy="status === 'sending'">
         <span
           v-if="status === 'sending'"
           class="size-4 animate-spin rounded-full border-2 border-bg/30 border-t-bg"

@@ -143,7 +143,7 @@ async function cancelBooking() {
         </label>
         <p v-if="invalid.has('consent')" class="field-error">{{ t('contact.errors.consent') }}</p>
         <p v-if="status === 'error' || status === 'rate'" role="alert" class="field-error">{{ t(status === 'rate' ? 'contact.errors.rate' : 'booking.errors.server') }}</p>
-        <button type="submit" class="btn btn-primary w-full" :disabled="status === 'sending'">
+        <button type="submit" class="btn btn-primary w-full" :disabled="status === 'sending'" data-umami-event="booking">
           <span v-if="status === 'sending'" class="size-4 animate-spin rounded-full border-2 border-bg/30 border-t-bg" aria-hidden="true" />
           {{ t('booking.submit') }}
         </button>
