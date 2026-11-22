@@ -107,3 +107,30 @@ describe('références clients', async () => {
     expect(quoted('Good', 'en')).toBe('“Good”')
   })
 })
+
+describe('preuve de travail', async () => {
+  const { createChallenge, checkSolution, solve } = await import('../server/utils/pow-core')
+  it('accepte une solution juste, refuse une fausse, une expirée ou une autre clé', () => {
+    const c = createChallenge('secret', 600, 2000)
+    const n = solve(c)!
+    const p = { algorithm: c.algorithm, challenge: c.challenge, salt: c.salt, signature: c.signature, number: n }
+    expect(checkSolution('secret', p)).toBe(true)
+    expect(checkSolution('secret', { ...p, number: n + 1 })).toBe(false)
+    expect(checkSolution('autre', p)).toBe(false)
+    expect(checkSolution('secret', p, Date.now() + 601_000)).toBe(false)
+  })
+})
+
+describe('programme bêta', async () => {
+  const { applicationSchema, reportSchema, BETA_AGREEMENT } = await import('#shared/beta')
+  it('valide candidature et signalement', () => {
+    const app = { sector: 'pme', orgSize: 'lt100', hypervisor: 'proxmox', activeDirectory: true, wifi8021x: false, services: ['dhcp'], hours: 'lt2', motivation: 'Remplacer notre DHCP Windows.' }
+    expect(applicationSchema.safeParse(app).success).toBe(true)
+    expect(applicationSchema.safeParse({ ...app, services: [] }).success).toBe(false)
+    expect(applicationSchema.safeParse({ ...app, ref: '../x' }).success).toBe(false)
+    expect(reportSchema.safeParse({ version: '0.24', module: 'dns', severity: 'minor', title: 'Titre trop', steps: 'Faire ceci et cela', expected: 'ok', actual: 'ko' }).success).toBe(true)
+  })
+  it('a un accord complet dans les deux langues', () => {
+    expect(BETA_AGREEMENT.fr.length).toBe(BETA_AGREEMENT.en.length)
+  })
+})

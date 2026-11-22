@@ -17,7 +17,8 @@
     "releases": "Nouveautés",
     "demo": "Démo",
     "tools": "Outils",
-    "roadmap": "Feuille de route"
+    "roadmap": "Feuille de route",
+    "beta": "Bêta"
   },
   "hero": {
     "title": "DNS, DHCP, IPAM, RADIUS et PKI. Une seule appliance.",
@@ -956,7 +957,14 @@
       "email_mismatch": "L'adresse saisie ne correspond pas.",
       "too_many_ideas": "Vous avez proposé 5 idées en 24 heures. Revenez demain.",
       "too_many_comments": "Beaucoup de commentaires en peu de temps. Patientez un peu.",
-      "idea_closed": "Cette idée est close : elle ne prend plus de voix."
+      "idea_closed": "Cette idée est close : elle ne prend plus de voix.",
+      "not_tester": "Cet espace est réservé aux bêta-testeurs acceptés.",
+      "agreement_required": "Acceptez d'abord l'accord bêta.",
+      "already_decided": "Votre candidature a déjà été traitée.",
+      "too_many_reports": "20 signalements en 24 heures : revenez demain, ou regroupez vos constats.",
+      "campaign_closed": "La campagne est terminée.",
+      "pow_required": "La vérification anti-robot a échoué. Rechargez la page et réessayez.",
+      "pow_invalid": "La vérification anti-robot a expiré. Réessayez."
     }
   },
   "ideas": {
@@ -1066,5 +1074,233 @@
       "dnsfilter": "Filtrage DNS",
       "ad": "Active Directory"
     }
+  },
+  "beta": {
+    "badge": "Bêta",
+    "badgeTitle": "Bêta-testeur officiel d'Ipnoria",
+    "title": "Programme bêta-testeurs",
+    "pill": "{n} testeur(s) officiel(s)",
+    "lead": "Testez Ipnoria avant sa sortie sur votre propre réseau, dites-nous ce qui manque, et orientez la première version stable. Gratuit, sans engagement, avec un contact direct avec l'équipe.",
+    "cta": "Postuler",
+    "back": "Programme bêta",
+    "benefitsTitle": "Ce que vous y gagnez",
+    "benefits": [
+      "Les versions préliminaires avant tout le monde, avec leurs notes et les problèmes connus.",
+      "Un lien direct avec l'équipe : vos signalements sont lus, suivis et vous recevez une réponse.",
+      "Vos priorités pèsent dans la feuille de route, avec un badge « Bêta » sur vos idées.",
+      "Un accompagnement pour la migration de votre DHCP, de votre DNS ou de votre NPS, sur votre cas réel.",
+      "Votre nom sur la page de remerciements, si vous le souhaitez."
+    ],
+    "expectTitle": "Ce que nous attendons",
+    "expect": [
+      "Un environnement de test isolé (une ou trois machines virtuelles), jamais votre production.",
+      "Quelques heures par mois pour installer les nouvelles versions et suivre les campagnes de test.",
+      "Des signalements précis : étapes, résultat attendu, résultat obtenu, journaux nettoyés.",
+      "La confidentialité des versions préliminaires, le temps du programme."
+    ],
+    "processTitle": "Comment ça se passe",
+    "process": [
+      "Vous créez un compte et décrivez votre environnement.",
+      "Nous composons un panel varié (PME, collectivités, enseignement…) et revenons vers vous sous quelques jours.",
+      "Vous acceptez l'accord bêta : l'espace testeur s'ouvre.",
+      "Vous installez, testez, signalez ; chaque version corrige ce que vous avez trouvé."
+    ],
+    "applyTitle": "Candidature",
+    "closed": "Les candidatures ne sont pas encore ouvertes.",
+    "needAccount": "La candidature se fait depuis un compte : il sert ensuite à accéder à l'espace testeur et à suivre vos signalements.",
+    "status": {
+      "pending": "Candidature enregistrée. Vous pouvez la compléter tant qu'elle n'est pas traitée ; la réponse arrive par e-mail.",
+      "accepted": "Candidature acceptée ! Dernière étape : lire et accepter l'accord bêta.",
+      "waitlist": "Vous êtes sur la liste d'attente : vous serez prévenu dès qu'une place s'ouvre pour votre profil.",
+      "declined": "Votre candidature n'a pas été retenue pour cette phase.",
+      "left": "Vous avez quitté le programme. Écrivez-nous pour revenir.",
+      "tester": "Vous êtes bêta-testeur officiel. Merci !"
+    },
+    "openSpace": "Ouvrir l'espace testeur",
+    "readAgreement": "Lire l'accord bêta",
+    "referralTitle": "Votre lien de parrainage",
+    "referralText": "Partagez-le avec un collègue d'une autre organisation : sa candidature vous sera rattachée. {n} candidature(s) par votre lien.",
+    "form": {
+      "sector": "Secteur",
+      "orgSize": "Taille du parc",
+      "hypervisor": "Virtualisation pour le test",
+      "hours": "Temps disponible",
+      "stack": "Ce que vous utilisez aujourd'hui",
+      "services": "Ce que vous voulez tester",
+      "servicesError": "Choisissez au moins un service.",
+      "ad": "Active Directory",
+      "wifi": "Wi‑Fi ou VPN en 802.1X",
+      "motivation": "Votre contexte et vos attentes",
+      "motivationHint": "Ce que vous voulez remplacer, ce qui vous bloque aujourd'hui, ce qui ferait de ce test une réussite. 20 caractères au moins.",
+      "credit": "J'accepte que mon nom et mon organisation figurent sur la page de remerciements.",
+      "referred": "Vous avez été invité par un bêta-testeur.",
+      "checking": "Vérification anti-robot…",
+      "submit": "Envoyer ma candidature",
+      "update": "Mettre à jour ma candidature"
+    },
+    "sizes": {
+      "lt100": "Moins de 100 postes",
+      "lt500": "100 à 500 postes",
+      "lt2000": "500 à 2 000 postes",
+      "gt2000": "Plus de 2 000 postes"
+    },
+    "hypervisors": {
+      "vmware": "VMware vSphere",
+      "proxmox": "Proxmox VE",
+      "hyperv": "Hyper-V",
+      "xcpng": "XCP-ng",
+      "nutanix": "Nutanix AHV",
+      "other": "Autre",
+      "none": "Matériel dédié"
+    },
+    "hoursOpt": {
+      "lt2": "Moins de 2 heures par mois",
+      "lt8": "2 à 8 heures par mois",
+      "gt8": "Plus de 8 heures par mois"
+    },
+    "stack": {
+      "windows_dns": "DNS Windows Server",
+      "windows_dhcp": "DHCP Windows Server",
+      "windows_nps": "NPS (RADIUS) Windows",
+      "windows_adcs": "AD CS (certificats)",
+      "linux_bind": "BIND sous Linux",
+      "linux_dhcp": "DHCP sous Linux (ISC, Kea)",
+      "box": "Box ou routeur",
+      "spreadsheet": "Tableur pour les adresses",
+      "commercial_ddi": "Solution DDI commerciale",
+      "other": "Autre"
+    },
+    "faqTitle": "Questions fréquentes",
+    "faq": [
+      {
+        "q": "Combien de temps dure le programme ?",
+        "a": "Jusqu'à la première version stable, puis quelques semaines après. Vous pouvez partir quand vous voulez depuis votre espace."
+      },
+      {
+        "q": "Faut-il beaucoup de matériel ?",
+        "a": "Une machine virtuelle de 2 vCPU, 4 Go de mémoire et 40 Go de disque suffit pour l'essentiel. Trois machines pour tester le cluster."
+      },
+      {
+        "q": "Puis-je tester sur ma production ?",
+        "a": "Non. Les versions bêta peuvent contenir des défauts graves : un réseau de test isolé est demandé, avec une copie de vos données si vous voulez tester une migration."
+      },
+      {
+        "q": "Que deviennent mes données ?",
+        "a": "Votre candidature et vos signalements servent au programme, puis sont effacés un an après sa fin. Vous pouvez les exporter ou les supprimer avec votre compte."
+      },
+      {
+        "q": "Est-ce payant ?",
+        "a": "Non. Le programme est gratuit, et Ipnoria reste un logiciel libre sous licence AGPL."
+      }
+    ],
+    "thanksTitle": "Merci aux bêta-testeurs",
+    "thanksText": "Ces personnes et organisations testent Ipnoria avant sa sortie et nous aident à le rendre solide.",
+    "agreement": {
+      "title": "Accord bêta",
+      "version": "Version {v}",
+      "check": "J'ai lu l'accord bêta et je l'accepte.",
+      "accept": "Accepter et ouvrir l'espace testeur",
+      "done": "Vous avez accepté cette version de l'accord.",
+      "notYet": "L'accord s'accepte une fois la candidature acceptée."
+    },
+    "space": {
+      "title": "Espace testeur",
+      "lead": "Versions, campagnes de test et signalements. Confidentiel le temps du programme.",
+      "tabs": {
+        "versions": "Versions",
+        "campagnes": "Campagnes",
+        "signalements": "Mes signalements",
+        "connus": "Problèmes connus"
+      },
+      "noRelease": "Aucune version publiée pour l'instant : vous serez prévenu par e-mail.",
+      "latest": "dernière",
+      "download": "Télécharger",
+      "linkNote": "Lien personnel valable 24 heures. Vérifiez l'empreinte SHA-256 avant l'installation.",
+      "noCampaign": "Aucune campagne ouverte.",
+      "noKnown": "Aucun problème connu pour l'instant.",
+      "leave": "Quitter le programme",
+      "leaveConfirm": "Quitter le programme bêta ?",
+      "leaveYes": "Oui, quitter",
+      "gb": "Go",
+      "mb": "Mo"
+    },
+    "campaign": {
+      "meta": "{n} étape(s), {p} participant(s)",
+      "until": "jusqu'au {d}",
+      "todo": "À faire",
+      "back": "Toutes les campagnes",
+      "progress": "{done} étape(s) sur {total} renseignée(s)",
+      "resultFor": "Résultat de l'étape {n}",
+      "results": {
+        "ok": "Réussi",
+        "ko": "Échec",
+        "skip": "Pas testé"
+      },
+      "note": "Remarque (facultatif)",
+      "report": "Faire un signalement pour cet échec",
+      "outcome": "Bilan de la campagne",
+      "outcomes": {
+        "success": "Réussite",
+        "partial": "Réussite partielle",
+        "failure": "Échec"
+      },
+      "comment": "Commentaire général",
+      "incomplete": "Indiquez un résultat pour chaque étape et un bilan.",
+      "saved": "Résultat enregistré. Merci !",
+      "closed": "La campagne est terminée.",
+      "submit": "Enregistrer mon résultat"
+    },
+    "reports": {
+      "new": "Nouveau signalement",
+      "version": "Version",
+      "module": "Module",
+      "severity": "Gravité",
+      "titleLabel": "Résumé en une phrase",
+      "steps": "Étapes pour reproduire",
+      "stepsPlaceholder": "1. …\n2. …\n3. …",
+      "expected": "Résultat attendu",
+      "actual": "Résultat obtenu",
+      "logs": "Journaux",
+      "logsHint": "Retirez mots de passe, secrets partagés, clés et données personnelles avant de coller vos journaux.",
+      "send": "Envoyer le signalement",
+      "none": "Aucun signalement pour l'instant.",
+      "replies": "{n} réponse(s)",
+      "fixedIn": "Corrigé dans {v}",
+      "back": "Mes signalements",
+      "exchange": "Échanges avec l'équipe",
+      "noExchange": "Pas encore de réponse.",
+      "you": "Vous",
+      "answer": "Répondre à la demande d'informations",
+      "add": "Ajouter une information"
+    },
+    "modules": {
+      "install": "Installation",
+      "update": "Mise à jour",
+      "console": "Console",
+      "ipam": "IPAM",
+      "dns": "DNS",
+      "dhcp": "DHCP",
+      "radius": "RADIUS / 802.1X",
+      "pki": "PKI",
+      "cluster": "Cluster",
+      "ad": "Active Directory",
+      "other": "Autre"
+    },
+    "severities": {
+      "blocker": "Bloquant",
+      "major": "Majeur",
+      "minor": "Mineur",
+      "suggestion": "Suggestion"
+    },
+    "reportStatus": {
+      "new": "Reçu",
+      "need_info": "Informations demandées",
+      "confirmed": "Confirmé",
+      "in_progress": "En cours de correction",
+      "fixed": "Corrigé",
+      "wontfix": "Ne sera pas corrigé",
+      "duplicate": "Doublon"
+    },
+    "pillOpen": "Candidatures ouvertes"
   }
 }

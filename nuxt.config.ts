@@ -48,6 +48,10 @@ export default defineNuxtConfig({
       githubClientId: '',            // NUXT_ACCOUNTS_GITHUB_CLIENT_ID : connexion GitHub (facultative)
       githubClientSecret: '',        // NUXT_ACCOUNTS_GITHUB_CLIENT_SECRET
     },
+    powDisabled: false,              // NUXT_POW_DISABLED : désactive la preuve de travail (tests automatisés seulement)
+    beta: {
+      filesDir: '',                  // NUXT_BETA_FILES_DIR : dossier (lecture seule) des images bêta à distribuer
+    },
     oidc: {
       issuer: '',                    // NUXT_OIDC_ISSUER : URL du fournisseur OpenID Connect
       clientId: '',                  // NUXT_OIDC_CLIENT_ID
@@ -105,6 +109,11 @@ export default defineNuxtConfig({
       'feuille-de-route/index': { fr: '/feuille-de-route', en: '/roadmap' },
       'feuille-de-route/proposer': { fr: '/feuille-de-route/proposer', en: '/roadmap/propose' },
       'feuille-de-route/[id]': { fr: '/feuille-de-route/[id]', en: '/roadmap/[id]' },
+      'beta/index': { fr: '/beta', en: '/beta' },
+      'beta/accord': { fr: '/beta/accord', en: '/beta/agreement' },
+      'beta/espace': { fr: '/beta/espace', en: '/beta/space' },
+      'beta/signalements/[id]': { fr: '/beta/signalements/[id]', en: '/beta/reports/[id]' },
+      'beta/campagnes/[id]': { fr: '/beta/campagnes/[id]', en: '/beta/campaigns/[id]' },
       'references/index': { fr: '/references', en: '/customers' },
       'references/[slug]': { fr: '/references/[slug]', en: '/customers/[slug]' },
       'compte/index': { fr: '/compte', en: '/account' },
@@ -178,9 +187,15 @@ export default defineNuxtConfig({
     '/api/account/verify/resend': { security: { rateLimiter: { tokensPerInterval: 3, interval: 900000 } } },
     '/api/account/reauth': { security: { rateLimiter: { tokensPerInterval: 10, interval: 300000 } } },
     '/api/account/passkeys/**': { security: { rateLimiter: { tokensPerInterval: 30, interval: 300000 } } },
+    '/api/pow': { security: { rateLimiter: { tokensPerInterval: 30, interval: 300000 } } },
     '/api/account/**': { headers: { 'cache-control': 'no-store' }, security: { xssValidator: false } },
     // Idées et commentaires : texte brut, jamais rendu en HTML
     '/api/ideas/**': { security: { rateLimiter: { tokensPerInterval: 60, interval: 300000 }, xssValidator: false } },
+    '/api/beta/**': { headers: { 'cache-control': 'no-store' }, security: { xssValidator: false, requestSizeLimiter: { maxRequestSizeInBytes: 64_000 } } },
+    '/beta/espace': { headers: { 'cache-control': 'no-store', 'x-robots-tag': 'noindex' } },
+    '/beta/signalements/**': { headers: { 'cache-control': 'no-store', 'x-robots-tag': 'noindex' } },
+    '/beta/campagnes/**': { headers: { 'cache-control': 'no-store', 'x-robots-tag': 'noindex' } },
+    '/beta-download/**': { headers: { 'x-robots-tag': 'noindex' } },
     '/compte': { headers: { 'cache-control': 'no-store', 'x-robots-tag': 'noindex' } },
     '/compte/**': { headers: { 'cache-control': 'no-store', 'x-robots-tag': 'noindex' } },
     '/en/account': { headers: { 'cache-control': 'no-store', 'x-robots-tag': 'noindex' } },

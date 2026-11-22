@@ -20,6 +20,7 @@ const items = computed(() => [
   { to: localePath('guides'), label: t('nav.guides'), hash: false },
   { to: localePath('outils'), label: t('nav.tools'), hash: false },
   { to: localePath('feuille-de-route'), label: t('nav.roadmap'), hash: false },
+  { to: localePath('beta'), label: t('nav.beta'), hash: false },
   { to: localePath('contact'), label: t('nav.contact'), hash: false },
 ])
 const searchOpen = useState('search-open', () => false)

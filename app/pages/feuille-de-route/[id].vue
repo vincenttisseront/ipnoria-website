@@ -8,10 +8,10 @@ const { user, ensure } = useAccount()
 const errorText = useAccountError()
 await ensure()
 
-type Comment = { id: string, body: string, team: boolean, createdAt: string, editedAt: string | null, authorName: string | null, mine: boolean }
+type Comment = { id: string, body: string, team: boolean, beta?: boolean, createdAt: string, editedAt: string | null, authorName: string | null, mine: boolean }
 type Idea = {
   id: string, title: Record<string, string>, body: Record<string, string>, status: IdeaStatus, votes: number, voted: boolean, mine: boolean,
-  authorKind: string, authorName: string | null, createdAt: string, comments: Comment[], history: Array<{ status: IdeaStatus, note: string | null, at: string }>,
+  authorKind: string, authorName: string | null, authorBeta: boolean, createdAt: string, comments: Comment[], history: Array<{ status: IdeaStatus, note: string | null, at: string }>,
   duplicate: { id: string, title: Record<string, string> } | null
 }
 const id = computed(() => String(route.params.id))
@@ -64,7 +64,7 @@ const signInTo = computed(() => ({ path: localePath('compte-connexion'), query: 
         <div class="flex flex-wrap items-center gap-3"><IdeaStatus :status="idea.status" /></div>
         <h1 class="mt-3 text-h2">{{ pick(idea.title) }}</h1>
         <p class="mt-3 text-sm text-muted">
-          {{ idea.authorKind === 'team' ? t('ideas.byTeam') : idea.authorKind === 'deleted' ? t('ideas.byDeleted') : t('ideas.by', { name: idea.authorName }) }},
+          {{ idea.authorKind === 'team' ? t('ideas.byTeam') : idea.authorKind === 'deleted' ? t('ideas.byDeleted') : t('ideas.by', { name: idea.authorName }) }}<BetaBadge v-if="idea.authorBeta" />,
           {{ fmt(idea.createdAt) }}<template v-if="otherLang">. {{ t('ideas.otherLanguage') }}</template>
         </p>
       </div>
@@ -83,7 +83,7 @@ const signInTo = computed(() => ({ path: localePath('compte-connexion'), query: 
           <h2 id="comments-title" class="text-lg font-semibold tracking-tight">{{ t('ideas.discussion', { n: idea.comments.length }) }}</h2>
           <ul class="mt-6 space-y-6">
             <li v-for="c in idea.comments" :key="c.id" class="rounded-xl border p-4" :class="c.team ? 'border-accent/40 bg-accent-soft' : 'border-line'">
-              <p class="text-sm"><span class="font-medium">{{ c.team ? t('ideas.team') : c.authorName ?? t('ideas.deletedAccount') }}</span>
+              <p class="text-sm"><span class="font-medium">{{ c.team ? t('ideas.team') : c.authorName ?? t('ideas.deletedAccount') }}</span><BetaBadge v-if="c.beta" />
                 <span class="text-muted">, {{ fmt(c.createdAt) }}<template v-if="c.editedAt"> ({{ t('ideas.edited') }})</template></span></p>
               <form v-if="editing === c.id" class="mt-3 space-y-3" @submit.prevent="saveEdit(c)">
                 <label :for="`ce-${c.id}`" class="sr-only">{{ t('ideas.comment') }}</label>

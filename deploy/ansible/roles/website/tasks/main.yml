@@ -21,6 +21,7 @@
     - "{{ website_dir }}"
     - "{{ website_dir }}/caddy-sites"
     - "{{ website_dir }}/caddy-errors"
+    - "{{ website_dir }}/beta-files"
 
 - name: Fichiers de déploiement (compose, Caddy)
   ansible.builtin.copy:

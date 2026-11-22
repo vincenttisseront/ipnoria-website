@@ -23,6 +23,7 @@ export const IDEA_SELECT = `
   i.created_at AS "createdAt", i.updated_at AS "updatedAt",
   CASE WHEN i.author_id IS NULL AND i.key IS NOT NULL THEN 'team' WHEN i.author_id IS NULL THEN 'deleted' ELSE 'user' END AS "authorKind",
   u.display_name AS "authorName",
+  EXISTS (SELECT 1 FROM beta_applications ba WHERE ba.user_id = i.author_id AND ba.status = 'accepted') AS "authorBeta",
   (SELECT count(*)::int FROM idea_votes v WHERE v.idea_id = i.id) AS votes,
   (SELECT count(*)::int FROM idea_comments c WHERE c.idea_id = i.id AND NOT c.hidden) AS comments`
 

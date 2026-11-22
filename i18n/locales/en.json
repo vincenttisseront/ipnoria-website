@@ -17,7 +17,8 @@
     "releases": "Releases",
     "demo": "Demo",
     "tools": "Tools",
-    "roadmap": "Roadmap"
+    "roadmap": "Roadmap",
+    "beta": "Beta"
   },
   "hero": {
     "title": "DNS, DHCP, IPAM, RADIUS and PKI. One appliance.",
@@ -956,7 +957,14 @@
       "email_mismatch": "The address doesn't match.",
       "too_many_ideas": "You proposed 5 ideas in 24 hours. Come back tomorrow.",
       "too_many_comments": "Many comments in a short time. Wait a little.",
-      "idea_closed": "This idea is closed: it no longer takes votes."
+      "idea_closed": "This idea is closed: it no longer takes votes.",
+      "not_tester": "This space is for accepted beta testers.",
+      "agreement_required": "Accept the beta agreement first.",
+      "already_decided": "Your application has already been processed.",
+      "too_many_reports": "20 reports in 24 hours: come back tomorrow, or group your findings.",
+      "campaign_closed": "The campaign is over.",
+      "pow_required": "The anti-bot check failed. Reload the page and try again.",
+      "pow_invalid": "The anti-bot check expired. Try again."
     }
   },
   "ideas": {
@@ -1066,5 +1074,233 @@
       "dnsfilter": "DNS filtering",
       "ad": "Active Directory"
     }
+  },
+  "beta": {
+    "badge": "Beta",
+    "badgeTitle": "Official Ipnoria beta tester",
+    "title": "Beta tester programme",
+    "pill": "{n} official tester(s)",
+    "lead": "Test Ipnoria before its release on your own network, tell us what's missing, and shape the first stable version. Free, no commitment, with a direct line to the team.",
+    "cta": "Apply",
+    "back": "Beta programme",
+    "benefitsTitle": "What you get",
+    "benefits": [
+      "Pre-release versions before everyone else, with their notes and known issues.",
+      "A direct line to the team: your reports are read, tracked and answered.",
+      "Your priorities weigh on the roadmap, with a “Beta” badge on your ideas.",
+      "Help migrating your DHCP, DNS or NPS, on your real case.",
+      "Your name on the thank-you page, if you wish."
+    ],
+    "expectTitle": "What we expect",
+    "expect": [
+      "An isolated test environment (one or three virtual machines), never your production.",
+      "A few hours a month to install new versions and follow test campaigns.",
+      "Precise reports: steps, expected result, actual result, cleaned-up logs.",
+      "Keeping pre-release versions confidential for the duration of the programme."
+    ],
+    "processTitle": "How it works",
+    "process": [
+      "You create an account and describe your environment.",
+      "We build a varied panel (SMBs, local government, education…) and get back to you within a few days.",
+      "You accept the beta agreement: the tester space opens.",
+      "You install, test, report; each version fixes what you found."
+    ],
+    "applyTitle": "Application",
+    "closed": "Applications aren't open yet.",
+    "needAccount": "You apply from an account: it then gives access to the tester space and lets you follow your reports.",
+    "status": {
+      "pending": "Application saved. You can complete it until it's processed; the answer comes by email.",
+      "accepted": "Application accepted! Last step: read and accept the beta agreement.",
+      "waitlist": "You're on the waiting list: you'll be told as soon as a place opens for your profile.",
+      "declined": "Your application wasn't selected for this phase.",
+      "left": "You left the programme. Write to us to come back.",
+      "tester": "You're an official beta tester. Thank you!"
+    },
+    "openSpace": "Open the tester space",
+    "readAgreement": "Read the beta agreement",
+    "referralTitle": "Your referral link",
+    "referralText": "Share it with a colleague from another organization: their application will be linked to you. {n} application(s) through your link.",
+    "form": {
+      "sector": "Sector",
+      "orgSize": "Fleet size",
+      "hypervisor": "Virtualization for the test",
+      "hours": "Time available",
+      "stack": "What you use today",
+      "services": "What you want to test",
+      "servicesError": "Choose at least one service.",
+      "ad": "Active Directory",
+      "wifi": "802.1X Wi‑Fi or VPN",
+      "motivation": "Your context and expectations",
+      "motivationHint": "What you want to replace, what blocks you today, what would make this test a success. At least 20 characters.",
+      "credit": "I agree that my name and organization appear on the thank-you page.",
+      "referred": "You were invited by a beta tester.",
+      "checking": "Anti-bot check…",
+      "submit": "Send my application",
+      "update": "Update my application"
+    },
+    "sizes": {
+      "lt100": "Fewer than 100 devices",
+      "lt500": "100 to 500 devices",
+      "lt2000": "500 to 2,000 devices",
+      "gt2000": "More than 2,000 devices"
+    },
+    "hypervisors": {
+      "vmware": "VMware vSphere",
+      "proxmox": "Proxmox VE",
+      "hyperv": "Hyper-V",
+      "xcpng": "XCP-ng",
+      "nutanix": "Nutanix AHV",
+      "other": "Other",
+      "none": "Dedicated hardware"
+    },
+    "hoursOpt": {
+      "lt2": "Less than 2 hours a month",
+      "lt8": "2 to 8 hours a month",
+      "gt8": "More than 8 hours a month"
+    },
+    "stack": {
+      "windows_dns": "Windows Server DNS",
+      "windows_dhcp": "Windows Server DHCP",
+      "windows_nps": "Windows NPS (RADIUS)",
+      "windows_adcs": "AD CS (certificates)",
+      "linux_bind": "BIND on Linux",
+      "linux_dhcp": "DHCP on Linux (ISC, Kea)",
+      "box": "Router or ISP box",
+      "spreadsheet": "Spreadsheet for addresses",
+      "commercial_ddi": "Commercial DDI solution",
+      "other": "Other"
+    },
+    "faqTitle": "Frequently asked questions",
+    "faq": [
+      {
+        "q": "How long does the programme last?",
+        "a": "Until the first stable version, then a few weeks after. You can leave whenever you want from your space."
+      },
+      {
+        "q": "Do I need a lot of hardware?",
+        "a": "A virtual machine with 2 vCPU, 4 GB of memory and 40 GB of disk covers most of it. Three machines to test the cluster."
+      },
+      {
+        "q": "Can I test on my production?",
+        "a": "No. Beta versions may contain serious defects: an isolated test network is required, with a copy of your data if you want to test a migration."
+      },
+      {
+        "q": "What happens to my data?",
+        "a": "Your application and reports serve the programme, then are erased one year after it ends. You can export or delete them with your account."
+      },
+      {
+        "q": "Does it cost anything?",
+        "a": "No. The programme is free, and Ipnoria remains free software under the AGPL."
+      }
+    ],
+    "thanksTitle": "Thanks to our beta testers",
+    "thanksText": "These people and organizations test Ipnoria before its release and help us make it solid.",
+    "agreement": {
+      "title": "Beta agreement",
+      "version": "Version {v}",
+      "check": "I have read the beta agreement and accept it.",
+      "accept": "Accept and open the tester space",
+      "done": "You accepted this version of the agreement.",
+      "notYet": "The agreement can be accepted once your application is accepted."
+    },
+    "space": {
+      "title": "Tester space",
+      "lead": "Versions, test campaigns and reports. Confidential for the duration of the programme.",
+      "tabs": {
+        "versions": "Versions",
+        "campagnes": "Campaigns",
+        "signalements": "My reports",
+        "connus": "Known issues"
+      },
+      "noRelease": "No version published yet: you'll be told by email.",
+      "latest": "latest",
+      "download": "Download",
+      "linkNote": "Personal link valid for 24 hours. Check the SHA-256 fingerprint before installing.",
+      "noCampaign": "No open campaign.",
+      "noKnown": "No known issue yet.",
+      "leave": "Leave the programme",
+      "leaveConfirm": "Leave the beta programme?",
+      "leaveYes": "Yes, leave",
+      "gb": "GB",
+      "mb": "MB"
+    },
+    "campaign": {
+      "meta": "{n} step(s), {p} participant(s)",
+      "until": "until {d}",
+      "todo": "To do",
+      "back": "All campaigns",
+      "progress": "{done} of {total} step(s) filled in",
+      "resultFor": "Result of step {n}",
+      "results": {
+        "ok": "Passed",
+        "ko": "Failed",
+        "skip": "Not tested"
+      },
+      "note": "Note (optional)",
+      "report": "Report this failure",
+      "outcome": "Campaign outcome",
+      "outcomes": {
+        "success": "Success",
+        "partial": "Partial success",
+        "failure": "Failure"
+      },
+      "comment": "General comment",
+      "incomplete": "Give a result for each step and an outcome.",
+      "saved": "Result saved. Thank you!",
+      "closed": "The campaign is over.",
+      "submit": "Save my result"
+    },
+    "reports": {
+      "new": "New report",
+      "version": "Version",
+      "module": "Module",
+      "severity": "Severity",
+      "titleLabel": "One-sentence summary",
+      "steps": "Steps to reproduce",
+      "stepsPlaceholder": "1. …\n2. …\n3. …",
+      "expected": "Expected result",
+      "actual": "Actual result",
+      "logs": "Logs",
+      "logsHint": "Remove passwords, shared secrets, keys and personal data before pasting your logs.",
+      "send": "Send the report",
+      "none": "No report yet.",
+      "replies": "{n} reply(ies)",
+      "fixedIn": "Fixed in {v}",
+      "back": "My reports",
+      "exchange": "Conversation with the team",
+      "noExchange": "No answer yet.",
+      "you": "You",
+      "answer": "Answer the request for information",
+      "add": "Add information"
+    },
+    "modules": {
+      "install": "Installation",
+      "update": "Update",
+      "console": "Console",
+      "ipam": "IPAM",
+      "dns": "DNS",
+      "dhcp": "DHCP",
+      "radius": "RADIUS / 802.1X",
+      "pki": "PKI",
+      "cluster": "Cluster",
+      "ad": "Active Directory",
+      "other": "Other"
+    },
+    "severities": {
+      "blocker": "Blocker",
+      "major": "Major",
+      "minor": "Minor",
+      "suggestion": "Suggestion"
+    },
+    "reportStatus": {
+      "new": "Received",
+      "need_info": "Information requested",
+      "confirmed": "Confirmed",
+      "in_progress": "Being fixed",
+      "fixed": "Fixed",
+      "wontfix": "Won't fix",
+      "duplicate": "Duplicate"
+    },
+    "pillOpen": "Applications open"
   }
 }

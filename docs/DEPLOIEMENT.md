@@ -39,6 +39,10 @@ Avec Ansible : `ansible-playbook site.yml --ask-vault-pass --tags website` (tire
 3. Facultatif, connexion GitHub : créer une application OAuth (URL de retour `https://<domaine>/api/account/github/callback`), renseigner `website_accounts_github_client_id` et `vault_accounts_github_client_secret`.
 4. Les idées de l'équipe (ancienne feuille de route) sont importées au premier démarrage ; elles se modèrent ensuite dans `/admin`, comme les idées proposées.
 
+## Programme bêta
+
+Les images bêta se déposent dans `beta-files/` à côté de `docker-compose.yml` (par exemple avec `rsync`), puis se déclarent dans `/admin`, rubrique « Programme bêta », onglet « Versions » : le serveur calcule taille et SHA-256, et prévient les testeurs à la première publication. Les testeurs téléchargent par un lien personnel signé, valable 24 heures. Les objectifs de recrutement par secteur se règlent dans l'onglet « Candidatures ». Changer `BETA_AGREEMENT_VERSION` (`shared/beta.ts`) oblige chaque testeur à accepter la nouvelle version de l'accord.
+
 ## Références clients
 
 Dans `/admin`, rubrique « Références clients » : fiche (secteur, taille, services, témoignage, étude de cas en français et en anglais), logo (PNG, WebP ou JPEG, 300 Ko au plus). Une référence ne peut être publiée qu'une fois l'accord du client renseigné (qui, quand) : gardez la trace écrite de cet accord. La page et les bandeaux de l'accueil restent masqués tant qu'aucune référence n'est publiée.

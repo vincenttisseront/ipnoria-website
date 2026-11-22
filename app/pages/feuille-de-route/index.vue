@@ -10,7 +10,7 @@ const { user, state, ensure } = useAccount()
 await ensure()
 useSeoMeta({ title: () => t('ideas.title'), description: () => t('ideas.lead') })
 
-type Item = { id: string, title: Record<string, string>, excerpt: Record<string, string>, status: IdeaStatus, votes: number, comments: number, voted: boolean, authorKind: string, authorName: string | null, createdAt: string }
+type Item = { id: string, title: Record<string, string>, excerpt: Record<string, string>, status: IdeaStatus, votes: number, comments: number, voted: boolean, authorKind: string, authorName: string | null, authorBeta: boolean, createdAt: string }
 const FILTERS = ['open', 'planned', 'progress', 'shipped', 'all'] as const
 const filter = ref<string>(typeof route.query.statut === 'string' && (FILTERS as readonly string[]).includes(route.query.statut) ? route.query.statut : 'open')
 const sort = ref<'top' | 'new'>(route.query.tri === 'new' ? 'new' : 'top')
@@ -80,7 +80,7 @@ const banner = computed(() => route.query.propose === 'ok' ? t('ideas.proposed')
           </div>
           <p class="mt-1 text-[0.95rem] text-muted">{{ excerpt(i.excerpt) }}</p>
           <p class="mt-2 text-sm text-muted">
-            {{ i.authorKind === 'team' ? t('ideas.byTeam') : i.authorKind === 'deleted' ? t('ideas.byDeleted') : t('ideas.by', { name: i.authorName }) }}
+            {{ i.authorKind === 'team' ? t('ideas.byTeam') : i.authorKind === 'deleted' ? t('ideas.byDeleted') : t('ideas.by', { name: i.authorName }) }}<BetaBadge v-if="i.authorBeta" />
             <span aria-hidden="true">&ensp;</span>{{ t('ideas.comments', { n: i.comments }) }}
           </p>
         </div>

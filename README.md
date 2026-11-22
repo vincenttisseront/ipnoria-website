@@ -19,6 +19,7 @@ Site vitrine d'[Ipnoria](https://github.com/vincenttisseront/ipnoria), en franç
 | Pour qui | Pages PME, collectivités, enseignement |
 | Feuille de route | Idées proposées, votées et commentées par les comptes ; doublons suggérés à la saisie ; statuts et notes de l'équipe envoyés aux votants ; modération dans `/admin` |
 | Références | Page « Ils utilisent Ipnoria » filtrable par secteur, études de cas, logos sur l'accueil et les pages « Pour qui » ; gestion dans `/admin`, publication impossible sans accord du client enregistré, logos PNG/WebP/JPEG vérifiés au contenu |
+| Programme bêta | Candidature (anti-robot), sélection et objectifs par secteur dans `/admin`, accord versionné, espace testeur : versions par lien personnel signé de 24 h avec SHA-256, campagnes de test, signalements structurés avec échanges, problèmes connus ; parrainage, badge, page de remerciements |
 | Comptes | Mot de passe Argon2id (fuites refusées), adresse vérifiée, application d'authentification, clés d'accès, codes de secours, connexion GitHub facultative, sessions révocables, journal de sécurité et alertes, export et suppression |
 | Rendez-vous | Réservation de démonstration : créneaux, invitation iCalendar, rappel la veille, annulation, flux d'agenda privé |
 | Thème | Sombre, clair ou celui du système (cookie de préférence, sans flash) ; styles d'impression et PDF |

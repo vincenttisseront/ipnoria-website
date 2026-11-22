@@ -25,6 +25,7 @@ function staticPages(locale: Locale): SearchEntry[] {
     p(['Dimensionnement', 'Sizing calculator'], ['/outils/dimensionnement', '/tools/sizing'], ['CPU mémoire RAM disque cluster arbitre nombre de postes', 'CPU memory RAM disk cluster witness number of devices'], 'tool'),
     p(['Aperçu de l\'import DHCP Windows', 'Windows DHCP import preview'], ['/outils/import-dhcp', '/tools/dhcp-import-preview'], ['Export-DhcpServer XML étendues réservations exclusions options', 'Export-DhcpServer XML scopes reservations exclusions options'], 'tool'),
     p(['Calculatrice de sous-réseaux', 'Subnet calculator'], ['/outils/sous-reseaux', '/tools/subnets'], ['CIDR masque VLSM VLAN découpage plan d\'adressage CSV', 'CIDR mask VLSM VLAN split addressing plan CSV'], 'tool'),
+    p(['Programme bêta', 'Beta programme'], ['/beta', '/beta'], ['bêta testeur candidature tester avant la sortie', 'beta tester apply early access']),
     p(['Références', 'Customers'], ['/references', '/customers'], ['clients références témoignages ils utilisent', 'customers references testimonials case studies']),
     p(['Feuille de route', 'Roadmap'], ['/feuille-de-route', '/roadmap'], ['idées votes demandes fonctionnalités à venir', 'ideas votes feature requests upcoming']),
     p(['Démonstration sur rendez-vous', 'Book a demo'], ['/rendez-vous', '/book-a-demo'], ['rendez-vous créneau visio démonstration', 'appointment slot video call demo']),

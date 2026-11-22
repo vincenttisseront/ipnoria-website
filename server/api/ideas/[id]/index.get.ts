@@ -16,7 +16,8 @@ export default defineEventHandler(async (event) => {
   const [comments, history, dup] = await Promise.all([
     db.query(
       `SELECT c.id::text, c.body, c.team, c.created_at AS "createdAt", c.edited_at AS "editedAt",
-              CASE WHEN c.team THEN NULL ELSE u.display_name END AS "authorName", COALESCE(c.user_id = $2, false) AS mine
+              CASE WHEN c.team THEN NULL ELSE u.display_name END AS "authorName",
+              EXISTS (SELECT 1 FROM beta_applications ba WHERE ba.user_id = c.user_id AND ba.status = 'accepted') AS beta, COALESCE(c.user_id = $2, false) AS mine
          FROM idea_comments c LEFT JOIN users u ON u.id = c.user_id
         WHERE c.idea_id = $1 AND NOT c.hidden ORDER BY c.created_at`, [id, me],
     ),

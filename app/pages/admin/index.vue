@@ -176,6 +176,7 @@ watch(confirmDelete, async (open) => { if (open) { await nextTick(); confirmBtn.
             </ul>
           </section>
         </div>
+        <AdminBeta class="mt-14" />
         <AdminIdeas class="mt-14" />
         <AdminReferences class="mt-14" />
       </template>
