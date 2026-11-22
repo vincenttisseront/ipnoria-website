@@ -7,13 +7,15 @@ const email = ref('')
 const busy = ref(false)
 const sent = ref(false)
 const error = ref('')
+const pow = usePow()
+onMounted(() => pow.prepare())
 async function submit() {
   busy.value = true; error.value = ''
   try {
-    await $fetch('/api/account/password/forgot', { method: 'POST', body: { email: email.value, locale: locale.value } })
+    await $fetch('/api/account/password/forgot', { method: 'POST', body: { email: email.value, locale: locale.value, pow: await pow.get() } })
     sent.value = true
   }
-  catch (err) { error.value = errorText(err) }
+  catch (err) { error.value = errorText(err); pow.prepare() }
   finally { busy.value = false }
 }
 </script>

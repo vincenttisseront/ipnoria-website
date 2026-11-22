@@ -14,7 +14,8 @@ const form = reactive({
   website: '', // piège à robots, invisible pour un humain
 })
 const startedAt = ref(0)
-onMounted(() => { startedAt.value = Date.now() })
+const pow = usePow()
+onMounted(() => { startedAt.value = Date.now(); pow.prepare() })
 
 const errors = ref<Set<ContactField>>(new Set())
 const status = ref<'idle' | 'sending' | 'sent' | 'rate' | 'server'>('idle')
@@ -42,7 +43,7 @@ async function submit() {
   errors.value = new Set()
   status.value = 'sending'
   try {
-    await $fetch('/api/contact', { method: 'POST', body: payload() })
+    await $fetch('/api/contact', { method: 'POST', body: { ...payload(), pow: await pow.get() } })
     status.value = 'sent'
   }
   catch (e: unknown) {
@@ -53,6 +54,7 @@ async function submit() {
       status.value = 'idle'
     }
     else status.value = 'server'
+    pow.prepare()
     await nextTick()
     summary.value?.focus()
   }
@@ -61,6 +63,7 @@ async function submit() {
 function again() {
   Object.assign(form, { name: '', email: '', company: '', topic: '', message: '', consent: false, website: '' })
   startedAt.value = Date.now()
+  pow.prepare()
   status.value = 'idle'
 }
 </script>

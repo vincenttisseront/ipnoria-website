@@ -48,6 +48,7 @@ const year = new Date().getFullYear()
           <li><NuxtLink :to="localePath('contact')" class="hover:text-fg">{{ t('nav.contact') }}</NuxtLink></li>
           <li><NuxtLink :to="localePath('mentions-legales')" class="hover:text-fg">{{ t('footer.legal') }}</NuxtLink></li>
           <li><NuxtLink :to="localePath('confidentialite')" class="hover:text-fg">{{ t('footer.privacy') }}</NuxtLink></li>
+          <li><NuxtLink :to="localePath('securite')" class="hover:text-fg">{{ t('disclosure.title') }}</NuxtLink></li>
         </ul>
       </nav>
     </div>

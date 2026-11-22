@@ -63,6 +63,7 @@ Sans Ansible : créer ou supprimer `caddy-errors/maintenance.on` à côté de `d
 1. Déclarer un client OpenID Connect chez votre fournisseur d'identité : type confidentiel (ou public avec PKCE), URL de retour `https://<domaine>/auth/callback`, portées `openid email profile`.
 2. Renseigner `website_oidc_issuer`, `website_oidc_client_id`, `website_admin_emails` et, dans le vault, `vault_oidc_client_secret` et `vault_session_password` (32 caractères au moins).
 3. Seules les adresses listées (e-mail vérifié par le fournisseur) entrent ; la liste est relue à chaque requête.
+4. Un second facteur est exigé : le fournisseur doit le signaler dans le jeton (claim `amr` avec `mfa`, `otp`, `hwk`…). S'il l'exprime par un niveau `acr`, renseignez `website_oidc_mfa_acr` (ce niveau est alors demandé à chaque connexion). Toutes les actions d'administration sont journalisées (rubrique « Sécurité » de `/admin`).
 
 ## Réservation de démonstrations (`/rendez-vous`)
 

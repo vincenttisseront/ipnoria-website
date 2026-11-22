@@ -30,6 +30,7 @@ const errors: Record<string, string> = {
   session: 'La connexion a expiré avant la fin. Reconnectez-vous.',
   fournisseur: 'Le fournisseur d\'identité a refusé la connexion. Réessayez, ou vérifiez la configuration OIDC.',
   refuse: 'Ce compte n\'est pas autorisé. Ajoutez son adresse à NUXT_ADMIN_EMAILS.',
+  mfa: 'Connexion refusée : l\'administration exige un second facteur. Activez-le chez votre fournisseur d\'identité (ou réglez NUXT_OIDC_MFA_ACR).',
 }
 const loginError = computed(() => errors[String(route.query.erreur ?? '')] ?? '')
 
@@ -179,6 +180,7 @@ watch(confirmDelete, async (open) => { if (open) { await nextTick(); confirmBtn.
         <AdminBeta class="mt-14" />
         <AdminIdeas class="mt-14" />
         <AdminReferences class="mt-14" />
+        <AdminSecurity class="mt-14" />
       </template>
     </main>
 

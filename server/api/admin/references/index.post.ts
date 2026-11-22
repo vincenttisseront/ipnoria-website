@@ -1,7 +1,7 @@
 import { referenceSchema } from '#shared/account'
 
 export default defineEventHandler(async (event) => {
-  await requireAdmin(event)
+  const admin = await requireAdmin(event)
   const d = await readJson(event, referenceSchema)
   try {
     const r = await useDb().query(
@@ -12,6 +12,7 @@ export default defineEventHandler(async (event) => {
       [d.slug, d.name, d.sector, d.size, d.location, d.website, d.services, d.quote, d.quoteAuthor, d.quoteRole, d.story,
         d.logoDarkBg, d.authorizedBy, d.authorizedAt, d.published, d.position],
     )
+    await adminAudit(event, admin, 'reference.create', 'customer_reference', r.rows[0].id, { slug: d.slug, published: d.published })
     return { ok: true, id: r.rows[0].id }
   }
   catch (err) {

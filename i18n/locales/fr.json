@@ -1302,5 +1302,53 @@
       "duplicate": "Doublon"
     },
     "pillOpen": "Candidatures ouvertes"
+  },
+  "disclosure": {
+    "title": "Signaler une vulnérabilité",
+    "lead": "La sécurité d'Ipnoria et de ce site compte autant que leurs fonctionnalités. Si vous trouvez une faille, prévenez-nous en privé : nous la corrigeons, vous tenons informé et vous remercions publiquement si vous le souhaitez.",
+    "reportTitle": "Comment signaler",
+    "reportText": "Écrivez à l'adresse indiquée ci-contre, en privé (pas de ticket public). Indiquez si possible :",
+    "reportInclude": [
+      "le produit ou la page concernés, et la version de l'appliance ;",
+      "les étapes pour reproduire, avec une preuve de concept minimale ;",
+      "l'impact que vous estimez ;",
+      "comment vous souhaitez être cité (nom, pseudonyme, lien), ou si vous préférez rester anonyme."
+    ],
+    "scopeTitle": "Périmètre",
+    "scope": [
+      "L'appliance Ipnoria : console, API, services intégrés (DNS, DHCP, RADIUS, PKI), cluster, mises à jour et images d'installation.",
+      "Ce site : comptes, espace bêta, formulaires, administration.",
+      "Les dépôts de code publics et la chaîne de publication (images signées, paquets)."
+    ],
+    "outTitle": "Hors périmètre",
+    "out": [
+      "Les dénis de service, tests de charge et envois en masse.",
+      "L'ingénierie sociale, le hameçonnage et l'accès physique.",
+      "Les rapports d'outils automatiques sans démonstration d'impact (en-têtes, versions de logiciels).",
+      " Les services tiers que nous n'opérons pas."
+    ],
+    "commitTitle": "Nos engagements",
+    "commit": [
+      "Accusé de réception sous 3 jours ouvrés.",
+      "Première analyse et niveau de gravité sous 10 jours ouvrés.",
+      "Correctif visé sous 30 jours pour une faille critique ou haute, et des nouvelles régulières jusque-là.",
+      "Publication coordonnée : nous convenons ensemble de la date, au plus tard 90 jours après le signalement.",
+      "Remerciement public sur cette page, si vous le souhaitez."
+    ],
+    "safeTitle": "Recherche de bonne foi",
+    "safeText": "Nous n'engagerons aucune poursuite contre une recherche menée de bonne foi dans le respect de cette politique. Concrètement :",
+    "safe": [
+      "n'accédez qu'au strict nécessaire pour démontrer la faille, et ne conservez aucune donnée ;",
+      "n'altérez ni ne supprimez de données, ne dégradez pas le service ;",
+      "testez sur vos propres comptes ou une appliance de test, jamais sur le réseau d'un client ;",
+      "laissez-nous le temps de corriger avant toute publication."
+    ],
+    "thanksTitle": "Remerciements",
+    "thanksEmpty": "Aucun signalement pour l'instant. Le premier nom ici pourrait être le vôtre.",
+    "contactTitle": "Contact sécurité",
+    "noContact": "Adresse en cours de configuration : utilisez le formulaire de contact en attendant, sans détail technique.",
+    "pgp": "Clé OpenPGP publique",
+    "mailSubject": "Signalement de sécurité Ipnoria",
+    "noBounty": "Pas de prime pour l'instant : notre reconnaissance, publique ou discrète, comme vous préférez."
   }
 }

@@ -47,3 +47,10 @@ backup_rsync_target: ""                      # ex. backup@nas.exemple.lan:/srv/b
 # Comptes utilisateurs : contrôle des mots de passe divulgués, connexion GitHub (identifiant d'application OAuth)
 website_accounts_breach_check: true
 website_accounts_github_client_id: ""
+
+# Administration : second facteur exigé au SSO ; niveau acr si votre fournisseur l'utilise
+website_oidc_require_mfa: true
+website_oidc_mfa_acr: ""
+# Signalement des vulnérabilités (security.txt) ; vide = adresse des mentions légales
+website_disclosure_contact: ""
+website_disclosure_encryption_url: ""

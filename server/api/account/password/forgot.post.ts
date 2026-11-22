@@ -4,7 +4,8 @@ import { forgotSchema } from '#shared/account'
 export default defineEventHandler(async (event) => {
   requireAccounts()
   assertSameOrigin(event)
-  const { email } = await readJson(event, forgotSchema)
+  const { email, pow } = await readJson(event, forgotSchema)
+  await verifyPow(event, pow)
   const r = await useDb().query('SELECT id::text, email, locale FROM users WHERE lower(email) = $1', [email])
   const u = r.rows[0]
   if (u) {

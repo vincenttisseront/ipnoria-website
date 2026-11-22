@@ -1,7 +1,7 @@
 import { referenceSchema } from '#shared/account'
 
 export default defineEventHandler(async (event) => {
-  await requireAdmin(event)
+  const admin = await requireAdmin(event)
   const d = await readJson(event, referenceSchema)
   try {
     const r = await useDb().query(
@@ -13,6 +13,7 @@ export default defineEventHandler(async (event) => {
         d.story, d.logoDarkBg, d.authorizedBy, d.authorizedAt, d.published, d.position],
     )
     if (!r.rowCount) throw createError({ statusCode: 404 })
+    await adminAudit(event, admin, 'reference.update', 'customer_reference', getRouterParam(event, 'id'), { slug: d.slug, published: d.published, authorizedBy: d.authorizedBy })
     return { ok: true }
   }
   catch (err) {

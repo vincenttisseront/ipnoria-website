@@ -59,3 +59,12 @@ export async function requireAdmin(event: H3Event): Promise<Required<AdminData>>
 }
 
 export const callbackUrl = () => `${useRuntimeConfig().public.siteUrl.replace(/\/$/, '')}/auth/callback`
+
+// Méthodes d'authentification qui attestent d'un second facteur (RFC 8176, plus quelques valeurs répandues)
+const MFA_AMR = new Set(['mfa', 'otp', 'hwk', 'swk', 'sms', 'fido', 'webauthn', 'totp', 'pop', 'sc'])
+/** La connexion OIDC a-t-elle utilisé un second facteur ? (acr exigé s'il est configuré, sinon amr) */
+export function oidcUsedMfa(claims: { amr?: unknown, acr?: unknown } | undefined): boolean {
+  const { mfaAcr } = useRuntimeConfig().oidc
+  if (mfaAcr) return String(claims?.acr ?? '') === String(mfaAcr)
+  return Array.isArray(claims?.amr) && claims.amr.some(m => MFA_AMR.has(String(m).toLowerCase()))
+}

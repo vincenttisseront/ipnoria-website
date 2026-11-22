@@ -20,11 +20,12 @@ export const registerSchema = z.object({
   consent: z.literal(true),
   website: z.string().max(0).optional().default(''),
   startedAt: z.number().int().positive(),
+  pow: z.string().max(2000).optional(),
 })
 
 export const loginSchema = z.object({ email: emailField, password: z.string().min(1).max(128) })
 export const codeSchema = z.object({ code: z.string().trim().min(6).max(20) })
-export const forgotSchema = z.object({ email: emailField, locale })
+export const forgotSchema = z.object({ email: emailField, locale, pow: z.string().max(2000).optional() })
 export const resetSchema = z.object({ token: z.string().min(20).max(100), password: passwordField })
 export const changePasswordSchema = z.object({ current: z.string().max(128).optional(), password: passwordField })
 export const changeEmailSchema = z.object({ email: emailField })

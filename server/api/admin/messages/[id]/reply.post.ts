@@ -27,5 +27,6 @@ export default defineEventHandler(async (event) => {
     [id, body],
   )
   console.info(`[admin] réponse au message ${id} envoyée par ${admin.email}`)
+  await adminAudit(event, admin, 'message.reply', 'contact_message', getRouterParam(event, 'id'), {})
   return { ok: true }
 })

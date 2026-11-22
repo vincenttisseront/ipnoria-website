@@ -1302,5 +1302,53 @@
       "duplicate": "Duplicate"
     },
     "pillOpen": "Applications open"
+  },
+  "disclosure": {
+    "title": "Report a vulnerability",
+    "lead": "The security of Ipnoria and this site matters as much as their features. If you find a flaw, tell us privately: we fix it, keep you informed and thank you publicly if you wish.",
+    "reportTitle": "How to report",
+    "reportText": "Write to the address shown here, privately (no public issue). If possible, include:",
+    "reportInclude": [
+      "the product or page involved, and the appliance version;",
+      "steps to reproduce, with a minimal proof of concept;",
+      "the impact you estimate;",
+      "how you'd like to be credited (name, handle, link), or whether you prefer to stay anonymous."
+    ],
+    "scopeTitle": "Scope",
+    "scope": [
+      "The Ipnoria appliance: console, API, built-in services (DNS, DHCP, RADIUS, PKI), cluster, updates and installation images.",
+      "This site: accounts, beta space, forms, administration.",
+      "Public code repositories and the release chain (signed images, packages)."
+    ],
+    "outTitle": "Out of scope",
+    "out": [
+      "Denial of service, load testing and mass submissions.",
+      "Social engineering, phishing and physical access.",
+      "Automated tool output without demonstrated impact (headers, software versions).",
+      "Third-party services we don't operate."
+    ],
+    "commitTitle": "Our commitments",
+    "commit": [
+      "Acknowledgment within 3 business days.",
+      "First analysis and severity within 10 business days.",
+      "Fix targeted within 30 days for a critical or high flaw, with regular updates until then.",
+      "Coordinated disclosure: we agree on the date together, at most 90 days after the report.",
+      "Public thanks on this page, if you wish."
+    ],
+    "safeTitle": "Good-faith research",
+    "safeText": "We will not pursue any legal action against research carried out in good faith and in line with this policy. In practice:",
+    "safe": [
+      "only access what's strictly needed to demonstrate the flaw, and keep no data;",
+      "don't alter or delete data, don't degrade the service;",
+      "test on your own accounts or a test appliance, never on a customer's network;",
+      "give us time to fix before any publication."
+    ],
+    "thanksTitle": "Acknowledgments",
+    "thanksEmpty": "No report yet. The first name here could be yours.",
+    "contactTitle": "Security contact",
+    "noContact": "Address being configured: use the contact form meanwhile, without technical details.",
+    "pgp": "Public OpenPGP key",
+    "mailSubject": "Ipnoria security report",
+    "noBounty": "No bounty for now: our gratitude, public or discreet, as you prefer."
   }
 }

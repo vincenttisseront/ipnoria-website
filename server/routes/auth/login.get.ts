@@ -16,6 +16,8 @@ export default defineEventHandler(async (event) => {
     code_challenge_method: 'S256',
     state,
     nonce,
+    // Demande explicite d'un niveau d'authentification avec second facteur, si le fournisseur le gère
+    ...(useRuntimeConfig().oidc.mfaAcr ? { acr_values: String(useRuntimeConfig().oidc.mfaAcr) } : {}),
   })
   return sendRedirect(event, url.href, 302)
 })

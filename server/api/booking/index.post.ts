@@ -19,6 +19,7 @@ export default defineEventHandler(async (event) => {
     throw createError({ statusCode: 400, statusMessage: 'Invalid booking', data: { fields: [...new Set(parsed.error.issues.map(i => String(i.path[0])))] } })
   }
   const d = parsed.data
+  await verifyPow(event, raw.pow)
   const start = new Date(d.slot)
   const { slots } = await availableSlots()
   if (!slots.includes(start.toISOString())) throw createError({ statusCode: 409, statusMessage: 'Slot unavailable' })

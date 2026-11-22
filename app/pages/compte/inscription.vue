@@ -13,7 +13,8 @@ useSeoMeta({ title: () => t('account.signUp.title'), robots: 'noindex' })
 
 const form = reactive({ displayName: '', email: '', password: '', consent: false, website: '' })
 const startedAt = ref(0)
-onMounted(() => { startedAt.value = Date.now() })
+const pow = usePow()
+onMounted(() => { startedAt.value = Date.now(); pow.prepare() })
 const invalid = ref<string[]>([])
 const busy = ref(false)
 const error = ref('')
@@ -28,7 +29,7 @@ async function submit() {
   if (invalid.value.length) { await nextTick(); document.getElementById(`su-${invalid.value[0]}`)?.focus(); return }
   busy.value = true
   try {
-    await $fetch('/api/account/register', { method: 'POST', body })
+    await $fetch('/api/account/register', { method: 'POST', body: { ...body, pow: await pow.get() } })
     await refresh()
     const next = route.query.next
     await navigateTo(typeof next === 'string' && next.startsWith('/') && !next.startsWith('//') ? next : { path: localePath('compte'), query: { bienvenue: '1' } })
@@ -37,6 +38,7 @@ async function submit() {
     const code = apiErrorCode(err)
     if (code.startsWith('password_')) invalid.value = ['password']
     error.value = errorText(err)
+    pow.prepare()
     await nextTick(); errorBox.value?.focus()
   }
   finally { busy.value = false }

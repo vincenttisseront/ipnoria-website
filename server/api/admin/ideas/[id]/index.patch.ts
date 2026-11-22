@@ -3,7 +3,7 @@ import { adminIdeaSchema } from '#shared/account'
 // Modération d'une idée : statut (avec note envoyée aux votants), doublon (les voix passent à l'idée cible),
 // masquage, correction du titre et du texte dans chaque langue.
 export default defineEventHandler(async (event) => {
-  await requireAdmin(event)
+  const admin = await requireAdmin(event)
   const id = getRouterParam(event, 'id') ?? ''
   const d = await readJson(event, adminIdeaSchema)
   const db = useDb()
@@ -31,5 +31,6 @@ export default defineEventHandler(async (event) => {
     await db.query('INSERT INTO idea_status_events (idea_id, status, note) VALUES ($1, $2, NULLIF($3, \'\'))', [id, status, d.note])
     notified = await notifyStatusChange(id, status, d.note)
   }
+  await adminAudit(event, admin, 'idea.update', 'idea', id, { status, duplicateOf: d.duplicateOf ?? null, hidden: d.hidden ?? null })
   return { ok: true, notified }
 })

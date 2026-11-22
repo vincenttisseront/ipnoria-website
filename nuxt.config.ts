@@ -48,6 +48,10 @@ export default defineNuxtConfig({
       githubClientId: '',            // NUXT_ACCOUNTS_GITHUB_CLIENT_ID : connexion GitHub (facultative)
       githubClientSecret: '',        // NUXT_ACCOUNTS_GITHUB_CLIENT_SECRET
     },
+    disclosure: {
+      contact: '',                   // NUXT_DISCLOSURE_CONTACT : adresse de signalement (par défaut, l'adresse des mentions légales)
+      encryptionUrl: '',             // NUXT_DISCLOSURE_ENCRYPTION_URL : clé OpenPGP publique (https://…), facultative
+    },
     powDisabled: false,              // NUXT_POW_DISABLED : désactive la preuve de travail (tests automatisés seulement)
     beta: {
       filesDir: '',                  // NUXT_BETA_FILES_DIR : dossier (lecture seule) des images bêta à distribuer
@@ -56,6 +60,8 @@ export default defineNuxtConfig({
       issuer: '',                    // NUXT_OIDC_ISSUER : URL du fournisseur OpenID Connect
       clientId: '',                  // NUXT_OIDC_CLIENT_ID
       clientSecret: '',              // NUXT_OIDC_CLIENT_SECRET (vide = client public avec PKCE)
+      requireMfa: true,              // NUXT_OIDC_REQUIRE_MFA : refuse une connexion sans second facteur (claim amr ou acr)
+      mfaAcr: '',                    // NUXT_OIDC_MFA_ACR : valeur acr exigée et demandée au fournisseur (sinon : amr contenant mfa, otp, hwk…)
       scopes: 'openid email profile',
       allowInsecure: false,          // NUXT_OIDC_ALLOW_INSECURE : HTTP autorisé, pour un fournisseur de test local uniquement
     },
@@ -114,6 +120,7 @@ export default defineNuxtConfig({
       'beta/espace': { fr: '/beta/espace', en: '/beta/space' },
       'beta/signalements/[id]': { fr: '/beta/signalements/[id]', en: '/beta/reports/[id]' },
       'beta/campagnes/[id]': { fr: '/beta/campagnes/[id]', en: '/beta/campaigns/[id]' },
+      'securite': { fr: '/securite', en: '/security' },
       'references/index': { fr: '/references', en: '/customers' },
       'references/[slug]': { fr: '/references/[slug]', en: '/customers/[slug]' },
       'compte/index': { fr: '/compte', en: '/account' },

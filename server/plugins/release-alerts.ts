@@ -14,6 +14,9 @@ export default defineNitroPlugin((nitro) => {
       await pool.query(`DELETE FROM webauthn_challenges WHERE expires_at < now()`)
       await pool.query(`DELETE FROM user_events WHERE created_at < now() - interval '1 year'`)
       await pool.query(`DELETE FROM users WHERE email_verified_at IS NULL AND created_at < now() - interval '30 days'`)
+      // Journal d'administration : deux ans ; preuves de travail expirées
+      await pool.query(`DELETE FROM admin_audit WHERE created_at < now() - interval '2 years'`)
+      await pool.query(`DELETE FROM pow_used WHERE expires_at < now()`)
       // Rendez-vous passés depuis plus de 90 jours : effacés (données personnelles)
       await pool.query(`DELETE FROM bookings WHERE ends_at < now() - interval '90 days'`)
       await remindBookings(pool)

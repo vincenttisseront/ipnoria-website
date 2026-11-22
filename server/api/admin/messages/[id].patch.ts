@@ -2,7 +2,7 @@ import { z } from 'zod'
 
 // Marquer un message traité / à traiter
 export default defineEventHandler(async (event) => {
-  await requireAdmin(event)
+  const admin = await requireAdmin(event)
   const id = z.coerce.number().int().positive().parse(getRouterParam(event, 'id'))
   const { handled } = z.object({ handled: z.boolean() }).parse(await readBody(event))
   const { rowCount } = await useDb().query(
@@ -10,5 +10,6 @@ export default defineEventHandler(async (event) => {
     [id, handled],
   )
   if (!rowCount) throw createError({ statusCode: 404 })
+  await adminAudit(event, admin, 'message.update', 'contact_message', getRouterParam(event, 'id'), {})
   return { ok: true }
 })

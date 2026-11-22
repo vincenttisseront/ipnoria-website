@@ -9,6 +9,7 @@ export default defineEventHandler(async (event) => {
 
   let email: string
   let name: string
+  let mfa: boolean
   try {
     const config = await oidcConfig()
     // L'URL reçue est reconstruite sur l'adresse publique du site (derrière le proxy, l'hôte interne n'est pas fiable)
@@ -24,6 +25,7 @@ export default defineEventHandler(async (event) => {
     email = String(claims?.email ?? '').toLowerCase()
     name = String(claims?.name ?? claims?.preferred_username ?? email)
     if (claims?.email_verified === false) email = ''
+    mfa = oidcUsedMfa(claims as { amr?: unknown, acr?: unknown })
   }
   catch (err) {
     console.warn('[auth] échec de la connexion OIDC :', (err as Error).message)
@@ -33,6 +35,10 @@ export default defineEventHandler(async (event) => {
   if (!email || !allowedAdmin(email)) {
     console.warn('[auth] accès refusé à un compte non autorisé')
     return sendRedirect(event, '/admin?erreur=refuse', 302)
+  }
+  if (String(useRuntimeConfig().oidc.requireMfa) !== 'false' && !mfa) {
+    console.warn('[auth] connexion administrateur refusée : pas de second facteur')
+    return sendRedirect(event, '/admin?erreur=mfa', 302)
   }
   const session = await useAdminSession(event)
   await session.update({ email, name })

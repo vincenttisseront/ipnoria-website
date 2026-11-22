@@ -20,6 +20,7 @@ export default defineEventHandler(async (event) => {
   if (!parsed.success) {
     throw createError({ statusCode: 400, statusMessage: 'Invalid form', data: { fields: invalidFields(parsed.error) } })
   }
+  await verifyPow(event, (raw as { pow?: string })?.pow)
   const data = parsed.data
   const ipHash = clientIpHash(event)
   const userAgent = (getRequestHeader(event, 'user-agent') || '').slice(0, 300)

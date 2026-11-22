@@ -19,6 +19,7 @@ const PAGES: Array<[fr: string, en: string, priority: string]> = [
   ['/rendez-vous', '/en/book-a-demo', '0.5'],
   ['/references', '/en/customers', '0.6'],
   ['/beta', '/en/beta', '0.8'],
+  ['/securite', '/en/security', '0.3'],
   ['/demo', '/en/demo', '0.5'],
   ['/contact', '/en/contact', '0.6'],
   ['/confidentialite', '/en/privacy', '0.2'],

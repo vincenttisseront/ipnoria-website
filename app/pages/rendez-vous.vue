@@ -28,7 +28,8 @@ const slot = ref<string | null>(null)
 
 const form = reactive({ name: '', email: '', company: '', notes: '', consent: false, website: '' })
 const startedAt = ref(0)
-onMounted(() => { startedAt.value = Date.now() })
+const pow = usePow()
+onMounted(() => { startedAt.value = Date.now(); pow.prepare() })
 const status = ref<'idle' | 'sending' | 'sent' | 'taken' | 'error' | 'rate'>('idle')
 const invalid = ref<Set<string>>(new Set())
 const booked = ref('')
@@ -40,7 +41,7 @@ async function submit() {
   invalid.value = new Set()
   status.value = 'sending'
   try {
-    await $fetch('/api/booking', { method: 'POST', body })
+    await $fetch('/api/booking', { method: 'POST', body: { ...body, pow: await pow.get() } })
     booked.value = slot.value!
     status.value = 'sent'
   }
@@ -48,6 +49,7 @@ async function submit() {
     const code = (e as { statusCode?: number }).statusCode
     status.value = code === 409 ? 'taken' : code === 429 ? 'rate' : 'error'
     if (code === 409) { slot.value = null; await refresh() }
+    pow.prepare()
   }
 }
 

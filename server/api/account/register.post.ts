@@ -13,6 +13,7 @@ export default defineEventHandler(async (event) => {
   const d = registerSchema.safeParse(raw)
   if (!d.success) throw createError({ statusCode: 400, statusMessage: 'Invalid input', data: { fields: [...new Set(d.error.issues.map(i => String(i.path[0])))] } })
   const { email, password, displayName, locale } = d.data
+  await verifyPow(event, d.data.pow)
   await checkNewPassword(password, email)
 
   const db = useDb()
