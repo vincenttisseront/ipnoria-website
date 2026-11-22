@@ -1022,5 +1022,49 @@
     },
     "similar": "Ces idées existent peut-être déjà",
     "similarHint": "Si l'une correspond, votez pour elle plutôt que d'en créer une autre : les voix s'additionnent."
+  },
+  "refs": {
+    "title": "Références",
+    "lead": "Des organisations qui gèrent leurs adresses, leurs noms et leurs accès réseau avec Ipnoria. Chaque référence est publiée avec l'accord du client.",
+    "filter": "Filtrer par secteur",
+    "all": "Tous les secteurs",
+    "services": "Services utilisés",
+    "readStory": "Lire l'étude de cas",
+    "back": "Toutes les références",
+    "storyTitle": "{name} : étude de cas",
+    "facts": "Fiche",
+    "sector": "Secteur",
+    "size": "Taille",
+    "location": "Lieu",
+    "website": "Site",
+    "others": "Voir les autres références",
+    "emptyTitle": "Les premières références arrivent",
+    "emptyText": "Les déploiements en cours seront présentés ici dès que les clients auront donné leur accord.",
+    "joinTitle": "Vous utilisez Ipnoria ?",
+    "joinText": "Racontez votre déploiement : nous rédigeons la fiche avec vous, et rien n'est publié sans votre validation.",
+    "joinCta": "Proposer votre témoignage",
+    "stripTitle": "Ils utilisent Ipnoria",
+    "stripProfile": "Ils l'utilisent dans votre secteur",
+    "seeAll": "Toutes les références",
+    "sectors": {
+      "pme": "PME",
+      "collectivite": "Collectivité",
+      "enseignement": "Enseignement",
+      "sante": "Santé",
+      "industrie": "Industrie",
+      "services": "Services",
+      "association": "Association",
+      "autre": "Autre"
+    },
+    "serviceNames": {
+      "ipam": "IPAM",
+      "dns": "DNS",
+      "dhcp": "DHCP",
+      "radius": "RADIUS",
+      "pki": "PKI",
+      "cluster": "Cluster",
+      "dnsfilter": "Filtrage DNS",
+      "ad": "Active Directory"
+    }
   }
 }

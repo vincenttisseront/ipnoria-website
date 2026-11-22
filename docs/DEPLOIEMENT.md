@@ -39,6 +39,10 @@ Avec Ansible : `ansible-playbook site.yml --ask-vault-pass --tags website` (tire
 3. Facultatif, connexion GitHub : créer une application OAuth (URL de retour `https://<domaine>/api/account/github/callback`), renseigner `website_accounts_github_client_id` et `vault_accounts_github_client_secret`.
 4. Les idées de l'équipe (ancienne feuille de route) sont importées au premier démarrage ; elles se modèrent ensuite dans `/admin`, comme les idées proposées.
 
+## Références clients
+
+Dans `/admin`, rubrique « Références clients » : fiche (secteur, taille, services, témoignage, étude de cas en français et en anglais), logo (PNG, WebP ou JPEG, 300 Ko au plus). Une référence ne peut être publiée qu'une fois l'accord du client renseigné (qui, quand) : gardez la trace écrite de cet accord. La page et les bandeaux de l'accueil restent masqués tant qu'aucune référence n'est publiée.
+
 ## Pages d'erreur et maintenance
 
 Quand l'application ne répond pas (redémarrage, mise à jour), Caddy sert lui-même une page « le site redémarre » (502, 503, 504), en français ou en anglais selon l'adresse. Pour une intervention plus longue :

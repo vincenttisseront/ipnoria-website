@@ -105,6 +105,8 @@ export default defineNuxtConfig({
       'feuille-de-route/index': { fr: '/feuille-de-route', en: '/roadmap' },
       'feuille-de-route/proposer': { fr: '/feuille-de-route/proposer', en: '/roadmap/propose' },
       'feuille-de-route/[id]': { fr: '/feuille-de-route/[id]', en: '/roadmap/[id]' },
+      'references/index': { fr: '/references', en: '/customers' },
+      'references/[slug]': { fr: '/references/[slug]', en: '/customers/[slug]' },
       'compte/index': { fr: '/compte', en: '/account' },
       'compte/connexion': { fr: '/compte/connexion', en: '/account/sign-in' },
       'compte/inscription': { fr: '/compte/inscription', en: '/account/sign-up' },
@@ -188,6 +190,8 @@ export default defineNuxtConfig({
     '/auth/**': { security: { rateLimiter: { tokensPerInterval: 30, interval: 300000 } }, headers: { 'cache-control': 'no-store' } },
     '/admin': { headers: { 'cache-control': 'no-store', 'x-robots-tag': 'noindex, nofollow' } },
     '/api/admin/**': { headers: { 'cache-control': 'no-store' }, security: { xssValidator: false } },
+    // Logos des références : jusqu'à 300 Ko (le contenu est contrôlé par le serveur)
+    '/api/admin/references/*/logo': { security: { requestSizeLimiter: { maxRequestSizeInBytes: 320_000, maxUploadFileRequestInBytes: 320_000 }, xssValidator: false } },
     '/api/**': { headers: { 'cache-control': 'no-store' } },
     '/og/**': { headers: { 'cache-control': 'public, max-age=86400' } },
     '/img/**': { headers: { 'cache-control': 'public, max-age=604800' } },

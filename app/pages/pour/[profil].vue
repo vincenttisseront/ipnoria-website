@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { PROFILES, profileBySlug } from '#shared/profiles'
+import { PROFILE_SECTOR } from '#shared/references'
 
 const { t, locale } = useI18n()
 const route = useRoute()
@@ -41,6 +42,8 @@ const others = computed(() => PROFILES[lang.value].filter(p => p.id !== profile.
         </ul>
       </section>
     </div>
+
+    <ReferenceStrip class="mt-16" :sector="PROFILE_SECTOR[profile.id]" :title="t('refs.stripProfile')" />
 
     <section class="panel mt-14 p-7">
       <h2 class="text-lg font-semibold">{{ t('profiles.start') }}</h2>

@@ -34,6 +34,7 @@ const year = new Date().getFullYear()
           <li><NuxtLink :to="localePath('visite')" class="hover:text-fg">{{ t('tour.title') }}</NuxtLink></li>
           <li><NuxtLink :to="localePath('comparatif')" class="hover:text-fg">{{ t('nav.compare') }}</NuxtLink></li>
           <li><NuxtLink :to="localePath('feuille-de-route')" class="hover:text-fg">{{ t('nav.roadmap') }}</NuxtLink></li>
+          <li><NuxtLink :to="localePath('references')" class="hover:text-fg">{{ t('refs.title') }}</NuxtLink></li>
           <li><NuxtLink :to="localePath('nouveautes')" class="hover:text-fg">{{ t('nav.releases') }}</NuxtLink></li>
           <li><a href="/rss.xml" class="hover:text-fg">{{ t('footer.rss') }}</a></li>
         </ul>

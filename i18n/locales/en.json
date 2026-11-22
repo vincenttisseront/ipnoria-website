@@ -1022,5 +1022,49 @@
     },
     "similar": "These ideas may already exist",
     "similarHint": "If one matches, vote for it rather than creating another: votes add up."
+  },
+  "refs": {
+    "title": "Customers",
+    "lead": "Organizations that manage their addresses, names and network access with Ipnoria. Each reference is published with the customer's consent.",
+    "filter": "Filter by sector",
+    "all": "All sectors",
+    "services": "Services used",
+    "readStory": "Read the case study",
+    "back": "All customers",
+    "storyTitle": "{name}: case study",
+    "facts": "Facts",
+    "sector": "Sector",
+    "size": "Size",
+    "location": "Location",
+    "website": "Website",
+    "others": "See other customers",
+    "emptyTitle": "First references are on their way",
+    "emptyText": "Ongoing deployments will be shown here as soon as customers give their consent.",
+    "joinTitle": "Do you use Ipnoria?",
+    "joinText": "Tell us about your deployment: we write the page with you, and nothing is published without your approval.",
+    "joinCta": "Share your story",
+    "stripTitle": "They use Ipnoria",
+    "stripProfile": "Used in your sector",
+    "seeAll": "All customers",
+    "sectors": {
+      "pme": "SMB",
+      "collectivite": "Local government",
+      "enseignement": "Education",
+      "sante": "Healthcare",
+      "industrie": "Industry",
+      "services": "Services",
+      "association": "Non-profit",
+      "autre": "Other"
+    },
+    "serviceNames": {
+      "ipam": "IPAM",
+      "dns": "DNS",
+      "dhcp": "DHCP",
+      "radius": "RADIUS",
+      "pki": "PKI",
+      "cluster": "Cluster",
+      "dnsfilter": "DNS filtering",
+      "ad": "Active Directory"
+    }
   }
 }

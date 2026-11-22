@@ -183,6 +183,9 @@ const terminal = computed(() => [
       </ul>
     </section>
 
+    <!-- Références clients (masqué tant qu'aucune n'est publiée) -->
+    <div class="wrap py-10"><ReferenceStrip /></div>
+
     <!-- Modules de la console -->
     <section class="wrap py-20">
       <div class="max-w-2xl">

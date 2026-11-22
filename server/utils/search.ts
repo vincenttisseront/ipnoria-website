@@ -25,6 +25,7 @@ function staticPages(locale: Locale): SearchEntry[] {
     p(['Dimensionnement', 'Sizing calculator'], ['/outils/dimensionnement', '/tools/sizing'], ['CPU mémoire RAM disque cluster arbitre nombre de postes', 'CPU memory RAM disk cluster witness number of devices'], 'tool'),
     p(['Aperçu de l\'import DHCP Windows', 'Windows DHCP import preview'], ['/outils/import-dhcp', '/tools/dhcp-import-preview'], ['Export-DhcpServer XML étendues réservations exclusions options', 'Export-DhcpServer XML scopes reservations exclusions options'], 'tool'),
     p(['Calculatrice de sous-réseaux', 'Subnet calculator'], ['/outils/sous-reseaux', '/tools/subnets'], ['CIDR masque VLSM VLAN découpage plan d\'adressage CSV', 'CIDR mask VLSM VLAN split addressing plan CSV'], 'tool'),
+    p(['Références', 'Customers'], ['/references', '/customers'], ['clients références témoignages ils utilisent', 'customers references testimonials case studies']),
     p(['Feuille de route', 'Roadmap'], ['/feuille-de-route', '/roadmap'], ['idées votes demandes fonctionnalités à venir', 'ideas votes feature requests upcoming']),
     p(['Démonstration sur rendez-vous', 'Book a demo'], ['/rendez-vous', '/book-a-demo'], ['rendez-vous créneau visio démonstration', 'appointment slot video call demo']),
     p(['Visite guidée de la console', 'Guided console tour'], ['/visite', '/tour'], ['captures annotées IPAM DNS DHCP RADIUS', 'annotated screenshots IPAM DNS DHCP RADIUS']),
@@ -79,8 +80,11 @@ async function ideaEntries(locale: Locale): Promise<SearchEntry[]> {
     const r = await useDb().query(
       `SELECT id::text, title, body FROM ideas WHERE NOT hidden AND status NOT IN ('declined', 'duplicate') ORDER BY id LIMIT 500`,
     )
-    return r.rows.map(i => entry('roadmap', pickLocale(i.title, locale), locale === 'en' ? 'Roadmap' : 'Feuille de route',
-      L(locale, `/feuille-de-route/${i.id}`, `/roadmap/${i.id}`), pickLocale(i.body, locale)))
+    const refs = await useDb().query(`SELECT slug, name, story, quote FROM customer_references WHERE published`)
+    const out = refs.rows.map(c => entry('page', c.name, locale === 'en' ? 'Customers' : 'Références',
+      L(locale, `/references/${c.slug}`, `/customers/${c.slug}`), `${pickLocale(c.quote, locale)} ${pickLocale(c.story, locale)}`))
+    return out.concat(r.rows.map(i => entry('roadmap', pickLocale(i.title, locale), locale === 'en' ? 'Roadmap' : 'Feuille de route',
+      L(locale, `/feuille-de-route/${i.id}`, `/roadmap/${i.id}`), pickLocale(i.body, locale))))
   }
   catch { return [] }
 }

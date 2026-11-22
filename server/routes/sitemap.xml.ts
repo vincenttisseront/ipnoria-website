@@ -17,6 +17,7 @@ const PAGES: Array<[fr: string, en: string, priority: string]> = [
   ['/visite', '/en/tour', '0.7'],
   ['/feuille-de-route', '/en/roadmap', '0.6'],
   ['/rendez-vous', '/en/book-a-demo', '0.5'],
+  ['/references', '/en/customers', '0.6'],
   ['/demo', '/en/demo', '0.5'],
   ['/contact', '/en/contact', '0.6'],
   ['/confidentialite', '/en/privacy', '0.2'],
@@ -32,6 +33,8 @@ export default defineEventHandler(async (event) => {
     try {
       const ideas = await useDb().query(`SELECT id::text FROM ideas WHERE NOT hidden AND status <> 'duplicate' ORDER BY id LIMIT 1000`)
       for (const i of ideas.rows) pairs.push([`/feuille-de-route/${i.id}`, `/en/roadmap/${i.id}`, '0.4'])
+      const refs = await useDb().query(`SELECT slug FROM customer_references WHERE published AND (story->>'fr' <> '' OR story->>'en' <> '')`)
+      for (const r of refs.rows) pairs.push([`/references/${r.slug}`, `/en/customers/${r.slug}`, '0.5'])
     }
     catch { /* base indisponible : plan sans les idées */ }
   }

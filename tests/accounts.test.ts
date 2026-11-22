@@ -84,3 +84,26 @@ describe('schémas des formulaires', () => {
     expect(ideaSchema.safeParse({ title: 'Exporter les baux en CSV', body: 'Besoin de sortir les baux pour l\'inventaire mensuel.', locale: 'fr' }).success).toBe(true)
   })
 })
+
+describe('références clients', async () => {
+  const { sniffImage } = await import('../server/utils/references')
+  const { referenceSchema } = await import('#shared/account')
+  const { quoted } = await import('#shared/references')
+  it('reconnaît les images par leur contenu et refuse le SVG', () => {
+    expect(sniffImage(Buffer.from([0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A, 0, 0]))).toBe('image/png')
+    expect(sniffImage(Buffer.from('RIFF\0\0\0\0WEBPVP8 '))).toBe('image/webp')
+    expect(sniffImage(Buffer.from([0xFF, 0xD8, 0xFF, 0xE0]))).toBe('image/jpeg')
+    expect(sniffImage(Buffer.from('<svg xmlns="http://www.w3.org/2000/svg"><script/></svg>'))).toBeNull()
+  })
+  it('exige l\'accord du client pour publier', () => {
+    const base = { slug: 'commune-de-kerval', name: 'Commune de Kerval', sector: 'collectivite', size: {}, quote: {}, quoteRole: {}, story: {} }
+    expect(referenceSchema.safeParse({ ...base, published: true }).success).toBe(false)
+    expect(referenceSchema.safeParse({ ...base, published: true, authorizedBy: 'DSI', authorizedAt: '2026-11-20' }).success).toBe(true)
+    expect(referenceSchema.safeParse({ ...base, website: 'javascript:alert(1)' }).success).toBe(false)
+    expect(referenceSchema.safeParse({ ...base, slug: 'Pas Bon' }).success).toBe(false)
+  })
+  it('met les guillemets de la langue', () => {
+    expect(quoted('Bien', 'fr')).toBe('« Bien »')
+    expect(quoted('Good', 'en')).toBe('“Good”')
+  })
+})

@@ -60,3 +60,27 @@ export type PublicUser = {
   id: string, email: string, emailVerified: boolean, displayName: string, organization: string | null, locale: 'fr' | 'en'
   notifyStatus: boolean, notifyComments: boolean, hasPassword: boolean, totp: boolean, github: boolean, passkeys: number, createdAt: string
 }
+
+// Références clients
+export const REFERENCE_SECTORS = ['pme', 'collectivite', 'enseignement', 'sante', 'industrie', 'services', 'association', 'autre'] as const
+export const REFERENCE_SERVICES = ['ipam', 'dns', 'dhcp', 'radius', 'pki', 'cluster', 'dnsfilter', 'ad'] as const
+const bilingual = (max: number) => z.object({ fr: z.string().trim().max(max).optional().default(''), en: z.string().trim().max(max).optional().default('') })
+export const referenceSchema = z.object({
+  slug: z.string().trim().regex(/^[a-z0-9]+(-[a-z0-9]+)*$/).max(60),
+  name: z.string().trim().min(2).max(80).regex(SINGLE_LINE),
+  sector: z.enum(REFERENCE_SECTORS),
+  size: bilingual(60),
+  location: z.string().trim().max(80).regex(SINGLE_LINE).optional().default(''),
+  website: z.union([z.literal(''), z.string().trim().max(200).regex(/^https:\/\/[^\s<>"]+$/)]).optional().default(''),
+  services: z.array(z.enum(REFERENCE_SERVICES)).max(8).default([]),
+  quote: bilingual(600),
+  quoteAuthor: z.string().trim().max(80).regex(SINGLE_LINE).optional().default(''),
+  quoteRole: bilingual(80),
+  story: bilingual(6000),
+  logoDarkBg: z.boolean().default(false),
+  authorizedBy: z.string().trim().max(120).regex(SINGLE_LINE).optional().default(''),
+  authorizedAt: z.union([z.literal(''), z.iso.date()]).optional().default(''),
+  published: z.boolean().default(false),
+  position: z.number().int().min(0).max(10000).default(100),
+}).refine(r => !r.published || (r.authorizedBy && r.authorizedAt), { path: ['authorizedBy'], message: 'authorization required' })
+export type ReferenceInput = z.infer<typeof referenceSchema>
