@@ -24,10 +24,10 @@ ENV NODE_ENV=production \
 WORKDIR /app
 # Correctifs de sécurité de l'image de base, puis retrait de npm/yarn (inutiles à l'exécution, et source fréquente de CVE)
 RUN apk upgrade --no-cache \
- && rm -rf /usr/local/lib/node_modules/npm /usr/local/bin/npm /usr/local/bin/npx /usr/local/bin/corepack /opt/yarn* /usr/local/bin/yarn /usr/local/bin/yarnpkg
-# Fichiers possédés par root : l'utilisateur « node » peut les lire mais pas les modifier
+ && rm -rf /usr/local/lib/node_modules/npm /usr/local/lib/node_modules/corepack /usr/local/bin/npm /usr/local/bin/npx /usr/local/bin/corepack /opt/yarn* /usr/local/bin/yarn /usr/local/bin/yarnpkg
+# Fichiers possédés par root : l'utilisateur « node » (uid 1000) peut les lire mais pas les modifier
 COPY --from=build /app/.output ./.output
-USER node
+USER 1000:1000
 EXPOSE 3000
 HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=3 \
   CMD ["node", "-e", "fetch('http://127.0.0.1:3000/api/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]

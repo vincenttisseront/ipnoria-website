@@ -10,7 +10,7 @@ Linux avec Docker Engine et le plugin Compose, ports 80 et 443 ouverts, un nom D
 mkdir -p /opt/ddibuntu-site && cd /opt/ddibuntu-site
 # copier docker-compose.yml, Caddyfile et .env.example depuis le dépôt
 cp .env.example .env && chmod 600 .env
-# remplir .env : SITE_DOMAIN, ACME_EMAIL, POSTGRES_PASSWORD et IP_HASH_SALT (openssl rand -base64 32), mentions légales
+# remplir .env : SITE_DOMAIN, POSTGRES_PASSWORD et IP_HASH_SALT (openssl rand -base64 32), mentions légales
 echo "$GHCR_TOKEN" | docker login ghcr.io -u vincenttisseront --password-stdin   # jeton « read:packages » seulement
 docker compose up -d --wait
 ```

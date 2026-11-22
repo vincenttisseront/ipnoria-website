@@ -1,6 +1,6 @@
 # Proxy HTTPS (certificat Let's Encrypt automatique ; pour SITE_DOMAIN=localhost, certificat local de Caddy).
+# Let's Encrypt n'exige pas d'adresse e-mail (et n'envoie plus d'avis d'expiration) : aucune n'est configurée.
 {
-	email {$ACME_EMAIL}
 	servers {
 		protocols h1 h2 h3
 	}
