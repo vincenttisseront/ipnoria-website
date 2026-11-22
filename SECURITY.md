@@ -14,10 +14,11 @@ Politique complète, engagements et remerciements : page `/securite` du site ; c
 | Dépendances | `npm audit` (production, high+), vérification des signatures npm, Dependabot hebdomadaire (npm, Docker, Actions) | `security.yml`, `dependabot.yml` |
 | Code | SonarQube avec porte qualité bloquante, Semgrep (JS/TS/Node, secrets, Docker), ESLint, TypeScript strict | `ci.yml`, `security.yml` |
 | Conteneur | hadolint ; Trivy sur le dépôt et sur l'image (bloquant HIGH/CRITICAL) ; SBOM CycloneDX ; provenance signée de l'image | `security.yml`, `release.yml` |
+| Infrastructure | KICS sur `docker-compose.yml`, Ansible, Dockerfile et sites Caddy (bloquant dès le niveau moyen) ; `caddy validate` et `caddy fmt` du Caddyfile ; exceptions assumées annotées sur place : ports 80/443 publiés par Caddy (c'est son rôle), pas de `no_log` global dans Ansible (chaque tâche sensible porte le sien) | `security.yml`, `tools/security-scan.sh config` |
 | Workflows | zizmor ; actions épinglées par empreinte de commit (Dependabot les met à jour) ; permissions minimales ; `persist-credentials: false` | `.github/workflows/` |
 | Publication | image signée sans clé (cosign / Sigstore), attestation de provenance, SBOM, déploiement par empreinte et non par tag | `release.yml` |
 | Image | base épinglée par empreinte, npm retiré, utilisateur non root, fichiers en lecture seule | `Dockerfile` |
-| Exécution | `read_only`, `cap_drop: ALL`, `no-new-privileges`, limites mémoire/processus, base sur réseau interne sans Internet | `docker-compose.yml` |
+| Exécution | `read_only`, `cap_drop: ALL` sans aucune capacité rendue (Postgres lancé directement en uid 70), `no-new-privileges`, sondes de santé sur chaque service, limites mémoire/processus, base sur réseau interne sans Internet | `docker-compose.yml` |
 | HTTP | HTTPS automatique (Caddy), HSTS, CSP stricte avec nonce, COOP/COEP/CORP, `X-Frame-Options: DENY`, Permissions-Policy | `nuxt.config.ts`, `Caddyfile` |
 | Formulaire | validation zod partagée client/serveur, contrôle d'origine (anti-CSRF), JSON seulement, limite de taille, limite de débit (mémoire + base), piège à robots, aucun HTML rendu, refus des retours à la ligne dans les en-têtes d'e-mail | `server/api/contact.post.ts`, `shared/contact.ts` |
 | Administration | OpenID Connect avec PKCE, state et nonce ; e-mail vérifié et liste d'autorisation relue à chaque requête ; session chiffrée HttpOnly SameSite=Lax de 8 h ; contrôle d'origine sur toute écriture ; confirmation dans l'interface avant effacement | `server/utils/auth.ts`, `server/api/admin/` |

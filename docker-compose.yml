@@ -14,6 +14,9 @@ services:
   caddy:
     <<: *hardening
     image: caddy:2.11.9-alpine@sha256:003a97808e781aa9f7e75cc2f43d34d461099031faf5e20faefb9f61126836f0
+    # Seul point d'entrée public : HTTP et HTTPS doivent être joignables sur toutes les interfaces, aux ports standard.
+    # Exception assumée aux règles KICS « ports privilégiés » et « liaison à une interface » (IPv4 et IPv6).
+    # kics-scan ignore-block
     ports:
       - "80:80"
       - "443:443"
@@ -28,8 +31,13 @@ services:
       - caddy_config:/config
     read_only: true
     tmpfs: [/tmp]
+    # Aucune capacité : Docker autorise l'écoute sur les ports < 1024 dans le conteneur (ip_unprivileged_port_start=0)
     cap_drop: [ALL]
-    cap_add: [NET_BIND_SERVICE]
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:2019/config/"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
     depends_on:
       app: { condition: service_healthy }
     networks: [edge]
@@ -90,6 +98,12 @@ services:
     cap_drop: [ALL]
     pids_limit: 200
     mem_limit: 512m
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/api/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 5s
+      start_period: 20s
+      retries: 3
     depends_on:
       db: { condition: service_healthy }
     # edge : joignable par Caddy et sortie vers GitHub (version publiée) et le relais SMTP ; backend : la base
@@ -105,10 +119,11 @@ services:
       POSTGRES_INITDB_ARGS: --auth-host=scram-sha-256
     volumes:
       - db_data:/var/lib/postgresql/data
+    # Lancé directement sous l'utilisateur postgres de l'image (uid 70) : aucune capacité nécessaire
+    user: "70:70"
     tmpfs: [/tmp, /var/run/postgresql]
     read_only: true
     cap_drop: [ALL]
-    cap_add: [CHOWN, DAC_OVERRIDE, FOWNER, SETGID, SETUID]
     shm_size: 128m
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U site -d site"]
@@ -131,6 +146,12 @@ services:
     cap_drop: [ALL]
     pids_limit: 200
     mem_limit: 512m
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:3000/api/heartbeat"]
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 3
     depends_on:
       umami-db: { condition: service_healthy }
     networks: [edge, analytics]
@@ -146,10 +167,11 @@ services:
       POSTGRES_INITDB_ARGS: --auth-host=scram-sha-256
     volumes:
       - umami_db_data:/var/lib/postgresql/data
+    # Lancé directement sous l'utilisateur postgres de l'image (uid 70) : aucune capacité nécessaire
+    user: "70:70"
     tmpfs: [/tmp, /var/run/postgresql]
     read_only: true
     cap_drop: [ALL]
-    cap_add: [CHOWN, DAC_OVERRIDE, FOWNER, SETGID, SETUID]
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U umami -d umami"]
       interval: 10s

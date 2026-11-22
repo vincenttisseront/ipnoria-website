@@ -44,10 +44,9 @@
 	import pages_erreur
 
 	handle {
-		reverse_proxy app:3000 {
-			# Écrase tout X-Forwarded-For envoyé par le client : l'application s'y fie pour la limitation de débit
-			header_up X-Forwarded-For {remote_host}
-		}
+		# X-Forwarded-For : Caddy remplace toute valeur envoyée par le client par sa vraie adresse (aucun proxy
+		# déclaré de confiance) ; l'application s'y fie pour la limitation de débit. Ne pas ajouter trusted_proxies.
+		reverse_proxy app:3000
 	}
 
 	header {
