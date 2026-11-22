@@ -104,6 +104,15 @@ const terminal = computed(() => [
       </ul>
     </section>
 
+    <!-- Une allocation en 3D : de la plage d'adresses au nom publié -->
+    <section class="wrap py-20" aria-labelledby="alloc-title">
+      <div class="max-w-2xl">
+        <h2 id="alloc-title" class="text-h2">{{ t('alloc.title') }}</h2>
+        <p class="mt-4 text-lg text-muted">{{ t('alloc.lead') }}</p>
+      </div>
+      <AllocationScene class="mt-10" />
+    </section>
+
     <!-- Fonctionnalités : deux tuiles vivantes (IPAM, cluster), les autres en texte -->
     <section id="fonctionnalites" class="wrap py-20">
       <div class="max-w-2xl">

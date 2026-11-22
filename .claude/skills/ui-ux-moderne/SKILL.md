@@ -39,7 +39,7 @@ N'ajoute pas de couleur en dur dans un composant : étends le `@theme`.
 
 ## Mouvement
 
-- Un seul mouvement non déclenché : la capture de l'ouverture qui se redresse au chargement.
+- Mouvements non déclenchés limités à deux : la capture de l'ouverture qui se redresse au chargement, et la scène 3D d'allocation (plage → adresse → DNS), jouée seulement quand elle est visible, avec un bouton pause et un état final fixe si l'animation est réduite.
 - Tout le reste répond à une action (allocation d'une adresse, changement d'onglet, copie).
 - `prefers-reduced-motion` est respecté globalement : ne le contourne pas.
 

@@ -346,11 +346,62 @@
     "rss": "RSS feed"
   },
   "error": {
-    "notFoundTitle": "This page doesn't exist",
-    "notFoundText": "The address may be mistyped, or the page has moved.",
-    "genericTitle": "Something went wrong",
-    "genericText": "The server couldn't display the page.",
-    "back": "Back to the home page"
+    "label": "Error {code}",
+    "retry": "Try again",
+    "login": "Sign in",
+    "back": "Back to the home page",
+    "search": "Search the site",
+    "near": "Closest pages",
+    "report": "Did a link on the site bring you here?",
+    "persist": "Still happening?",
+    "contact": "Let us know.",
+    "dnsNote": "in DNS, this would be:",
+    "code": {
+      "400": {
+        "title": "Malformed request",
+        "text": "The link is incomplete or damaged. Start from the home page or search for the page."
+      },
+      "401": {
+        "title": "Sign-in required",
+        "text": "This page is for the team. Sign in with your account to open it."
+      },
+      "403": {
+        "title": "Access denied",
+        "text": "Your account can't open this page. If that's a mistake, ask to be added to the administrators list."
+      },
+      "404": {
+        "title": "This page doesn't exist",
+        "text": "The address may be mistyped, or the page has moved. Search for it, or start from the home page."
+      },
+      "405": {
+        "title": "Action not supported",
+        "text": "This address doesn't answer this kind of request. Open the page from the site."
+      },
+      "410": {
+        "title": "This page was removed",
+        "text": "Its content no longer exists. What replaced it is most likely in the documentation."
+      },
+      "429": {
+        "title": "Too many requests",
+        "text": "Your network sent many requests in a short time. Wait a minute, then try again."
+      },
+      "500": {
+        "title": "The server ran into an error",
+        "text": "The page couldn't be shown. Try again in a moment: the incident is logged."
+      },
+      "502": {
+        "title": "The site is restarting",
+        "text": "The server isn't answering right now, often during an update. Try again in a minute."
+      },
+      "503": {
+        "title": "Service temporarily unavailable",
+        "text": "Part of the site isn't answering right now. Try again in a few minutes."
+      },
+      "504": {
+        "title": "The server took too long",
+        "text": "The page didn't arrive in time. Try again: the second attempt usually works."
+      }
+    }
   },
   "releases": {
     "title": "Releases",
@@ -651,5 +702,32 @@
     "notesHint": "Fleet size, services to replace, questions.",
     "consent": "I agree that this information is used only to organize this demo.",
     "submit": "Book this slot"
+  },
+  "alloc": {
+    "title": "An address and its name, in a single action",
+    "lead": "What the console does when you ask for an address: nothing to copy between IPAM and DNS, nothing to forget in the reverse zone.",
+    "sr": "Animation: the console walks the 10.20.20.0/26 range, finds 10.20.20.42 free, reserves it, creates srv-app03.corp.example in the forward zone and the PTR record in the reverse zone, then publishes both zones.",
+    "published": "Zone validated and reloaded",
+    "pause": "Pause",
+    "play": "Play",
+    "replay": "Replay",
+    "steps": {
+      "search": {
+        "title": "Find",
+        "text": "The range is walked up to the first free address."
+      },
+      "reserve": {
+        "title": "Reserve",
+        "text": "10.20.20.42 is reserved for srv-app03, with its owner and purpose."
+      },
+      "name": {
+        "title": "Name",
+        "text": "The name is created in corp.example, and the reverse lookup with it."
+      },
+      "publish": {
+        "title": "Publish",
+        "text": "Zones are validated, their serial moves forward, the name answers."
+      }
+    }
   }
 }

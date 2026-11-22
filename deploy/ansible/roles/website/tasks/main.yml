@@ -19,6 +19,7 @@
   loop:
     - "{{ website_dir }}"
     - "{{ website_dir }}/caddy-sites"
+    - "{{ website_dir }}/caddy-errors"
 
 - name: Fichiers de déploiement (compose, Caddy)
   ansible.builtin.copy:
@@ -29,6 +30,25 @@
     mode: "0644"
   loop: [docker-compose.yml, Caddyfile]
   notify: Relancer le site
+
+- name: Pages d'erreur et de maintenance servies par Caddy
+  ansible.builtin.copy:
+    src: "{{ website_repo_root }}/caddy-errors/"
+    dest: "{{ website_dir }}/caddy-errors/"
+    owner: root
+    group: root
+    mode: "0644"
+    directory_mode: "0755"
+
+- name: Mode maintenance (page 503 tant que website_maintenance est vrai)
+  ansible.builtin.file:
+    path: "{{ website_dir }}/caddy-errors/maintenance.on"
+    state: "{{ 'touch' if website_maintenance | bool else 'absent' }}"
+    owner: root
+    group: root
+    mode: "0644"
+    access_time: preserve
+    modification_time: preserve
 
 - name: Site des statistiques (Caddy)
   ansible.builtin.copy:

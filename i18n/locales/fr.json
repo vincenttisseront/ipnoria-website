@@ -346,11 +346,62 @@
     "rss": "Flux RSS"
   },
   "error": {
-    "notFoundTitle": "Cette page n'existe pas",
-    "notFoundText": "L'adresse est peut-être mal saisie, ou la page a été déplacée.",
-    "genericTitle": "Une erreur est survenue",
-    "genericText": "Le serveur n'a pas pu afficher la page.",
-    "back": "Revenir à l'accueil"
+    "label": "Erreur {code}",
+    "retry": "Réessayer",
+    "login": "Se connecter",
+    "back": "Revenir à l'accueil",
+    "search": "Rechercher dans le site",
+    "near": "Les pages les plus proches",
+    "report": "Un lien du site vous a mené ici ?",
+    "persist": "Le problème persiste ?",
+    "contact": "Prévenez-nous.",
+    "dnsNote": "en DNS, ce serait :",
+    "code": {
+      "400": {
+        "title": "Requête mal formée",
+        "text": "Le lien est incomplet ou abîmé. Repartez de l'accueil ou cherchez la page."
+      },
+      "401": {
+        "title": "Connexion nécessaire",
+        "text": "Cette page est réservée à l'équipe. Connectez-vous avec votre compte pour y accéder."
+      },
+      "403": {
+        "title": "Accès refusé",
+        "text": "Votre compte n'a pas accès à cette page. Si c'est une erreur, demandez à être ajouté à la liste des administrateurs."
+      },
+      "404": {
+        "title": "Cette page n'existe pas",
+        "text": "L'adresse est peut-être mal saisie, ou la page a été déplacée. Cherchez-la, ou partez de l'accueil."
+      },
+      "405": {
+        "title": "Action non prise en charge",
+        "text": "Cette adresse ne répond pas à ce type de requête. Ouvrez la page depuis le site."
+      },
+      "410": {
+        "title": "Cette page a été retirée",
+        "text": "Son contenu n'existe plus. Ce qui l'a remplacé se trouve sans doute dans la documentation."
+      },
+      "429": {
+        "title": "Trop de requêtes",
+        "text": "Votre réseau a envoyé beaucoup de requêtes en peu de temps. Patientez une minute, puis réessayez."
+      },
+      "500": {
+        "title": "Le serveur a rencontré une erreur",
+        "text": "La page n'a pas pu être affichée. Réessayez dans un instant : l'incident est enregistré."
+      },
+      "502": {
+        "title": "Le site redémarre",
+        "text": "Le serveur ne répond pas pour le moment, souvent pendant une mise à jour. Réessayez dans une minute."
+      },
+      "503": {
+        "title": "Service momentanément indisponible",
+        "text": "Une partie du site ne répond pas pour le moment. Réessayez dans quelques minutes."
+      },
+      "504": {
+        "title": "Le serveur a mis trop de temps",
+        "text": "La page n'est pas arrivée à temps. Réessayez : la seconde tentative passe le plus souvent."
+      }
+    }
   },
   "releases": {
     "title": "Nouveautés",
@@ -651,5 +702,32 @@
     "notesHint": "Taille du parc, services à remplacer, questions.",
     "consent": "J'accepte que ces informations servent uniquement à organiser cette démonstration.",
     "submit": "Réserver ce créneau"
+  },
+  "alloc": {
+    "title": "Une adresse et son nom, en une seule action",
+    "lead": "Ce que fait la console quand vous demandez une adresse : rien à recopier entre l'IPAM et le DNS, rien à oublier dans la zone inverse.",
+    "sr": "Animation : la console parcourt la plage 10.20.20.0/26, trouve 10.20.20.42 libre, la réserve, crée srv-app03.corp.example dans la zone directe et l'enregistrement PTR dans la zone inverse, puis publie les deux zones.",
+    "published": "Zone validée et rechargée",
+    "pause": "Pause",
+    "play": "Lecture",
+    "replay": "Rejouer",
+    "steps": {
+      "search": {
+        "title": "Chercher",
+        "text": "La plage est parcourue jusqu'à la première adresse libre."
+      },
+      "reserve": {
+        "title": "Réserver",
+        "text": "10.20.20.42 est réservée pour srv-app03, avec son responsable et son motif."
+      },
+      "name": {
+        "title": "Nommer",
+        "text": "Le nom est créé dans corp.example, la résolution inverse avec lui."
+      },
+      "publish": {
+        "title": "Publier",
+        "text": "Les zones sont validées, leur numéro de série avance, le nom répond."
+      }
+    }
   }
 }

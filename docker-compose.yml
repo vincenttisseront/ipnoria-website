@@ -23,6 +23,7 @@ services:
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
       - ./caddy-sites:/etc/caddy/sites:ro
+      - ./caddy-errors:/srv/errors:ro
       - caddy_data:/data
       - caddy_config:/config
     read_only: true

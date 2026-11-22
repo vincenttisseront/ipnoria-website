@@ -32,6 +32,17 @@ Le playbook est idempotent : un second passage ne change rien (vérifié par `de
 Automatique : pousser un tag `vX.Y.Z` construit, signe et publie l'image (`release.yml`), puis la déploie par SSH si les secrets `DEPLOY_*` existent.
 Avec Ansible : `ansible-playbook site.yml --ask-vault-pass --tags website` (tire la dernière image).
 
+## Pages d'erreur et maintenance
+
+Quand l'application ne répond pas (redémarrage, mise à jour), Caddy sert lui-même une page « le site redémarre » (502, 503, 504), en français ou en anglais selon l'adresse. Pour une intervention plus longue :
+
+```sh
+ansible-playbook site.yml -e website_maintenance=true    # page de maintenance (503, Retry-After)
+ansible-playbook site.yml                                # retour à la normale
+```
+
+Sans Ansible : créer ou supprimer `caddy-errors/maintenance.on` à côté de `docker-compose.yml`. Les pages se régénèrent avec `tools/caddy_errors.py`.
+
 ## Espace d'administration (`/admin`)
 
 1. Déclarer un client OpenID Connect chez votre fournisseur d'identité : type confidentiel (ou public avec PKCE), URL de retour `https://<domaine>/auth/callback`, portées `openid email profile`.
