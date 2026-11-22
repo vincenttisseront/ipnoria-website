@@ -43,3 +43,7 @@ backup_dir: /var/backups/ipnoria-website
 backup_retention_days: 14
 backup_time: "03:17"
 backup_rsync_target: ""                      # ex. backup@nas.exemple.lan:/srv/backups/ipnoria-website (copie hors serveur)
+
+# Comptes utilisateurs : contrôle des mots de passe divulgués, connexion GitHub (identifiant d'application OAuth)
+website_accounts_breach_check: true
+website_accounts_github_client_id: ""

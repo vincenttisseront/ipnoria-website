@@ -32,6 +32,13 @@ Le playbook est idempotent : un second passage ne change rien (vérifié par `de
 Automatique : pousser un tag `vX.Y.Z` construit, signe et publie l'image (`release.yml`), puis la déploie par SSH si les secrets `DEPLOY_*` existent.
 Avec Ansible : `ansible-playbook site.yml --ask-vault-pass --tags website` (tire la dernière image).
 
+## Comptes utilisateurs et feuille de route
+
+1. Le SMTP doit fonctionner (vérification d'adresse, réinitialisation, alertes de sécurité, notifications des idées).
+2. Dans le vault : `vault_accounts_secret` (`openssl rand -hex 32`). Il chiffre les secrets des applications d'authentification : ne le changez plus une fois des comptes créés.
+3. Facultatif, connexion GitHub : créer une application OAuth (URL de retour `https://<domaine>/api/account/github/callback`), renseigner `website_accounts_github_client_id` et `vault_accounts_github_client_secret`.
+4. Les idées de l'équipe (ancienne feuille de route) sont importées au premier démarrage ; elles se modèrent ensuite dans `/admin`, comme les idées proposées.
+
 ## Pages d'erreur et maintenance
 
 Quand l'application ne répond pas (redémarrage, mise à jour), Caddy sert lui-même une page « le site redémarre » (502, 503, 504), en français ou en anglais selon l'adresse. Pour une intervention plus longue :

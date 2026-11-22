@@ -41,6 +41,13 @@ export default defineNuxtConfig({
       busyIcsUrl: '',                // adresse iCalendar (secrète) de votre agenda : ses occupations bloquent les créneaux
       feedKey: '',                   // clé du flux /api/booking/feed.ics à ajouter dans votre agenda
     },
+    // Comptes utilisateurs (demandes de fonctionnalités) : actifs avec la base, le SMTP et ce secret (32 caractères ou plus)
+    accounts: {
+      secret: '',                    // NUXT_ACCOUNTS_SECRET : chiffre les secrets TOTP
+      breachCheck: true,             // NUXT_ACCOUNTS_BREACH_CHECK : refuse les mots de passe connus dans des fuites
+      githubClientId: '',            // NUXT_ACCOUNTS_GITHUB_CLIENT_ID : connexion GitHub (facultative)
+      githubClientSecret: '',        // NUXT_ACCOUNTS_GITHUB_CLIENT_SECRET
+    },
     oidc: {
       issuer: '',                    // NUXT_OIDC_ISSUER : URL du fournisseur OpenID Connect
       clientId: '',                  // NUXT_OIDC_CLIENT_ID
@@ -95,7 +102,17 @@ export default defineNuxtConfig({
       'outils/dimensionnement': { fr: '/outils/dimensionnement', en: '/tools/sizing' },
       'outils/import-dhcp': { fr: '/outils/import-dhcp', en: '/tools/dhcp-import-preview' },
       'outils/sous-reseaux': { fr: '/outils/sous-reseaux', en: '/tools/subnets' },
-      'feuille-de-route': { fr: '/feuille-de-route', en: '/roadmap' },
+      'feuille-de-route/index': { fr: '/feuille-de-route', en: '/roadmap' },
+      'feuille-de-route/proposer': { fr: '/feuille-de-route/proposer', en: '/roadmap/propose' },
+      'feuille-de-route/[id]': { fr: '/feuille-de-route/[id]', en: '/roadmap/[id]' },
+      'compte/index': { fr: '/compte', en: '/account' },
+      'compte/connexion': { fr: '/compte/connexion', en: '/account/sign-in' },
+      'compte/inscription': { fr: '/compte/inscription', en: '/account/sign-up' },
+      'compte/mot-de-passe-oublie': { fr: '/compte/mot-de-passe-oublie', en: '/account/forgot-password' },
+      'compte/reinitialiser': { fr: '/compte/reinitialiser', en: '/account/reset-password' },
+      'compte/securite': { fr: '/compte/securite', en: '/account/security' },
+      'compte/sessions': { fr: '/compte/sessions', en: '/account/sessions' },
+      'compte/donnees': { fr: '/compte/donnees', en: '/account/data' },
       'visite': { fr: '/visite', en: '/tour' },
       'pour/[profil]': { fr: '/pour/[profil]', en: '/for/[profil]' },
       'rendez-vous': { fr: '/rendez-vous', en: '/book-a-demo' },
@@ -132,6 +149,9 @@ export default defineNuxtConfig({
       permissionsPolicy: {
         'camera': [], 'microphone': [], 'geolocation': [], 'display-capture': [],
         'fullscreen': [], 'payment': [], 'usb': [],
+        // Clés d'accès (WebAuthn) : permises au site lui-même, jamais à un cadre tiers
+        'publickey-credentials-get': ['self'],
+        'publickey-credentials-create': ['self'],
         // Directive non reconnue par Chromium : retirée pour ne pas polluer la console
         'web-share': false,
       },
@@ -148,7 +168,21 @@ export default defineNuxtConfig({
     // Le message n'est jamais rendu en HTML (texte brut en base et dans l'e-mail) : le filtre XSS générique refuserait à tort « a < b »
     '/api/contact': { security: { rateLimiter: { tokensPerInterval: 5, interval: 600000 }, xssValidator: false } },
     '/api/newsletter': { security: { rateLimiter: { tokensPerInterval: 5, interval: 600000 } } },
-    '/api/roadmap/vote': { security: { rateLimiter: { tokensPerInterval: 10, interval: 600000 } } },
+    // Comptes : connexion, inscription et liens e-mail limités par IP (le compte a aussi son propre verrou)
+    '/api/account/login': { security: { rateLimiter: { tokensPerInterval: 10, interval: 300000 } } },
+    '/api/account/login/mfa': { security: { rateLimiter: { tokensPerInterval: 10, interval: 300000 } } },
+    '/api/account/register': { security: { rateLimiter: { tokensPerInterval: 5, interval: 3600000 } } },
+    '/api/account/password/forgot': { security: { rateLimiter: { tokensPerInterval: 5, interval: 900000 } } },
+    '/api/account/verify/resend': { security: { rateLimiter: { tokensPerInterval: 3, interval: 900000 } } },
+    '/api/account/reauth': { security: { rateLimiter: { tokensPerInterval: 10, interval: 300000 } } },
+    '/api/account/passkeys/**': { security: { rateLimiter: { tokensPerInterval: 30, interval: 300000 } } },
+    '/api/account/**': { headers: { 'cache-control': 'no-store' }, security: { xssValidator: false } },
+    // Idées et commentaires : texte brut, jamais rendu en HTML
+    '/api/ideas/**': { security: { rateLimiter: { tokensPerInterval: 60, interval: 300000 }, xssValidator: false } },
+    '/compte': { headers: { 'cache-control': 'no-store', 'x-robots-tag': 'noindex' } },
+    '/compte/**': { headers: { 'cache-control': 'no-store', 'x-robots-tag': 'noindex' } },
+    '/en/account': { headers: { 'cache-control': 'no-store', 'x-robots-tag': 'noindex' } },
+    '/en/account/**': { headers: { 'cache-control': 'no-store', 'x-robots-tag': 'noindex' } },
     '/api/booking': { security: { rateLimiter: { tokensPerInterval: 5, interval: 600000 }, xssValidator: false } },
     '/api/booking/cancel': { security: { rateLimiter: { tokensPerInterval: 10, interval: 600000 } } },
     '/auth/**': { security: { rateLimiter: { tokensPerInterval: 30, interval: 300000 } }, headers: { 'cache-control': 'no-store' } },

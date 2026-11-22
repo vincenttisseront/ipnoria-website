@@ -5,6 +5,7 @@
       - vault_postgres_password is defined and vault_postgres_password | length >= 16 and vault_postgres_password != 'CHANGE-ME'
       - vault_ip_hash_salt is defined and vault_ip_hash_salt | length >= 16 and vault_ip_hash_salt != 'CHANGE-ME'
       - website_admin_emails | length == 0 or (vault_session_password | default('') | length >= 32)
+      - vault_accounts_secret | default('') | length == 0 or (vault_accounts_secret | length >= 32 and 'CHANGE-ME' not in vault_accounts_secret)
       - not website_analytics_enabled or (vault_umami_db_password | default('') | length >= 16 and vault_umami_app_secret | default('') | length >= 16)
     fail_msg: "Secret manquant ou trop court dans group_vars/all/vault.yml (voir vault.yml.example)."
     quiet: true

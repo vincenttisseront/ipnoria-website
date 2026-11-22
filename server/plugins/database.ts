@@ -27,6 +27,9 @@ export default defineNitroPlugin(async (nitro) => {
     }
   }
 
+  // Idées de l'équipe (ancienne feuille de route) : ajoutées une fois, modifiables ensuite depuis l'administration
+  await seedTeamIdeas(pool).catch(err => console.error('[db] idées de l\'équipe non importées :', err.message))
+
   const purge = () => purgeOldMessages(pool, Number(contactRetentionDays))
     .then(n => n && console.info(`[db] purge RGPD : ${n} message(s) supprimé(s)`))
     .catch(err => console.error('[db] purge impossible :', err.message))

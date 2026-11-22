@@ -16,3 +16,7 @@ vault_umami_app_secret: CHANGE-ME
 # Réservation de démonstrations (facultatif)
 vault_booking_busy_ics_url: ""        # adresse iCalendar secrète de votre agenda
 vault_booking_feed_key: ""            # 24 caractères ou plus : openssl rand -hex 24
+# Comptes utilisateurs : 32 caractères ou plus (openssl rand -hex 32). Ne plus le changer ensuite.
+vault_accounts_secret: CHANGE-ME-32-CARACTERES-AU-MOINS
+# Connexion GitHub (facultative)
+vault_accounts_github_client_secret: ""

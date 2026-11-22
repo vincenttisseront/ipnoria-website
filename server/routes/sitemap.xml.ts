@@ -28,6 +28,13 @@ export default defineEventHandler(async (event) => {
   for (const d of DOCS) pairs.push([`/documentation/${d.slug}`, `/en/docs/${d.slug}`, '0.6'])
   for (const p of PROFILES.fr) pairs.push([`/pour/${p.slug.fr}`, `/en/for/${p.slug.en}`, '0.7'])
   for (const g of GUIDES.fr) pairs.push([`/guides/${g.slug}`, `/en/guides/${g.slug}`, '0.7'])
+  if (hasDb()) {
+    try {
+      const ideas = await useDb().query(`SELECT id::text FROM ideas WHERE NOT hidden AND status <> 'duplicate' ORDER BY id LIMIT 1000`)
+      for (const i of ideas.rows) pairs.push([`/feuille-de-route/${i.id}`, `/en/roadmap/${i.id}`, '0.4'])
+    }
+    catch { /* base indisponible : plan sans les idées */ }
+  }
   try {
     for (const r of (await loadChangelog()).slice(0, 30)) pairs.push([`/nouveautes/${r.version}`, `/en/releases/${r.version}`, '0.4'])
   }

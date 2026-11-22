@@ -1,5 +1,5 @@
 // Toutes les heures : si une nouvelle version est publiée sur GitHub, e-mail aux abonnés confirmés ;
-// rappel des démonstrations du lendemain ; purge des inscriptions et votes jamais confirmés depuis plus de 7 jours.
+// rappel des démonstrations du lendemain ; purge des inscriptions jamais confirmées, des comptes jamais vérifiés et des données de session expirées.
 const HOUR = 60 * 60 * 1000
 
 export default defineNitroPlugin((nitro) => {
@@ -8,7 +8,12 @@ export default defineNitroPlugin((nitro) => {
     try {
       const pool = useDb()
       await pool.query(`DELETE FROM newsletter_subscribers WHERE confirmed_at IS NULL AND created_at < now() - interval '7 days'`)
-      await pool.query(`DELETE FROM roadmap_votes WHERE confirmed_at IS NULL AND created_at < now() - interval '7 days'`)
+      // Comptes : sessions et liens expirés, journal de plus d'un an, comptes jamais vérifiés après 30 jours
+      await pool.query(`DELETE FROM user_sessions WHERE expires_at < now()`)
+      await pool.query(`DELETE FROM user_tokens WHERE expires_at < now() - interval '7 days'`)
+      await pool.query(`DELETE FROM webauthn_challenges WHERE expires_at < now()`)
+      await pool.query(`DELETE FROM user_events WHERE created_at < now() - interval '1 year'`)
+      await pool.query(`DELETE FROM users WHERE email_verified_at IS NULL AND created_at < now() - interval '30 days'`)
       // Rendez-vous passés depuis plus de 90 jours : effacés (données personnelles)
       await pool.query(`DELETE FROM bookings WHERE ends_at < now() - interval '90 days'`)
       await remindBookings(pool)

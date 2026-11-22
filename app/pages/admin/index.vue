@@ -14,7 +14,7 @@ const filter = ref<'ouverts' | 'traites' | 'tous'>('ouverts')
 const { data: list, refresh, status } = await useFetch<{ messages: Message[], stats: { open: number, total: number, subscribers: number } }>(
   '/api/admin/messages', { query: { filtre: filter }, immediate: Boolean(me.value?.user), watch: [filter] },
 )
-const { data: overview } = await useFetch<{ bookings: Array<{ id: string, starts_at: string, name: string, email: string, company: string, notes: string }>, votes: Array<{ id: string, title: string, votes: number, pending: number }> }>(
+const { data: overview } = await useFetch<{ bookings: Array<{ id: string, starts_at: string, name: string, email: string, company: string, notes: string }>, ideas: Record<string, number>, users: { total: number, verified: number, mfa: number } }>(
   '/api/admin/overview', { immediate: Boolean(me.value?.user) },
 )
 const selectedId = ref<string | null>(null)
@@ -169,15 +169,14 @@ watch(confirmDelete, async (open) => { if (open) { await nextTick(); confirmBtn.
             </ul>
           </section>
           <section class="panel p-6">
-            <h2 class="text-lg font-semibold">Votes de la feuille de route</h2>
-            <table class="mt-3 w-full text-sm">
-              <thead><tr class="text-left text-muted"><th class="py-1.5 font-medium">Élément</th><th class="py-1.5 font-medium">Votes</th><th class="py-1.5 font-medium">En attente</th></tr></thead>
-              <tbody>
-                <tr v-for="v in overview.votes" :key="v.id" class="border-t border-line"><td class="py-1.5">{{ v.title }}</td><td class="py-1.5 font-mono">{{ v.votes }}</td><td class="py-1.5 font-mono text-muted">{{ v.pending }}</td></tr>
-              </tbody>
-            </table>
+            <h2 class="text-lg font-semibold">Comptes et idées</h2>
+            <p class="mt-3 text-sm text-muted">{{ overview.users.total }} comptes, dont {{ overview.users.verified }} vérifiés et {{ overview.users.mfa }} avec un second facteur.</p>
+            <ul class="mt-4 flex flex-wrap gap-2 text-sm">
+              <li v-for="(n, st) in overview.ideas" :key="st" class="rounded-full border border-line px-3 py-1"><IdeaStatus :status="st as any" /> <span class="ml-1 font-mono">{{ n }}</span></li>
+            </ul>
           </section>
         </div>
+        <AdminIdeas class="mt-14" />
       </template>
     </main>
 

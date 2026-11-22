@@ -2,7 +2,6 @@ import { COMPARISON } from '#shared/comparison'
 import { DOCS, fold } from '#shared/docs'
 import { GUIDES } from '#shared/guides'
 import { PROFILES } from '#shared/profiles'
-import { ROADMAP } from '#shared/roadmap'
 import { TOUR } from '#shared/tour'
 
 export type SearchKind = 'page' | 'doc' | 'guide' | 'tool' | 'release' | 'compare' | 'roadmap' | 'profile' | 'tour'
@@ -26,7 +25,7 @@ function staticPages(locale: Locale): SearchEntry[] {
     p(['Dimensionnement', 'Sizing calculator'], ['/outils/dimensionnement', '/tools/sizing'], ['CPU mémoire RAM disque cluster arbitre nombre de postes', 'CPU memory RAM disk cluster witness number of devices'], 'tool'),
     p(['Aperçu de l\'import DHCP Windows', 'Windows DHCP import preview'], ['/outils/import-dhcp', '/tools/dhcp-import-preview'], ['Export-DhcpServer XML étendues réservations exclusions options', 'Export-DhcpServer XML scopes reservations exclusions options'], 'tool'),
     p(['Calculatrice de sous-réseaux', 'Subnet calculator'], ['/outils/sous-reseaux', '/tools/subnets'], ['CIDR masque VLSM VLAN découpage plan d\'adressage CSV', 'CIDR mask VLSM VLAN split addressing plan CSV'], 'tool'),
-    p(['Feuille de route', 'Roadmap'], ['/feuille-de-route', '/roadmap'], ['votes fonctionnalités à venir', 'votes upcoming features']),
+    p(['Feuille de route', 'Roadmap'], ['/feuille-de-route', '/roadmap'], ['idées votes demandes fonctionnalités à venir', 'ideas votes feature requests upcoming']),
     p(['Démonstration sur rendez-vous', 'Book a demo'], ['/rendez-vous', '/book-a-demo'], ['rendez-vous créneau visio démonstration', 'appointment slot video call demo']),
     p(['Visite guidée de la console', 'Guided console tour'], ['/visite', '/tour'], ['captures annotées IPAM DNS DHCP RADIUS', 'annotated screenshots IPAM DNS DHCP RADIUS']),
     p(['Nouveautés', 'Releases'], ['/nouveautes', '/releases'], ['versions journal des modifications RSS alertes', 'versions changelog RSS alerts']),
@@ -54,9 +53,6 @@ function contentEntries(locale: Locale): SearchEntry[] {
     out.push(entry('tour', t.title, fr ? 'Visite guidée' : 'Guided tour', `${L(locale, '/visite', '/tour')}?parcours=${t.id}`,
       `${t.summary} ${t.steps.map(s => `${s.title} ${s.text}`).join(' ')}`))
   }
-  for (const i of ROADMAP) {
-    out.push(entry('roadmap', i.title[locale], fr ? 'Feuille de route' : 'Roadmap', `${L(locale, '/feuille-de-route', '/roadmap')}#${i.id}`, i.text[locale]))
-  }
   return out
 }
 
@@ -77,6 +73,18 @@ async function docEntries(locale: Locale): Promise<SearchEntry[]> {
   return out
 }
 
+async function ideaEntries(locale: Locale): Promise<SearchEntry[]> {
+  if (!hasDb()) return []
+  try {
+    const r = await useDb().query(
+      `SELECT id::text, title, body FROM ideas WHERE NOT hidden AND status NOT IN ('declined', 'duplicate') ORDER BY id LIMIT 500`,
+    )
+    return r.rows.map(i => entry('roadmap', pickLocale(i.title, locale), locale === 'en' ? 'Roadmap' : 'Feuille de route',
+      L(locale, `/feuille-de-route/${i.id}`, `/roadmap/${i.id}`), pickLocale(i.body, locale)))
+  }
+  catch { return [] }
+}
+
 async function releaseEntries(locale: Locale): Promise<SearchEntry[]> {
   try {
     return (await loadChangelog()).map(r => entry('release', `Ipnoria ${r.version}${r.title ? ` : ${r.title}` : ''}`,
@@ -87,9 +95,9 @@ async function releaseEntries(locale: Locale): Promise<SearchEntry[]> {
 
 /** Index complet du site, reconstruit au plus une fois par heure. */
 export const searchIndex = defineCachedFunction(async (locale: Locale): Promise<SearchEntry[]> => {
-  const [docs, releases] = await Promise.all([docEntries(locale), releaseEntries(locale)])
-  return [...staticPages(locale), ...contentEntries(locale), ...docs, ...releases]
-}, { name: 'site-search', maxAge: 3600, staleMaxAge: 86400, getKey: (l: string) => l })
+  const [docs, releases, ideas] = await Promise.all([docEntries(locale), releaseEntries(locale), ideaEntries(locale)])
+  return [...staticPages(locale), ...contentEntries(locale), ...docs, ...releases, ...ideas]
+}, { name: 'site-search', maxAge: 900, staleMaxAge: 86400, getKey: (l: string) => l })
 
 const KIND_BOOST: Record<SearchKind, number> = { tool: 4, page: 4, guide: 3, profile: 3, compare: 2, tour: 2, roadmap: 2, doc: 1, release: 0 }
 

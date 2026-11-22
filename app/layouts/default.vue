@@ -14,5 +14,6 @@ const { t } = useI18n()
     </main>
     <SiteFooter />
     <SearchPalette />
+    <ReauthDialog />
   </div>
 </template>

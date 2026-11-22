@@ -60,15 +60,17 @@ onMounted(() => { isMac.value = /Mac|iPhone|iPad/.test(navigator.platform) })
         <span class="mx-2 h-5 w-px bg-line" aria-hidden="true" />
         <ThemeSwitcher />
         <LangSwitcher />
-        <a :href="githubLinks.repo" class="btn btn-secondary ml-2 !min-h-9 !px-3 !py-1.5" rel="noopener">
-          <AppIcon name="github" :size="16" />{{ t('nav.github') }}
+        <a :href="githubLinks.repo" class="ml-1 flex size-9 items-center justify-center rounded-lg text-muted hover:text-fg" rel="noopener" :aria-label="t('nav.github')">
+          <AppIcon name="github" :size="18" />
         </a>
+        <AccountMenu class="ml-1" />
       </nav>
 
       <div class="flex items-center gap-2 lg:hidden">
       <button type="button" class="btn btn-secondary !px-3" :aria-label="t('search.open')" @click="searchOpen = true">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" /></svg>
       </button>
+      <AccountMenu />
       <details ref="menu" class="relative">
         <summary class="btn btn-secondary cursor-pointer list-none [&::-webkit-details-marker]:hidden">
           <AppIcon name="menu" /><span class="sr-only">{{ t('nav.menu') }}</span>
