@@ -9,6 +9,7 @@ const router = useRouter()
 const { user, state, ensure } = useAccount()
 await ensure()
 useSeoMeta({ title: () => t('ideas.title'), description: () => t('ideas.lead') })
+useOgImage('page', () => 'roadmap')
 
 type Item = { id: string, title: Record<string, string>, excerpt: Record<string, string>, status: IdeaStatus, votes: number, comments: number, voted: boolean, authorKind: string, authorName: string | null, authorBeta: boolean, createdAt: string }
 const FILTERS = ['open', 'planned', 'progress', 'shipped', 'all'] as const

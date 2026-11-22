@@ -121,6 +121,10 @@ export default defineNuxtConfig({
       'beta/signalements/[id]': { fr: '/beta/signalements/[id]', en: '/beta/reports/[id]' },
       'beta/campagnes/[id]': { fr: '/beta/campagnes/[id]', en: '/beta/campaigns/[id]' },
       'securite': { fr: '/securite', en: '/security' },
+      'glossaire/index': { fr: '/glossaire', en: '/glossary' },
+      'glossaire/[terme]': { fr: '/glossaire/[terme]', en: '/glossary/[terme]' },
+      'articles/index': { fr: '/articles', en: '/articles' },
+      'articles/[slug]': { fr: '/articles/[slug]', en: '/articles/[slug]' },
       'references/index': { fr: '/references', en: '/customers' },
       'references/[slug]': { fr: '/references/[slug]', en: '/customers/[slug]' },
       'compte/index': { fr: '/compte', en: '/account' },
@@ -222,7 +226,7 @@ export default defineNuxtConfig({
 
   nitro: {
     // Les migrations SQL sont embarquées dans le serveur construit (useStorage('assets:migrations'))
-    serverAssets: [{ baseName: 'migrations', dir: './database/migrations' }],
+    serverAssets: [{ baseName: 'migrations', dir: './database/migrations' }, { baseName: 'fonts', dir: './assets/fonts' }],
   },
 
   typescript: { strict: true },

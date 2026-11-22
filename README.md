@@ -26,7 +26,7 @@ Site vitrine d'[Ipnoria](https://github.com/vincenttisseront/ipnoria), en franç
 | Démo | S'active dès que `NUXT_PUBLIC_DEMO_URL` est défini |
 | Contact | Formulaire protégé (origine, débit, piège à robots), stockage PostgreSQL, notification SMTP, purge RGPD |
 | Administration | `/admin` : connexion OpenID Connect (PKCE), lecture, réponse par e-mail, marquage, effacement |
-| Référencement | `sitemap.xml` avec hreflang, `robots.txt`, images d'aperçu par section, données structurées schema.org |
+| Référencement | `sitemap.xml` avec hreflang, `robots.txt` ; données structurées (logiciel, fil d'Ariane, HowTo pour les guides, FAQ, article, glossaire) ; images d'aperçu PNG générées par contenu (`/og/<type>/<clé>.png`, polices Geist statiques dans `server/assets/fonts`, `tools/og_fonts.py`) ; glossaire DDI et articles techniques FR/EN |
 | Statistiques | Umami auto-hébergé, sans cookie, « Ne pas me pister » respecté (facultatif) |
 
 ## Démarrer en développement

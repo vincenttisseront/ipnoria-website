@@ -1,4 +1,6 @@
+import { ARTICLES } from '#shared/articles'
 import { DOCS } from '#shared/docs'
+import { GLOSSARY } from '#shared/glossary'
 import { GUIDES } from '#shared/guides'
 import { PROFILES } from '#shared/profiles'
 
@@ -20,6 +22,8 @@ const PAGES: Array<[fr: string, en: string, priority: string]> = [
   ['/references', '/en/customers', '0.6'],
   ['/beta', '/en/beta', '0.8'],
   ['/securite', '/en/security', '0.3'],
+  ['/glossaire', '/en/glossary', '0.6'],
+  ['/articles', '/en/articles', '0.7'],
   ['/demo', '/en/demo', '0.5'],
   ['/contact', '/en/contact', '0.6'],
   ['/confidentialite', '/en/privacy', '0.2'],
@@ -29,6 +33,8 @@ export default defineEventHandler(async (event) => {
   const site = useRuntimeConfig().public.siteUrl.replace(/\/$/, '')
   const pairs: Array<[string, string, string]> = [...PAGES]
   for (const d of DOCS) pairs.push([`/documentation/${d.slug}`, `/en/docs/${d.slug}`, '0.6'])
+  for (const x of GLOSSARY.fr) pairs.push([`/glossaire/${x.id}`, `/en/glossary/${x.id}`, '0.5'])
+  for (const a of ARTICLES) pairs.push([`/articles/${a.slug.fr}`, `/en/articles/${a.slug.en}`, '0.7'])
   for (const p of PROFILES.fr) pairs.push([`/pour/${p.slug.fr}`, `/en/for/${p.slug.en}`, '0.7'])
   for (const g of GUIDES.fr) pairs.push([`/guides/${g.slug}`, `/en/guides/${g.slug}`, '0.7'])
   if (hasDb()) {

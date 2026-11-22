@@ -8,6 +8,8 @@ interface Rel { version: string, title: string, publishedAt: string | null, rele
 const { data: rel, error } = await useFetch<Rel>(() => `/api/releases/${version.value}`)
 if (error.value) throw createError({ statusCode: error.value.statusCode ?? 404, fatal: true })
 useSeoMeta({ title: () => `Ipnoria ${version.value}`, description: () => rel.value?.title ?? '' })
+useOgImage('release', () => version.value)
+useBreadcrumbs(() => [{ name: t('releases.title'), path: localePath('nouveautes') }, { name: `Ipnoria ${version.value}`, path: route.path }])
 
 const fmt = (d: string | null) => (d ? new Date(d).toLocaleDateString(locale.value === 'en' ? 'en-GB' : 'fr-FR', { day: 'numeric', month: 'long', year: 'numeric' }) : '')
 const to = (v: string) => localePath({ name: 'nouveautes-version', params: { version: v } })

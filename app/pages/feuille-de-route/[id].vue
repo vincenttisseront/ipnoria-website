@@ -19,6 +19,8 @@ const { data: idea, error: loadError, refresh } = await useFetch<Idea>(() => `/a
 if (loadError.value || !idea.value) throw createError({ statusCode: 404, fatal: true })
 const pick = (o: Record<string, string>) => o?.[locale.value] || o?.[locale.value === 'fr' ? 'en' : 'fr'] || ''
 useSeoMeta({ title: () => pick(idea.value!.title), description: () => pick(idea.value!.body).slice(0, 160) })
+useOgImage('idea', () => idea.value?.id)
+useBreadcrumbs(() => [{ name: t('ideas.title'), path: localePath('feuille-de-route') }, { name: pick(idea.value!.title), path: route.path }])
 const otherLang = computed(() => !idea.value!.title[locale.value])
 const fmt = (d: string) => new Intl.DateTimeFormat(locale.value, { dateStyle: 'long' }).format(new Date(d))
 const closed = computed(() => ['shipped', 'declined', 'duplicate'].includes(idea.value!.status))

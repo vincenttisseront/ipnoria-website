@@ -134,3 +134,24 @@ describe('programme bêta', async () => {
     expect(BETA_AGREEMENT.fr.length).toBe(BETA_AGREEMENT.en.length)
   })
 })
+
+describe('référencement', async () => {
+  const { wrap, ogSvg } = await import('../server/utils/og-core')
+  const { GLOSSARY } = await import('#shared/glossary')
+  const { ARTICLES } = await import('#shared/articles')
+  it('coupe les titres longs et échappe le texte', () => {
+    const l = wrap('Remplacer un DHCP Windows Server par Linux : méthode et pièges à éviter absolument lors de la bascule', 64, 1040, 2)
+    expect(l.length).toBe(2)
+    expect(l[1]!.endsWith('…')).toBe(true)
+    expect(ogSvg({ kicker: 'A & B', title: '<script>' }, 'x.test')).toContain('&lt;script&gt;')
+  })
+  it('a un glossaire et des articles complets et cohérents dans les deux langues', () => {
+    expect(GLOSSARY.fr.map(t => t.id)).toEqual(GLOSSARY.en.map(t => t.id))
+    const ids = new Set(GLOSSARY.fr.map(t => t.id))
+    for (const t of GLOSSARY.fr) for (const r of t.related) expect(ids.has(r)).toBe(true)
+    for (const a of ARTICLES) {
+      expect(a.sections.fr.length).toBe(a.sections.en.length)
+      for (const g of a.related.glossary) expect(ids.has(g)).toBe(true)
+    }
+  })
+})

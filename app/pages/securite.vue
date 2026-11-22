@@ -2,6 +2,7 @@
 // Politique de divulgation des vulnérabilités : comment signaler, périmètre, engagements, cadre de bonne foi, remerciements.
 const { t, tm, rt, locale } = useI18n()
 useSeoMeta({ title: () => t('disclosure.title'), description: () => t('disclosure.lead') })
+useOgImage('page', () => 'security')
 const { data } = await useFetch<{ contact: string, encryptionUrl: string, acknowledgments: Array<{ id: string, name: string, url: string | null, summary: Record<string, string>, month: string }> }>('/api/security')
 const list = (k: string) => (tm(k) as unknown[]).map(x => rt(x as never))
 const pick = (o: Record<string, string>) => o?.[locale.value] || o?.[locale.value === 'fr' ? 'en' : 'fr'] || ''

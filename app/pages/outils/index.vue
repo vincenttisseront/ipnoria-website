@@ -2,6 +2,7 @@
 const { t } = useI18n()
 const localePath = useLocalePath()
 useSeoMeta({ title: () => t('tools.title'), description: () => t('tools.lead') })
+useOgImage('page', () => 'tools')
 
 const tools = [
   { name: 'outils-checklist', key: 'checklist', icon: 'check' },

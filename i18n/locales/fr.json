@@ -18,7 +18,8 @@
     "demo": "Démo",
     "tools": "Outils",
     "roadmap": "Feuille de route",
-    "beta": "Bêta"
+    "beta": "Bêta",
+    "resources": "Ressources"
   },
   "hero": {
     "title": "DNS, DHCP, IPAM, RADIUS et PKI. Une seule appliance.",
@@ -1350,5 +1351,26 @@
     "pgp": "Clé OpenPGP publique",
     "mailSubject": "Signalement de sécurité Ipnoria",
     "noBounty": "Pas de prime pour l'instant : notre reconnaissance, publique ou discrète, comme vous préférez."
+  },
+  "glossary": {
+    "title": "Glossaire DDI",
+    "lead": "Les mots du DNS, du DHCP, de l'IPAM et du contrôle d'accès réseau, expliqués simplement, avec ce que chacun change en pratique.",
+    "filter": "Filtrer les termes",
+    "none": "Aucun terme ne correspond.",
+    "back": "Tout le glossaire",
+    "termTitle": "{term} : définition",
+    "inIpnoria": "Dans Ipnoria",
+    "articles": "Articles qui en parlent",
+    "related": "Termes liés"
+  },
+  "articles": {
+    "title": "Articles",
+    "lead": "Choisir, migrer, sécuriser : des notes pratiques pour les équipes réseau et système.",
+    "minutes": "{n} min de lecture",
+    "back": "Tous les articles",
+    "terms": "Termes du glossaire",
+    "others": "Autres articles",
+    "betaTitle": "Programme bêta",
+    "betaText": "Testez Ipnoria sur votre réseau avant sa sortie."
   }
 }

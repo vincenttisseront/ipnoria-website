@@ -1,5 +1,7 @@
 import { COMPARISON } from '#shared/comparison'
+import { ARTICLES } from '#shared/articles'
 import { DOCS, fold } from '#shared/docs'
+import { GLOSSARY } from '#shared/glossary'
 import { GUIDES } from '#shared/guides'
 import { PROFILES } from '#shared/profiles'
 import { TOUR } from '#shared/tour'
@@ -26,6 +28,8 @@ function staticPages(locale: Locale): SearchEntry[] {
     p(['Aperçu de l\'import DHCP Windows', 'Windows DHCP import preview'], ['/outils/import-dhcp', '/tools/dhcp-import-preview'], ['Export-DhcpServer XML étendues réservations exclusions options', 'Export-DhcpServer XML scopes reservations exclusions options'], 'tool'),
     p(['Calculatrice de sous-réseaux', 'Subnet calculator'], ['/outils/sous-reseaux', '/tools/subnets'], ['CIDR masque VLSM VLAN découpage plan d\'adressage CSV', 'CIDR mask VLSM VLAN split addressing plan CSV'], 'tool'),
     p(['Programme bêta', 'Beta programme'], ['/beta', '/beta'], ['bêta testeur candidature tester avant la sortie', 'beta tester apply early access']),
+    p(['Glossaire DDI', 'DDI glossary'], ['/glossaire', '/glossary'], ['définitions vocabulaire termes', 'definitions vocabulary terms']),
+    p(['Articles', 'Articles'], ['/articles', '/articles'], ['blog conseils migration', 'blog advice migration']),
     p(['Références', 'Customers'], ['/references', '/customers'], ['clients références témoignages ils utilisent', 'customers references testimonials case studies']),
     p(['Feuille de route', 'Roadmap'], ['/feuille-de-route', '/roadmap'], ['idées votes demandes fonctionnalités à venir', 'ideas votes feature requests upcoming']),
     p(['Démonstration sur rendez-vous', 'Book a demo'], ['/rendez-vous', '/book-a-demo'], ['rendez-vous créneau visio démonstration', 'appointment slot video call demo']),
@@ -50,6 +54,13 @@ function contentEntries(locale: Locale): SearchEntry[] {
   for (const p of PROFILES[locale]) {
     out.push(entry('profile', p.title, fr ? 'Pour qui' : 'Who it\'s for', L(locale, `/pour/${p.slug.fr}`, `/for/${p.slug.en}`),
       `${p.lead} ${p.needs.map(n => `${n.title} ${n.text}`).join(' ')} ${p.answers.map(a => `${a.title} ${a.text}`).join(' ')}`))
+  }
+  for (const g of GLOSSARY[locale]) {
+    out.push(entry('page', g.term, fr ? 'Glossaire' : 'Glossary', L(locale, `/glossaire/${g.id}`, `/glossary/${g.id}`), `${g.short} ${g.body}`))
+  }
+  for (const a of ARTICLES) {
+    out.push(entry('guide', a.title[locale], 'Article', L(locale, `/articles/${a.slug.fr}`, `/articles/${a.slug.en}`),
+      `${a.description[locale]} ${a.sections[locale].map(s => `${s.h} ${s.p.join(' ')}`).join(' ')}`))
   }
   for (const t of TOUR[locale]) {
     out.push(entry('tour', t.title, fr ? 'Visite guidée' : 'Guided tour', `${L(locale, '/visite', '/tour')}?parcours=${t.id}`,

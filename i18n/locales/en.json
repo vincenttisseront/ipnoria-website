@@ -18,7 +18,8 @@
     "demo": "Demo",
     "tools": "Tools",
     "roadmap": "Roadmap",
-    "beta": "Beta"
+    "beta": "Beta",
+    "resources": "Resources"
   },
   "hero": {
     "title": "DNS, DHCP, IPAM, RADIUS and PKI. One appliance.",
@@ -1350,5 +1351,26 @@
     "pgp": "Public OpenPGP key",
     "mailSubject": "Ipnoria security report",
     "noBounty": "No bounty for now: our gratitude, public or discreet, as you prefer."
+  },
+  "glossary": {
+    "title": "DDI glossary",
+    "lead": "The vocabulary of DNS, DHCP, IPAM and network access control, explained simply, with what each one changes in practice.",
+    "filter": "Filter terms",
+    "none": "No term matches.",
+    "back": "Whole glossary",
+    "termTitle": "{term}: definition",
+    "inIpnoria": "In Ipnoria",
+    "articles": "Articles about it",
+    "related": "Related terms"
+  },
+  "articles": {
+    "title": "Articles",
+    "lead": "Choose, migrate, secure: practical notes for network and systems teams.",
+    "minutes": "{n} min read",
+    "back": "All articles",
+    "terms": "Glossary terms",
+    "others": "Other articles",
+    "betaTitle": "Beta programme",
+    "betaText": "Test Ipnoria on your network before its release."
   }
 }

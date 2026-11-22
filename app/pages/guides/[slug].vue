@@ -7,6 +7,13 @@ const localePath = useLocalePath()
 const guide = computed(() => guideBySlug(locale.value === 'en' ? 'en' : 'fr', String(route.params.slug)))
 if (!guide.value) throw createError({ statusCode: 404, fatal: true })
 useSeoMeta({ title: () => guide.value?.title ?? '', description: () => guide.value?.summary ?? '' })
+useOgImage('guide', () => guide.value?.slug)
+useBreadcrumbs(() => guide.value ? [{ name: t('nav.guides'), path: localePath('guides') }, { name: guide.value.title, path: route.path }] : [])
+// Guide de migration décrit comme une procédure (schema.org HowTo)
+useJsonLd(() => guide.value ? {
+  '@type': 'HowTo', 'name': guide.value.title, 'description': guide.value.summary, 'inLanguage': locale.value,
+  'step': guide.value.steps.map((s, i) => ({ '@type': 'HowToStep', 'position': i + 1, 'name': s.title, 'text': s.text })),
+} : null)
 
 const copied = ref<number | null>(null)
 async function copy(i: number, code: string) {

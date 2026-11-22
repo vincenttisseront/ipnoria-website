@@ -13,6 +13,8 @@ if (error.value) throw createError({ statusCode: error.value.statusCode ?? 404, 
 
 const entry = computed(() => DOCS.find(d => d.slug === slug.value))
 useSeoMeta({ title: () => doc.value?.title ?? '', description: () => entry.value?.summary[lang.value] ?? '' })
+useOgImage('doc', () => entry.value?.slug)
+useBreadcrumbs(() => [{ name: t('nav.docs'), path: localePath('documentation') }, { name: doc.value?.title ?? slug.value, path: route.path }])
 </script>
 
 <template>

@@ -17,6 +17,7 @@ const st = computed(() => data.value?.state ?? null)
 
 const faq = computed(() => (tm('beta.faq') as Array<{ q: unknown, a: unknown }>).map(x => ({ q: rt(x.q as never), a: rt(x.a as never) })))
 useSeoMeta({ title: () => t('beta.title'), description: () => t('beta.lead'), ogTitle: () => t('beta.title'), ogDescription: () => t('beta.lead') })
+useOgImage('page', () => 'beta')
 useHead({
   script: [{
     type: 'application/ld+json',

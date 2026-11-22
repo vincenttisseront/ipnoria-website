@@ -11,6 +11,8 @@ if (error.value || !r.value) throw createError({ statusCode: 404, fatal: true })
 const pick = (o?: Record<string, string>) => o?.[locale.value] || o?.[locale.value === 'fr' ? 'en' : 'fr'] || ''
 const paragraphs = computed(() => pick(r.value!.story).split(/\n\s*\n/).map(p => p.trim()).filter(Boolean))
 useSeoMeta({ title: () => t('refs.storyTitle', { name: r.value!.name }), description: () => (pick(r.value!.quote) || paragraphs.value[0] || '').slice(0, 160) })
+useOgImage('ref', () => r.value?.slug)
+useBreadcrumbs(() => [{ name: t('refs.title'), path: localePath('references') }, { name: r.value!.name, path: route.path }])
 </script>
 
 <template>

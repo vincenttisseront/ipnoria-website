@@ -10,7 +10,7 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       reporter: ['text', 'lcov'],
-      include: ['shared/**', 'server/utils/migrate.ts', 'server/utils/markdown.ts', 'server/utils/changelog.ts', 'server/utils/booking-core.ts', 'server/utils/account-*.ts', 'server/utils/references.ts', 'server/utils/pow-core.ts'],
+      include: ['shared/**', 'server/utils/migrate.ts', 'server/utils/markdown.ts', 'server/utils/changelog.ts', 'server/utils/booking-core.ts', 'server/utils/account-*.ts', 'server/utils/references.ts', 'server/utils/pow-core.ts', 'server/utils/og-core.ts'],
     },
   },
 })
