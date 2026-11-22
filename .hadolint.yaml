@@ -1,0 +1,7 @@
+# hadolint : échec dès l'avertissement
+failure-threshold: warning
+ignored:
+  # apk upgrade sans version : on applique volontairement les derniers correctifs de sécurité de l'image de base
+  - DL3017
+trustedRegistries:
+  - docker.io

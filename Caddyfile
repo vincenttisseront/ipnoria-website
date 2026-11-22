@@ -1,0 +1,30 @@
+# Proxy HTTPS (certificat Let's Encrypt automatique ; pour SITE_DOMAIN=localhost, certificat local de Caddy).
+{
+	email {$ACME_EMAIL}
+	servers {
+		protocols h1 h2 h3
+	}
+}
+
+{$SITE_DOMAIN} {
+	encode zstd gzip
+
+	reverse_proxy app:3000 {
+		# Écrase tout X-Forwarded-For envoyé par le client : l'application s'y fie pour la limitation de débit
+		header_up X-Forwarded-For {remote_host}
+	}
+
+	header {
+		-Server
+		-Via
+	}
+
+	log {
+		output stdout
+		format json
+	}
+}
+
+www.{$SITE_DOMAIN} {
+	redir https://{$SITE_DOMAIN}{uri} permanent
+}

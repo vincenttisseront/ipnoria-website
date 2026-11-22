@@ -1,0 +1,42 @@
+<script setup lang="ts">
+import { githubLinks, docLinks } from '#shared/links'
+
+const { t } = useI18n()
+const localePath = useLocalePath()
+const year = new Date().getFullYear()
+</script>
+
+<template>
+  <footer class="mt-32 border-t border-line">
+    <div class="wrap grid gap-10 py-14 md:grid-cols-[1.6fr_1fr_1fr]">
+      <div>
+        <p class="flex items-center gap-2.5">
+          <BrandMark />
+          <span class="font-semibold tracking-tight">DDI-Buntu</span>
+        </p>
+        <p class="mt-3 max-w-xs text-sm text-muted">{{ t('footer.tagline') }}</p>
+      </div>
+      <nav :aria-label="t('footer.project')">
+        <h2 class="text-sm font-medium">{{ t('footer.project') }}</h2>
+        <ul class="mt-4 space-y-2.5 text-sm text-muted">
+          <li><a :href="githubLinks.repo" class="hover:text-fg" rel="noopener">GitHub</a></li>
+          <li><a :href="githubLinks.releases" class="hover:text-fg" rel="noopener">{{ t('footer.releases') }}</a></li>
+          <li><a :href="githubLinks.issues" class="hover:text-fg" rel="noopener">{{ t('footer.issues') }}</a></li>
+          <li><a :href="docLinks.licenseDoc" class="hover:text-fg" rel="noopener">AGPL-3.0</a></li>
+        </ul>
+      </nav>
+      <nav :aria-label="t('footer.site')">
+        <h2 class="text-sm font-medium">{{ t('footer.site') }}</h2>
+        <ul class="mt-4 space-y-2.5 text-sm text-muted">
+          <li><NuxtLink :to="localePath('documentation')" class="hover:text-fg">{{ t('nav.docs') }}</NuxtLink></li>
+          <li><NuxtLink :to="localePath('contact')" class="hover:text-fg">{{ t('nav.contact') }}</NuxtLink></li>
+          <li><NuxtLink :to="localePath('mentions-legales')" class="hover:text-fg">{{ t('footer.legal') }}</NuxtLink></li>
+          <li><NuxtLink :to="localePath('confidentialite')" class="hover:text-fg">{{ t('footer.privacy') }}</NuxtLink></li>
+        </ul>
+      </nav>
+    </div>
+    <div class="border-t border-line">
+      <p class="wrap py-6 text-[0.8rem] text-muted">{{ t('footer.copyright', { year }) }}</p>
+    </div>
+  </footer>
+</template>

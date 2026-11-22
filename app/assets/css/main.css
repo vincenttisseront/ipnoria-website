@@ -1,0 +1,145 @@
+@import "tailwindcss";
+
+/* Polices auto-hébergées (aucun appel à un service tiers : RGPD et CSP font-src 'self') */
+@import "@fontsource-variable/geist";
+@import "@fontsource-variable/geist-mono";
+
+/*
+  Jetons de conception — « produit sombre » (voir .claude/skills/ui-ux-moderne/SKILL.md)
+  bg       fond de page, noir bleuté
+  surface  panneaux posés sur le fond
+  raised   éléments au-dessus d'un panneau (champs, onglets actifs)
+  line     traits et bordures (blanc à 8 %), line-strong au survol
+  fg       texte principal ; muted texte secondaire (contraste ≥ 7:1 sur bg)
+  accent   bleu électrique : actions, focus, données mises en avant
+  ok/warn  états (succès, adresse allouée) ; alert erreurs
+*/
+@theme {
+  --color-bg: #07090f;
+  --color-surface: #0d111a;
+  --color-raised: #141a28;
+  --color-line: rgb(255 255 255 / 0.08);
+  --color-line-strong: rgb(255 255 255 / 0.16);
+  --color-fg: #edf0f7;
+  --color-muted: #9aa3b8;
+  --color-accent: #5b8cff;
+  --color-accent-strong: #3f72f5;
+  --color-accent-soft: rgb(91 140 255 / 0.14);
+  --color-ok: #3dd6a3;
+  --color-warn: #f5b544;
+  --color-alert: #ff6b6b;
+
+  --font-sans: "Geist Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Geist Mono Variable", ui-monospace, monospace;
+
+  --text-display: clamp(2.6rem, 1.2rem + 4.4vw, 4.75rem);
+  --text-display--line-height: 1.02;
+  --text-display--letter-spacing: -0.04em;
+  --text-h2: clamp(1.9rem, 1.3rem + 1.9vw, 2.9rem);
+  --text-h2--line-height: 1.08;
+  --text-h2--letter-spacing: -0.032em;
+  --text-h3: 1.125rem;
+  --text-h3--line-height: 1.35;
+  --text-h3--letter-spacing: -0.01em;
+}
+
+@layer base {
+  html {
+    color-scheme: dark;
+    background-color: var(--color-bg);
+    color: var(--color-fg);
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    scroll-padding-top: 5rem;
+    scroll-behavior: smooth;
+  }
+
+  ::selection { background-color: rgb(91 140 255 / 0.35); }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+
+  h1, h2, h3 { font-weight: 600; text-wrap: balance; }
+  p { text-wrap: pretty; }
+  a { text-underline-offset: 0.22em; text-decoration-thickness: 1px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  .wrap { margin-inline: auto; width: 100%; max-width: 72rem; padding-inline: 1.25rem; }
+  @media (min-width: 768px) { .wrap { padding-inline: 2rem; } }
+
+  .measure { max-width: 36rem; }
+
+  /* Halo d'ambiance derrière les zones fortes (ouverture, appel final). Décor seulement, aria-hidden. */
+  .glow {
+    pointer-events: none;
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(60% 50% at 50% 0%, rgb(91 140 255 / 0.22), transparent 70%),
+      radial-gradient(30% 30% at 80% 20%, rgb(61 214 163 / 0.08), transparent 70%);
+  }
+
+  /* Trame de points très discrète, rappel d'un plan d'adressage */
+  .dots {
+    background-image: radial-gradient(rgb(255 255 255 / 0.07) 1px, transparent 1px);
+    background-size: 22px 22px;
+    mask-image: radial-gradient(70% 60% at 50% 0%, #000 30%, transparent 80%);
+  }
+
+  .panel {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-line);
+    border-radius: 1rem;
+  }
+
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+    min-height: 2.75rem; padding: 0.6rem 1.15rem;
+    font-weight: 500; font-size: 0.95rem; line-height: 1.2; text-decoration: none;
+    border-radius: 0.625rem; border: 1px solid transparent;
+    transition: background-color 150ms, border-color 150ms, color 150ms, box-shadow 150ms;
+  }
+  .btn-primary {
+    background-color: var(--color-fg); color: var(--color-bg);
+    box-shadow: 0 0 0 1px rgb(255 255 255 / 0.1), 0 8px 24px -8px rgb(91 140 255 / 0.55);
+  }
+  .btn-primary:hover { background-color: #ffffff; }
+  .btn-secondary { background-color: rgb(255 255 255 / 0.04); color: var(--color-fg); border-color: var(--color-line-strong); }
+  .btn-secondary:hover { background-color: rgb(255 255 255 / 0.08); }
+  .btn-accent { background-color: var(--color-accent-strong); color: #fff; }
+  .btn-accent:hover { background-color: var(--color-accent); }
+  .btn[disabled] { opacity: 0.6; cursor: progress; }
+
+  .link { color: var(--color-fg); text-decoration-line: underline; text-decoration-color: var(--color-line-strong); }
+  .link:hover { text-decoration-color: var(--color-accent); }
+
+  .field-label { display: block; font-weight: 500; font-size: 0.925rem; margin-bottom: 0.4rem; }
+  .field {
+    width: 100%; padding: 0.65rem 0.8rem;
+    background-color: var(--color-bg); color: var(--color-fg);
+    border: 1px solid var(--color-line-strong); border-radius: 0.625rem;
+    transition: border-color 150ms, box-shadow 150ms;
+  }
+  .field::placeholder { color: rgb(154 163 184 / 0.6); }
+  .field:hover { border-color: rgb(255 255 255 / 0.24); }
+  .field:focus-visible { outline: none; border-color: var(--color-accent); box-shadow: 0 0 0 3px rgb(91 140 255 / 0.3); }
+  .field[aria-invalid="true"] { border-color: var(--color-alert); }
+  .field-error { color: var(--color-alert); font-size: 0.875rem; margin-top: 0.35rem; }
+}

@@ -1,0 +1,8 @@
+# Toute modification passe par le propriétaire du dépôt ; les fichiers sensibles sont listés explicitement
+*                         @vincenttisseront
+/.github/                 @vincenttisseront
+/Dockerfile               @vincenttisseront
+/docker-compose.yml       @vincenttisseront
+/Caddyfile                @vincenttisseront
+/nuxt.config.ts           @vincenttisseront
+/server/                  @vincenttisseront

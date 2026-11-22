@@ -1,0 +1,16 @@
+import { fileURLToPath } from 'node:url'
+import { defineConfig } from 'vitest/config'
+
+// Tests unitaires du code sans Nuxt (schéma partagé, migrations). Les pages sont couvertes par tests/smoke.mjs.
+export default defineConfig({
+  resolve: { alias: { '#shared': fileURLToPath(new URL('./shared', import.meta.url)) } },
+  test: {
+    environment: 'node',
+    include: ['tests/**/*.test.ts'],
+    coverage: {
+      provider: 'v8',
+      reporter: ['text', 'lcov'],
+      include: ['shared/**', 'server/utils/migrate.ts'],
+    },
+  },
+})

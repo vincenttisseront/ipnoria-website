@@ -1,0 +1,94 @@
+# Sécurité : secrets, dépendances, configuration, Dockerfile, SAST, image, workflows. Chaque push, chaque PR, et chaque lundi
+# (une CVE peut apparaître sur du code qui n'a pas changé). Les outils sont ceux de tools/security-scan.sh, épinglés par empreinte.
+name: security
+on:
+  push:
+    branches: [main]
+  pull_request:
+  schedule:
+    - cron: "17 5 * * 1"
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: security-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  secrets:
+    name: gitleaks (historique complet)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0, persist-credentials: false }
+      - run: tools/security-scan.sh secrets
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with: { name: gitleaks, path: reports/, retention-days: 30 }
+
+  dependencies:
+    name: npm audit
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with: { persist-credentials: false }
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - run: npm ci --ignore-scripts
+      - run: tools/security-scan.sh deps
+      - name: Signatures et provenance des paquets npm
+        run: npm audit signatures
+
+  trivy-fs:
+    name: Trivy (dépôt)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with: { persist-credentials: false }
+      - run: tools/security-scan.sh fs
+
+  hadolint:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with: { persist-credentials: false }
+      - run: tools/security-scan.sh dockerfile
+
+  semgrep:
+    name: Semgrep (SAST)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with: { persist-credentials: false }
+      - run: tools/security-scan.sh sast
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with: { name: semgrep, path: reports/, retention-days: 30 }
+
+  image:
+    name: Trivy (image) + SBOM
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with: { persist-credentials: false }
+      - run: docker build -t ddibuntu-site:scan .
+      - run: tools/security-scan.sh image ddibuntu-site:scan
+      - if: always()
+        uses: actions/upload-artifact@v4
+        with: { name: sbom, path: reports/sbom.cdx.json, retention-days: 90 }
+
+  workflows:
+    name: zizmor (sécurité des workflows GitHub)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with: { persist-credentials: false }
+      - run: pipx run zizmor==1.* --min-severity medium .github/workflows
+        env: { GH_TOKEN: '${{ github.token }}' }

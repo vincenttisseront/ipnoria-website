@@ -1,0 +1,71 @@
+# Intégration continue : lint, typage, tests (avec un vrai PostgreSQL), construction, test de fumée, SonarQube.
+name: ci
+on:
+  push:
+    branches: [main]
+  pull_request:
+permissions:
+  contents: read
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_PASSWORD: ci-only
+          POSTGRES_DB: site
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U postgres" --health-interval 5s --health-timeout 5s --health-retries 10
+    env:
+      TEST_DATABASE_URL: postgres://postgres:ci-only@localhost:5432/site   # gitleaks:allow (base jetable de la CI)
+    steps:
+      - uses: actions/checkout@v4
+        with: { persist-credentials: false }
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - run: npm ci --ignore-scripts
+      - run: npx nuxt prepare
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm run test:coverage
+      - run: npm run build
+      - name: Test de fumée (serveur construit + base réelle)
+        env:
+          NUXT_DATABASE_URL: ${{ env.TEST_DATABASE_URL }}
+          NUXT_IP_HASH_SALT: ci-only
+          NUXT_PUBLIC_SITE_URL: http://localhost:3000
+          PORT: 3000
+        run: |
+          node .output/server/index.mjs > server.log 2>&1 &
+          npm run test:smoke || { cat server.log; exit 1; }
+      - uses: actions/upload-artifact@v4
+        with: { name: coverage, path: coverage/lcov.info, retention-days: 7 }
+
+  # SonarQube : sans le secret SONAR_TOKEN l'étape est sautée (premier démarrage, forks)
+  sonar:
+    needs: quality
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    env:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      # Serveur auto-hébergé si le secret existe, sinon SonarQube Cloud
+      SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL || 'https://sonarcloud.io' }}
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0, persist-credentials: false }
+      - uses: actions/download-artifact@v4
+        with: { name: coverage, path: coverage }
+      - name: Analyse SonarQube
+        if: ${{ env.SONAR_TOKEN != '' }}
+        uses: SonarSource/sonarqube-scan-action@v5
+      - name: Porte qualité (bloquante)
+        if: ${{ env.SONAR_TOKEN != '' }}
+        uses: SonarSource/sonarqube-quality-gate-action@v1
+        timeout-minutes: 5

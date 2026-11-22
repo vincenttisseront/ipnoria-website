@@ -1,0 +1,22 @@
+# Crochets git locaux (installés par `npx lefthook install`, voir README).
+# Le pre-commit bloque un secret AVANT qu'il n'entre dans l'historique : la CI ne fait que le constater après coup.
+pre-commit:
+  parallel: true
+  commands:
+    gitleaks:
+      run: |
+        if command -v gitleaks >/dev/null 2>&1; then
+          gitleaks git --staged --redact --no-banner --config .gitleaks.toml
+        else
+          docker run --rm -v "$PWD:/src" -w /src zricethezav/gitleaks:v8.30.1 git /src --staged --redact --no-banner --config /src/.gitleaks.toml
+        fi
+    eslint:
+      glob: "*.{ts,vue,mjs,js}"
+      run: npx eslint --max-warnings=0 {staged_files}
+
+pre-push:
+  commands:
+    typecheck:
+      run: npm run typecheck
+    test:
+      run: npm test

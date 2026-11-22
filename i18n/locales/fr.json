@@ -1,0 +1,389 @@
+{
+  "meta": {
+    "title": "DDI-Buntu — DNS, DHCP, IPAM, RADIUS et PKI dans une seule appliance",
+    "description": "Appliance DDI libre sur Ubuntu 24.04 : IPAM, DNS (BIND 9), DHCP (Kea), accès réseau 802.1X (FreeRADIUS) et PKI (EJBCA), installée depuis une ISO et pilotée depuis une console web."
+  },
+  "nav": {
+    "home": "Accueil",
+    "features": "Fonctionnalités",
+    "docs": "Documentation",
+    "contact": "Contact",
+    "github": "GitHub",
+    "skip": "Aller au contenu",
+    "menu": "Menu",
+    "language": "Langue"
+  },
+  "hero": {
+    "title": "DNS, DHCP, IPAM, RADIUS et PKI. Une seule appliance.",
+    "lead": "DDI-Buntu s'installe depuis une ISO sur Ubuntu 24.04 et remplace le tableur d'adresses, les serveurs DNS et DHCP Windows, le NPS et l'AD CS. Une console web pilote le tout, Wi‑Fi d'entreprise compris.",
+    "ctaDownload": "Télécharger",
+    "ctaGithub": "Code source",
+    "badge": "Version {version} disponible",
+    "badgeFallback": "Logiciel libre sous AGPL-3.0"
+  },
+  "demo": {
+    "title": "Réseau 10.20.4.0/24",
+    "hint": "Choisissez une adresse libre : l'IPAM l'alloue, et le DNS et le DHCP suivent dans la même transaction.",
+    "used": "{n} adresses utilisées sur 254",
+    "legendUsed": "Allouée",
+    "legendFree": "Libre",
+    "legendGateway": "Passerelle",
+    "legendNew": "Allouée à l'instant",
+    "picked": "Adresse {ip} allouée",
+    "recIpam": "IPAM",
+    "recIpamValue": "{ip} attribuée à {host}",
+    "recDns": "DNS",
+    "recDnsValue": "{host}.exemple.lan A {ip} et PTR",
+    "recDhcp": "DHCP",
+    "recDhcpValue": "Réservation pour {mac}",
+    "reset": "Remettre le réseau à zéro",
+    "cellLabel": "{ip}, {state}",
+    "stateFree": "libre",
+    "stateUsed": "allouée à {host}",
+    "stateGateway": "passerelle",
+    "stateNetwork": "adresse de réseau",
+    "stateBroadcast": "adresse de diffusion",
+    "gridLabel": "Grille des adresses du réseau"
+  },
+  "why": {
+    "title": "Tout le réseau d'entreprise, au même endroit",
+    "items": [
+      {
+        "title": "Une ISO, et c'est installé",
+        "text": "Une seule ISO (BIOS et UEFI) installe tout, sans rien télécharger au premier démarrage. La même ISO met à niveau une installation existante en gardant vos données."
+      },
+      {
+        "title": "Une seule source de vérité",
+        "text": "Allouer une adresse crée l'enregistrement DNS (A/AAAA et PTR) et la réservation DHCP dans la même transaction. Les gabarits de réseau appliquent étendue, options et règle de nommage dès la création."
+      },
+      {
+        "title": "Se tromper sans risque",
+        "text": "Un point de restauration précède chaque configuration, déploiement ou import. Un changement réseau non confirmé s'annule seul, et la base se restaure à la minute près."
+      },
+      {
+        "title": "Wi-Fi et VPN sans NPS ni AD CS",
+        "text": "RADIUS piloté depuis la console : règles d'accès par groupe Active Directory, EAP-TLS, PEAP, EAP-TTLS et second facteur, avec une simulation avant déploiement."
+      },
+      {
+        "title": "Une PKI intégrée",
+        "text": "Autorités, révocation, SCEP pour les équipements réseau, publication dans l'Active Directory et certificats de postes émis automatiquement. La clé reste sur le poste."
+      },
+      {
+        "title": "Haute disponibilité de bout en bout",
+        "text": "Deux nœuds de données et un arbitre. La base, le DHCP, le DNS, le RADIUS et la PKI suivent le cluster, et la bascule se teste depuis la console."
+      },
+      {
+        "title": "Partir de l'existant",
+        "text": "Import des exports DHCP et DNS de Windows Server, lecture directe de l'Active Directory, import NetBox, import d'un NPS existant et découverte réseau."
+      },
+      {
+        "title": "Sûr par construction",
+        "text": "Chaîne d'approvisionnement vérifiée, console sans privilège, pare-feu nftables, secrets chiffrés, journal d'audit complet, export SIEM, SSO OpenID Connect et jetons d'API."
+      }
+    ],
+    "lead": "Chaque service est un composant libre éprouvé. DDI-Buntu les relie, pour qu'un changement à un endroit soit juste partout."
+  },
+  "gallery": {
+    "title": "La console, telle qu'elle est",
+    "lead": "Captures de la console réelle, avec des données de démonstration fictives.",
+    "tabs": {
+      "ipam": "IPAM",
+      "dns": "DNS",
+      "dhcp": "DHCP",
+      "radius": "Accès réseau",
+      "tree": "Arbre des réseaux"
+    },
+    "captions": {
+      "ipam": "Toutes vos adresses, avec leurs noms, leurs MAC, leurs alias DNS et leur responsable.",
+      "dns": "Les enregistrements d'une zone, avec type, durée de vie et protection.",
+      "dhcp": "Plages d'adresses et réservations d'un réseau.",
+      "radius": "Des règles d'accès lisibles, jouées de haut en bas, par type de compte, groupe et équipement.",
+      "tree": "L'arbre des réseaux avec occupation et VLAN, en thème sombre."
+    },
+    "label": "Visite de la console"
+  },
+  "modules": {
+    "title": "Ce que contient la console",
+    "lead": "Console HTTPS en français et en anglais, thèmes clair et sombre, recherche globale au clavier.",
+    "items": [
+      {
+        "name": "IPAM",
+        "text": "Espaces IP qui se chevauchent, conteneurs, réseaux et pools, VLAN, gabarits, règles de nommage, adresses fantômes, découverte réseau, NetBox."
+      },
+      {
+        "name": "DNS",
+        "text": "BIND 9 : zones primaires, secondaires et de redirection, vues, zones inverses, historique avec retour arrière, contrôle de cohérence, limitation de débit."
+      },
+      {
+        "name": "DHCP",
+        "text": "Kea : étendues, plages, réservations, classes de clients, baux et haute disponibilité."
+      },
+      {
+        "name": "Filtrage DNS",
+        "text": "Journal des requêtes, listes blanches et noires en un clic, listes hosts et adblock, détection de tunnels DNS."
+      },
+      {
+        "name": "Accès réseau",
+        "text": "FreeRADIUS : clients Wi-Fi, VPN et commutateurs, Active Directory, EAP-TLS, PEAP, EAP-TTLS, second facteur, journal des authentifications."
+      },
+      {
+        "name": "PKI",
+        "text": "EJBCA : autorités et CRL, certificats, SCEP, publication dans l'AD, certificats de postes, sauvegarde et mises à jour."
+      },
+      {
+        "name": "Import et AD",
+        "text": "Exports Windows DHCP et DNS, transfert de zone, LDAP, NetBox, NPS."
+      },
+      {
+        "name": "Cluster",
+        "text": "État, réglages à chaud, adresse virtuelle, réseau dédié, test de bascule guidé."
+      },
+      {
+        "name": "Système",
+        "text": "36 règles d'alerte, sauvegardes planifiées, restauration à un instant donné, mises à jour en ligne avec retour arrière automatique, pare-feu."
+      }
+    ]
+  },
+  "cluster": {
+    "title": "Deux nœuds de données, un arbitre",
+    "text": "PostgreSQL se réplique avec Patroni et etcd, Kea répartit la charge DHCP, BIND passe en primaire et secondaire, et une adresse virtuelle suit le leader. Sans arbitre, un cluster à deux nœuds ne tolère aucune panne : l'arbitre ne porte aucune donnée, il ne sert qu'au quorum.",
+    "node1": "Nœud 1",
+    "node2": "Nœud 2",
+    "witness": "Arbitre",
+    "roleLeader": "Données, leader",
+    "roleReplica": "Données, réplique",
+    "roleWitness": "Quorum seul",
+    "vip": "Adresse virtuelle",
+    "net": "Réseau dédié de réplication",
+    "doc": "Lire l'architecture du cluster"
+  },
+  "blocks": {
+    "title": "Construit sur des composants libres éprouvés",
+    "lead": "DDI-Buntu ne réinvente pas les démons réseau : il les assemble, les configure et les surveille.",
+    "items": [
+      {
+        "name": "BIND 9",
+        "role": "DNS"
+      },
+      {
+        "name": "Kea",
+        "role": "DHCP"
+      },
+      {
+        "name": "FreeRADIUS",
+        "role": "Accès réseau 802.1X"
+      },
+      {
+        "name": "EJBCA",
+        "role": "PKI"
+      },
+      {
+        "name": "PostgreSQL",
+        "role": "Base de données"
+      },
+      {
+        "name": "Patroni",
+        "role": "Réplication et bascule"
+      },
+      {
+        "name": "etcd",
+        "role": "Quorum"
+      },
+      {
+        "name": "Keepalived",
+        "role": "Adresse virtuelle"
+      },
+      {
+        "name": "nftables",
+        "role": "Pare-feu"
+      },
+      {
+        "name": "Ubuntu 24.04 LTS",
+        "role": "Système"
+      }
+    ]
+  },
+  "quickstart": {
+    "title": "Construire l'ISO",
+    "lead": "Node 22 ou Docker suffisent. Sous macOS et Windows, la construction passe par Docker.",
+    "steps": [
+      "Récupérer le dépôt",
+      "Construire la console",
+      "Produire l'ISO"
+    ],
+    "alt": "Sans cloner le dépôt : téléchargez le fichier unique build-ddibuntu.sh (ou build-ddibuntu.ps1 sous Windows) depuis une release.",
+    "doc": "Guide d'installation complet",
+    "copy": "Copier",
+    "copied": "Copié"
+  },
+  "license": {
+    "title": "Libre, et le reste",
+    "text": "DDI-Buntu est publié sous licence GNU AGPL v3 ou ultérieure. Le code, la feuille de route et le journal des modifications sont publics. Une version modifiée proposée à des utilisateurs doit leur donner accès à ses sources.",
+    "read": "Lire la licence"
+  },
+  "cta": {
+    "title": "Un projet de migration DDI ?",
+    "text": "Démonstration, question technique ou retour d'essai : écrivez-nous, ou commencez par la documentation.",
+    "button": "Nous contacter",
+    "docs": "Lire la documentation"
+  },
+  "docs": {
+    "title": "Documentation",
+    "lead": "La documentation vit avec le code, dans le dépôt GitHub. Elle décrit ce que le code fait aujourd'hui, limites comprises.",
+    "langNote": "",
+    "open": "Ouvrir sur GitHub",
+    "groups": [
+      {
+        "title": "Démarrer",
+        "items": [
+          {
+            "key": "readme",
+            "title": "Présentation",
+            "text": "Ce que fait DDI-Buntu, la console en images, démarrage rapide."
+          },
+          {
+            "key": "install",
+            "title": "Générer l'ISO et l'installer",
+            "text": "Construction de l'ISO, proxys d'entreprise, essai sous VMware."
+          },
+          {
+            "key": "changelog",
+            "title": "Journal des modifications",
+            "text": "Le détail de chaque version, ce qui a été vérifié et ce qui ne l'a pas été."
+          }
+        ]
+      },
+      {
+        "title": "Comprendre",
+        "items": [
+          {
+            "key": "architecture",
+            "title": "Architecture",
+            "text": "Chaîne de livraison, séparation des privilèges, services de l'appliance."
+          },
+          {
+            "key": "cluster",
+            "title": "Architecture du cluster",
+            "text": "Rôles des nœuds, quorum, tolérance de panne, mise à jour, limites."
+          },
+          {
+            "key": "roadmap",
+            "title": "Feuille de route",
+            "text": "Ce qui est fait, partiel ou à faire, capacité par capacité."
+          }
+        ]
+      },
+      {
+        "title": "Contribuer",
+        "items": [
+          {
+            "key": "testing",
+            "title": "Tests",
+            "text": "Batteries shell, tests unitaires et de bout en bout de la console."
+          },
+          {
+            "key": "releasing",
+            "title": "Publier une version",
+            "text": "Publication automatique, signature des archives, mises à jour en ligne."
+          },
+          {
+            "key": "quality",
+            "title": "Qualité du code",
+            "text": "Analyse SonarQube et plan de remédiation."
+          },
+          {
+            "key": "opensource",
+            "title": "Composants libres",
+            "text": "Liste des composants embarqués et de leurs licences."
+          },
+          {
+            "key": "licenseDoc",
+            "title": "Licence",
+            "text": "Texte complet de la GNU AGPL v3."
+          }
+        ]
+      }
+    ],
+    "help": "Une question que la documentation ne couvre pas ?",
+    "helpIssue": "Ouvrir un ticket",
+    "helpContact": "Nous écrire"
+  },
+  "contact": {
+    "title": "Contact",
+    "lead": "Démonstration, question technique, retour d'essai ou partenariat. Nous répondons sous deux jours ouvrés.",
+    "bug": "Pour signaler un bogue, un ticket GitHub est plus rapide : il reste visible et la correction y est suivie.",
+    "bugLink": "Ouvrir un ticket sur GitHub",
+    "name": "Nom",
+    "email": "Adresse e-mail",
+    "company": "Organisation",
+    "optional": "facultatif",
+    "topic": "Sujet",
+    "topics": {
+      "demo": "Demande de démonstration",
+      "question": "Question technique",
+      "feedback": "Retour d'essai",
+      "partnership": "Partenariat",
+      "other": "Autre"
+    },
+    "message": "Message",
+    "messageHint": "Décrivez votre environnement si c'est utile : taille du parc, services à remplacer, contraintes.",
+    "consent": "J'accepte que ces informations servent uniquement à répondre à ma demande.",
+    "consentLink": "Comment nous traitons vos données",
+    "submit": "Envoyer le message",
+    "sending": "Envoi en cours",
+    "sent": "Message envoyé. Nous vous répondons à l'adresse indiquée.",
+    "sendAnother": "Écrire un autre message",
+    "errors": {
+      "name": "Indiquez votre nom (2 à 100 caractères).",
+      "email": "Indiquez une adresse e-mail valide.",
+      "company": "Le nom de l'organisation dépasse 120 caractères.",
+      "topic": "Choisissez un sujet.",
+      "message": "Le message doit faire entre 10 et 5000 caractères.",
+      "consent": "Cochez la case pour que nous puissions vous répondre.",
+      "rate": "Trop de messages envoyés depuis votre réseau. Réessayez dans dix minutes.",
+      "server": "Le message n'a pas pu être enregistré. Réessayez, ou écrivez-nous via GitHub.",
+      "summary": "Le formulaire contient des erreurs. Corrigez les champs signalés."
+    }
+  },
+  "legal": {
+    "title": "Mentions légales",
+    "publisherTitle": "Éditeur du site",
+    "publisher": "Le site est édité par {name}.",
+    "address": "Adresse : {address}",
+    "email": "Contact : {email}",
+    "director": "Directeur de la publication : {name}.",
+    "hostTitle": "Hébergement",
+    "host": "Hébergeur : {host}",
+    "ipTitle": "Propriété intellectuelle",
+    "ip": "Le logiciel DDI-Buntu est distribué sous licence GNU AGPL v3 ou ultérieure. Les noms de logiciels tiers cités appartiennent à leurs titulaires respectifs.",
+    "todo": "À compléter avant la mise en ligne."
+  },
+  "privacy": {
+    "title": "Confidentialité",
+    "intro": "Ce site ne dépose aucun cookie de mesure d'audience ni de publicité, et ne charge aucune ressource depuis un tiers : polices et images sont servies par le site lui-même.",
+    "cookieTitle": "Cookie",
+    "cookie": "Un seul cookie, « lang », retient la langue choisie. Il est strictement nécessaire au fonctionnement du site et ne demande donc pas de consentement.",
+    "formTitle": "Formulaire de contact",
+    "form": "Les données saisies (nom, e-mail, organisation, sujet, message) servent uniquement à répondre à votre demande. Base légale : votre consentement. Elles sont conservées {days} jours puis supprimées automatiquement.",
+    "ip": "Pour limiter les abus, une empreinte non réversible de votre adresse IP est enregistrée avec le message. L'adresse elle-même n'est jamais stockée.",
+    "rightsTitle": "Vos droits",
+    "rights": "Vous pouvez demander l'accès, la rectification ou l'effacement de vos données en écrivant à l'adresse indiquée dans les mentions légales. Vous pouvez aussi saisir la CNIL."
+  },
+  "footer": {
+    "tagline": "Appliance DDI libre pour Ubuntu 24.04.",
+    "project": "Projet",
+    "site": "Site",
+    "releases": "Versions publiées",
+    "issues": "Tickets",
+    "legal": "Mentions légales",
+    "privacy": "Confidentialité",
+    "copyright": "© {year} Vincent Tisseront. DDI-Buntu est distribué sous licence AGPL-3.0-or-later."
+  },
+  "error": {
+    "notFoundTitle": "Cette page n'existe pas",
+    "notFoundText": "L'adresse est peut-être mal saisie, ou la page a été déplacée.",
+    "genericTitle": "Une erreur est survenue",
+    "genericText": "Le serveur n'a pas pu afficher la page.",
+    "back": "Revenir à l'accueil"
+  }
+}

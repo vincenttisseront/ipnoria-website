@@ -1,0 +1,35 @@
+# gitleaks : règles par défaut + règles propres au site. Lancé en pre-commit (lefthook) et en CI sur tout l'historique.
+title = "ddibuntu-site"
+
+[extend]
+useDefault = true
+
+# Chaîne de connexion PostgreSQL avec mot de passe en clair
+[[rules]]
+id = "postgres-url-password"
+description = "URL PostgreSQL contenant un mot de passe"
+regex = '''postgres(?:ql)?://[^:\s/]+:([^@\s$]{6,})@'''
+secretGroup = 1
+keywords = ["postgres://", "postgresql://"]
+
+# Valeur réelle affectée à un secret du fichier .env
+[[rules]]
+id = "dotenv-secret"
+description = "Secret affecté dans un fichier d'environnement"
+regex = '''(?m)^(?:POSTGRES_PASSWORD|IP_HASH_SALT|SMTP_PASS|NUXT_SMTP_PASS|NUXT_IP_HASH_SALT)=([^\s#]{8,})$'''
+secretGroup = 1
+keywords = ["POSTGRES_PASSWORD", "IP_HASH_SALT", "SMTP_PASS"]
+
+[allowlist]
+description = "Valeurs d'exemple et fichiers générés"
+paths = [
+  '''(^|/)package-lock\.json$''',
+  '''(^|/)node_modules/''',
+  '''(^|/)\.output/''',
+  '''(^|/)reports/''',
+]
+regexes = [
+  '''change-me''',
+  '''\$\{POSTGRES_PASSWORD''',
+  '''postgres://postgres:test@127\.0\.0\.1''',
+]
