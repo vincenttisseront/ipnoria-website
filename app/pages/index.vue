@@ -50,7 +50,8 @@ const steps = computed(() => (tm('quickstart.steps') as Msg[]).map(s => rt(s)))
 const terminal = computed(() => [
   `git clone ${githubLinks.clone} && cd ipnoria`,
   'tools/build-console.sh',
-  './build-ipnoria.sh',
+  // Nom actuel du script de construction ; il deviendra build-ipnoria.sh avec l'étape 2 du renommage (0.24.0)
+  './build-ddibuntu.sh',
 ].map((command, i) => ({ command, comment: steps.value[i] ?? '' })))
 </script>
 

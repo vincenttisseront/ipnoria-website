@@ -226,7 +226,7 @@
       "Construire la console",
       "Produire l'ISO"
     ],
-    "alt": "Sans cloner le dépôt : téléchargez le fichier unique build-ipnoria.sh (ou build-ipnoria.ps1 sous Windows) depuis une release.",
+    "alt": "Sans cloner le dépôt : téléchargez le fichier unique build-ddibuntu.sh depuis une release.",
     "doc": "Guide d'installation complet",
     "copy": "Copier",
     "copied": "Copié"

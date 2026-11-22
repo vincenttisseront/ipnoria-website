@@ -226,7 +226,7 @@
       "Build the console",
       "Produce the ISO"
     ],
-    "alt": "Without cloning: download the single build-ipnoria.sh file (or build-ipnoria.ps1 on Windows) from a release.",
+    "alt": "Without cloning: download the single build-ddibuntu.sh file from a release.",
     "doc": "Full installation guide",
     "copy": "Copy",
     "copied": "Copied"
