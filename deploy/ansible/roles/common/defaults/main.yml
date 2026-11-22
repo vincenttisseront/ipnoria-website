@@ -1,0 +1,4 @@
+---
+common_timezone: Europe/Paris
+common_ssh_port: 22
+common_extra_allowed_ssh_sources: []

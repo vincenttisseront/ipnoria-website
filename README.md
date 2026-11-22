@@ -1,19 +1,35 @@
-# ddibuntu-site
+# ipnoria-website
 
-Site vitrine de [DDI-Buntu](https://github.com/vincenttisseront/ddibuntu), en français et en anglais : présentation du produit, visite de la console, documentation (liens vers le dépôt), formulaire de contact.
+Site vitrine d'[Ipnoria](https://github.com/vincenttisseront/ipnoria), en français et en anglais.
 
-**Pile** : Nuxt 4 (SSR), Tailwind CSS 4, @nuxtjs/i18n, nuxt-security, PostgreSQL 17, Caddy, Docker Compose.
+**Pile** : Nuxt 4 (SSR), Tailwind CSS 4, @nuxtjs/i18n, nuxt-security, PostgreSQL 17, Caddy, Docker Compose, Ansible.
+
+## Ce que contient le site
+
+| Partie | Détail |
+|---|---|
+| Accueil | Visite de la console, démonstration IPAM interactive, schéma du cluster, construction de l'ISO |
+| Documentation | Documents du dépôt produit rendus dans le site (Markdown sûr, sans HTML brut), table des matières, recherche plein texte |
+| Nouveautés | Journal des modifications par version, flux RSS (`/rss.xml`), alertes par e-mail en double opt-in |
+| Guides | Migrer un DHCP Windows, remplacer un NPS : commandes exactes, coexistence, bascule, retour arrière |
+| Comparatif | Ipnoria face aux rôles DNS, DHCP, NPS et AD CS de Windows Server, honnête dans les deux sens |
+| Démo | S'active dès que `NUXT_PUBLIC_DEMO_URL` est défini |
+| Contact | Formulaire protégé (origine, débit, piège à robots), stockage PostgreSQL, notification SMTP, purge RGPD |
+| Administration | `/admin` : connexion OpenID Connect (PKCE), lecture, réponse par e-mail, marquage, effacement |
+| Référencement | `sitemap.xml` avec hreflang, `robots.txt`, images d'aperçu par section, données structurées schema.org |
+| Statistiques | Umami auto-hébergé, sans cookie, « Ne pas me pister » respecté (facultatif) |
 
 ## Démarrer en développement
 
 ```bash
 npm ci
-npx lefthook install          # crochets : gitleaks + ESLint avant commit, typage + tests avant push
+npx lefthook install          # gitleaks + ESLint avant commit, typage + tests avant push
 docker run -d --name site-db -e POSTGRES_PASSWORD=dev -e POSTGRES_DB=site -p 5432:5432 postgres:17-alpine
 NUXT_DATABASE_URL=postgres://postgres:dev@localhost:5432/site NUXT_IP_HASH_SALT=dev npm run dev
 ```
 
-Sans `NUXT_DATABASE_URL`, le site s'affiche mais le formulaire répond 503.
+Sans base, le site s'affiche et le formulaire répond 503. Pour lire la documentation sans réseau : `NUXT_DOCS_LOCAL_DIR=/chemin/vers/ipnoria`.
+Toutes les variables sont décrites dans `nuxt.config.ts` (bloc `runtimeConfig`) et `.env.example`.
 
 ## Commandes
 
@@ -22,27 +38,22 @@ Sans `NUXT_DATABASE_URL`, le site s'affiche mais le formulaire répond 503.
 | Lint / typage | `npm run lint` · `npm run typecheck` |
 | Tests unitaires (+ base réelle si `TEST_DATABASE_URL`) | `npm test` · `npm run test:coverage` |
 | Test de fumée du serveur construit | `npm run build && node .output/server/index.mjs &` puis `npm run test:smoke` |
-| Tous les contrôles de sécurité | `tools/security-scan.sh` (Docker requis) |
-| Scan de l'image + SBOM | `docker build -t site . && tools/security-scan.sh image site` |
-| Créer le dépôt GitHub privé et ses protections | `tools/github-setup.sh` |
+| Contrôles de sécurité | `tools/security-scan.sh` (Docker requis) |
+| Images d'aperçu (après un changement de titre) | `python3 tools/og_images.py` |
+| Déploiement | voir [docs/DEPLOIEMENT.md](docs/DEPLOIEMENT.md) (Ansible) |
+| Essai du playbook sur conteneur | `deploy/ansible/tests/run-container-test.sh` |
 
 ## Organisation
 
 ```
-app/            pages, composants, styles (jetons dans assets/css/main.css)
-i18n/locales/   textes FR et EN (aucun texte en dur dans les composants)
-server/         API Nitro : contact, version publiée, santé ; migrations SQL ; purge RGPD
-shared/         schéma du formulaire (client + serveur), liens GitHub
-tests/          vitest (schéma, migrations sur base réelle) et test de fumée
-tools/          scans de sécurité, création du dépôt GitHub
-.claude/skills/ règles de design et d'UX à suivre pour toute retouche visuelle
+app/              pages, composants, styles (jetons dans assets/css/main.css)
+i18n/locales/     textes FR et EN
+server/           API Nitro (contact, docs, versions, newsletter, admin), routes (auth OIDC, RSS, sitemap), migrations SQL
+shared/           schémas partagés client/serveur, liste des documents, guides, comparatif
+deploy/ansible/   playbook : socle, Docker, site, sauvegardes
+tests/            vitest (schémas, rendu Markdown, migrations sur base réelle) et test de fumée
+tools/            scans de sécurité, images d'aperçu, création du dépôt GitHub
+.claude/skills/   règles de design et d'UX à suivre pour toute retouche visuelle
 ```
 
-## Déploiement et sécurité
-
-Voir [docs/DEPLOIEMENT.md](docs/DEPLOIEMENT.md) et [SECURITY.md](SECURITY.md).
-
-## Avant la mise en ligne
-
-- Renseigner les mentions légales (`LEGAL_ADDRESS`, `LEGAL_EMAIL`, `LEGAL_HOST` dans `.env`) : obligatoires en France.
-- Créer les secrets GitHub (`SONAR_TOKEN`, secrets `DEPLOY_*`), voir la fin de `tools/github-setup.sh`.
+Sécurité : [SECURITY.md](SECURITY.md).

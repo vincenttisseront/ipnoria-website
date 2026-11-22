@@ -10,3 +10,8 @@ dist/
 !.env.example
 .DS_Store
 reports/
+
+# Ansible : inventaire et secrets locaux
+deploy/ansible/inventories/*/hosts.yml
+deploy/ansible/inventories/*/group_vars/all/vault.yml
+.ansible/

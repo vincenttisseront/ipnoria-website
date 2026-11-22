@@ -7,6 +7,29 @@ const { data: release } = await useRelease()
 
 useSeoMeta({ title: '', ogTitle: () => t('meta.title'), ogDescription: () => t('meta.description') })
 
+// Données structurées (schema.org) : le logiciel, sa licence, son dépôt
+const site = useRuntimeConfig().public.siteUrl.replace(/\/$/, '')
+useHead({
+  script: [{
+    type: 'application/ld+json',
+    innerHTML: () => JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'SoftwareApplication',
+      'name': 'Ipnoria',
+      'applicationCategory': 'NetworkApplication',
+      'operatingSystem': 'Linux',
+      'description': t('meta.description'),
+      'url': site,
+      'downloadUrl': githubLinks.latestRelease,
+      'codeRepository': githubLinks.repo,
+      'license': 'https://www.gnu.org/licenses/agpl-3.0.html',
+      'softwareVersion': release.value?.version ?? undefined,
+      'offers': { '@type': 'Offer', 'price': '0', 'priceCurrency': 'EUR' },
+      'author': { '@type': 'Person', 'name': 'Vincent Tisseront' },
+    }),
+  }],
+})
+
 type Msg = Parameters<typeof rt>[0]
 type Icon = 'disc' | 'network' | 'undo' | 'wifi' | 'key' | 'server' | 'import' | 'shield' | 'globe' | 'filter' | 'activity'
 
@@ -22,9 +45,9 @@ const moduleIcons: Icon[] = ['network', 'globe', 'server', 'filter', 'wifi', 'ke
 const blocks = computed(() => (tm('blocks.items') as Array<{ name: Msg, role: Msg }>).map(i => ({ name: rt(i.name), role: rt(i.role) })))
 const steps = computed(() => (tm('quickstart.steps') as Msg[]).map(s => rt(s)))
 const terminal = computed(() => [
-  `git clone ${githubLinks.clone} && cd ddibuntu`,
+  `git clone ${githubLinks.clone} && cd ipnoria`,
   'tools/build-console.sh',
-  './build-ddibuntu.sh',
+  './build-ipnoria.sh',
 ].map((command, i) => ({ command, comment: steps.value[i] ?? '' })))
 </script>
 
@@ -159,6 +182,10 @@ const terminal = computed(() => [
         </div>
         <TerminalBlock :lines="terminal" />
       </div>
+    </section>
+
+    <section class="wrap pb-8">
+      <NewsletterSignup />
     </section>
 
     <!-- Appel final -->

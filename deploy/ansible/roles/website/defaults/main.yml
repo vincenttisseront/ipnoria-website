@@ -1,0 +1,9 @@
+---
+# Racine du dépôt (là où se trouvent docker-compose.yml et Caddyfile)
+website_repo_root: "{{ playbook_dir }}/../.."
+website_dir: /opt/ipnoria-website
+website_image: ghcr.io/vincenttisseront/ipnoria-website:latest
+# always : tire la dernière image à chaque passage ; missing : seulement si absente (essais hors ligne)
+website_pull: always
+website_check_health: true
+website_analytics_enabled: false

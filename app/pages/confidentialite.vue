@@ -16,6 +16,12 @@ useSeoMeta({ title: () => t('privacy.title') })
     <p class="mt-3">{{ t('privacy.form', { days: data.retentionDays }) }}</p>
     <p class="mt-3">{{ t('privacy.ip') }}</p>
 
+    <h2 class="mt-10 text-[1.6rem]">{{ t('privacy.newsletterTitle') }}</h2>
+    <p class="mt-3">{{ t('privacy.newsletter') }}</p>
+
+    <h2 class="mt-10 text-[1.6rem]">{{ t('privacy.analyticsTitle') }}</h2>
+    <p class="mt-3">{{ t('privacy.analytics') }}</p>
+
     <h2 class="mt-10 text-[1.6rem]">{{ t('privacy.rightsTitle') }}</h2>
     <p class="mt-3">{{ t('privacy.rights') }}</p>
   </article>

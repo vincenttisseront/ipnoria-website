@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 # Création du dépôt PRIVÉ sur GitHub et réglages de sécurité, avec la CLI gh (gh auth login au préalable).
-#   tools/github-setup.sh [propriétaire/nom]     défaut : vincenttisseront/ddibuntu-site
+#   tools/github-setup.sh [propriétaire/nom]     défaut : vincenttisseront/ipnoria-website
 # Idempotent : relancé, il ne recrée rien et réapplique les réglages.
 set -euo pipefail
 
-REPO="${1:-vincenttisseront/ddibuntu-site}"
+REPO="${1:-vincenttisseront/ipnoria-website}"
 cd "$(dirname "$0")/.."
 
 command -v gh >/dev/null || { echo "gh (GitHub CLI) est requis : https://cli.github.com" >&2; exit 1; }
@@ -13,7 +13,7 @@ gh auth status >/dev/null
 if gh repo view "$REPO" >/dev/null 2>&1; then
   echo "Dépôt $REPO déjà présent"
 else
-  gh repo create "$REPO" --private --source . --remote origin --description "Site vitrine de DDI-Buntu (FR/EN)" --disable-wiki
+  gh repo create "$REPO" --private --source . --remote origin --description "Site vitrine d'Ipnoria (FR/EN)" --disable-wiki
 fi
 git remote get-url origin >/dev/null 2>&1 || git remote add origin "https://github.com/$REPO.git"
 git push -u origin main

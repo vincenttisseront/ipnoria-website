@@ -23,11 +23,42 @@ check('pages FR et EN', async () => {
     ['/contact', 'Envoyer le message'], ['/en/contact', 'Send the message'],
     ['/mentions-legales', 'Mentions légales'], ['/en/legal-notice', 'Legal notice'],
     ['/confidentialite', 'Confidentialité'], ['/en/privacy', 'Privacy'],
+    ['/documentation/cluster', 'Sur cette page'], ['/en/docs/presentation', 'On this page'],
+    ['/comparatif', 'Windows Server'], ['/en/comparison', 'Windows Server'],
+    ['/guides/dhcp-windows', 'Export-DhcpServer'], ['/en/guides/nps', 'netsh nps export'],
+    ['/nouveautes', 'Flux RSS'], ['/en/releases', 'RSS feed'],
+    ['/demo', 'Démo'], ['/admin', 'Administration'],
   ]) {
     const res = await fetch(BASE + path, { headers: { 'accept-language': 'fr' } })
     assert.equal(res.status, 200, path)
     assert.ok((await res.text()).includes(text), `${path} : « ${text} » absent`)
   }
+})
+
+check('flux RSS, plan du site, robots', async () => {
+  const rss = await fetch(`${BASE}/rss.xml`)
+  assert.equal(rss.status, 200)
+  assert.match(await rss.text(), /<item>[\s\S]*<title>Ipnoria \d+\.\d+\.\d+/)
+  const sm = await (await fetch(`${BASE}/sitemap.xml`)).text()
+  assert.match(sm, /hreflang="en"/)
+  assert.match(await (await fetch(`${BASE}/robots.txt`)).text(), /Sitemap: /)
+})
+
+check('recherche dans la documentation', async () => {
+  const r = await (await fetch(`${BASE}/api/docs/search?q=quorum`)).json()
+  assert.ok(r.results.length > 0, 'aucun résultat pour « quorum »')
+  assert.ok(r.results.some(x => x.slug === 'cluster'))
+})
+
+check('images de la documentation servies par le site', async () => {
+  const res = await fetch(`${BASE}/docs-assets/console-ipam-adresses.png`)
+  assert.equal(res.status, 200)
+  assert.equal(res.headers.get('content-type'), 'image/png')
+  assert.equal((await fetch(`${BASE}/docs-assets/..%2F..%2Fetc%2Fpasswd`)).status, 404)
+})
+
+check('espace d\'administration fermé sans session', async () => {
+  assert.equal((await fetch(`${BASE}/api/admin/messages`)).status, process.env.EXPECT_ADMIN === '1' ? 401 : 404)
 })
 
 check('page inconnue : 404', async () => {

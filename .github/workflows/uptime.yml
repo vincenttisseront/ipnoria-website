@@ -1,0 +1,61 @@
+# Supervision externe : vérifie le site depuis l'extérieur toutes les heures (santé, HTTPS, échéance du certificat).
+# Un échec ouvre un ticket « site indisponible » (un seul à la fois) ; le retour à la normale le ferme.
+# Variable du dépôt : SITE_URL (ex. https://ipnoria.com). Sans elle, rien n'est vérifié.
+# Coût : environ 1 minute d'Actions par passage, soit ~720 minutes par mois sur un dépôt privé.
+name: uptime
+on:
+  schedule:
+    - cron: "23 * * * *"
+  workflow_dispatch:
+permissions:
+  contents: read
+  issues: write
+concurrency:
+  group: uptime
+  cancel-in-progress: false
+
+jobs:
+  check:
+    if: ${{ vars.SITE_URL != '' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    env:
+      SITE_URL: ${{ vars.SITE_URL }}
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+    steps:
+      - name: Santé, page d'accueil, certificat
+        id: probe
+        run: |
+          set -u
+          fail=""
+          code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 15 "$SITE_URL/api/health") || code=000
+          [ "$code" = 200 ] || fail="$fail /api/health a répondu $code."
+          home=$(curl -s -o /dev/null -w '%{http_code}' --max-time 15 "$SITE_URL/") || home=000
+          [ "$home" = 200 ] || fail="$fail La page d'accueil a répondu $home."
+          host=$(echo "$SITE_URL" | sed -E 's#^https?://([^/:]+).*#\1#')
+          end=$(echo | openssl s_client -servername "$host" -connect "$host:443" 2>/dev/null | openssl x509 -noout -enddate | cut -d= -f2) || end=""
+          if [ -n "$end" ]; then
+            days=$(( ($(date -d "$end" +%s) - $(date +%s)) / 86400 ))
+            [ "$days" -ge 14 ] || fail="$fail Le certificat HTTPS expire dans $days jour(s)."
+          else
+            fail="$fail Certificat HTTPS illisible."
+          fi
+          echo "fail=$fail" >> "$GITHUB_OUTPUT"
+          echo "${fail:-OK}"
+      - name: Ouvrir ou fermer le ticket d'incident
+        env:
+          FAIL: ${{ steps.probe.outputs.fail }}
+        run: |
+          open=$(gh issue list --label incident --state open --json number --jq '.[0].number // empty')
+          if [ -n "$FAIL" ]; then
+            if [ -z "$open" ]; then
+              gh label create incident --color B60205 --description "Supervision externe" 2>/dev/null || true
+              gh issue create --label incident --title "Site indisponible" --body "Détecté le $(date -u '+%F %H:%M') UTC :$FAIL"
+            else
+              gh issue comment "$open" --body "Toujours en échec le $(date -u '+%F %H:%M') UTC :$FAIL"
+            fi
+            exit 1
+          elif [ -n "$open" ]; then
+            gh issue close "$open" --comment "Rétabli le $(date -u '+%F %H:%M') UTC."
+          fi

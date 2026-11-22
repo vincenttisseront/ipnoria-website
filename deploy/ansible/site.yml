@@ -1,0 +1,20 @@
+---
+# Déploiement complet du site Ipnoria sur un serveur Debian/Ubuntu :
+#   socle système (pare-feu, mises à jour automatiques, SSH durci) → Docker → site (Caddy + Nuxt + PostgreSQL) → sauvegardes nocturnes.
+#
+#   ansible-galaxy collection install -r requirements.yml
+#   ansible-playbook site.yml                       # tout
+#   ansible-playbook site.yml --tags website        # mise à jour du site seulement
+#   ansible-playbook site.yml --check --diff        # voir ce qui changerait, sans rien changer
+- name: Serveur du site Ipnoria
+  hosts: website
+  become: true
+  roles:
+    - role: common
+      tags: [common]
+    - role: docker
+      tags: [docker]
+    - role: website
+      tags: [website]
+    - role: backup
+      tags: [backup]

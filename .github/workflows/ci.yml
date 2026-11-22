@@ -23,12 +23,18 @@ jobs:
         ports: ["5432:5432"]
         options: >-
           --health-cmd "pg_isready -U postgres" --health-interval 5s --health-timeout 5s --health-retries 10
+      mailpit:
+        image: axllent/mailpit:v1.34
+        ports: ["1025:1025", "8025:8025"]
     env:
       TEST_DATABASE_URL: postgres://postgres:ci-only@localhost:5432/site   # gitleaks:allow (base jetable de la CI)
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with: { persist-credentials: false }
-      - uses: actions/setup-node@v4
+      # Documentation du produit (dépôt public) : le test de fumée la lit sur disque, sans dépendre de raw.githubusercontent.com
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with: { repository: vincenttisseront/ipnoria, path: .product, persist-credentials: false }
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with: { node-version: 22, cache: npm }
       - run: npm ci --ignore-scripts
       - run: npx nuxt prepare
@@ -41,12 +47,36 @@ jobs:
           NUXT_DATABASE_URL: ${{ env.TEST_DATABASE_URL }}
           NUXT_IP_HASH_SALT: ci-only
           NUXT_PUBLIC_SITE_URL: http://localhost:3000
+          NUXT_DOCS_LOCAL_DIR: ${{ github.workspace }}/.product
+          NUXT_SMTP_HOST: 127.0.0.1
+          NUXT_SMTP_PORT: 1025
+          NUXT_SMTP_ALLOW_PLAIN: "true"
+          NUXT_SMTP_FROM: site@ipnoria.test
+          NUXT_OIDC_ISSUER: https://login.ipnoria.test
+          NUXT_OIDC_CLIENT_ID: ci
+          NUXT_SESSION_PASSWORD: ci-only-session-password-0123456789
+          NUXT_ADMIN_EMAILS: admin@ipnoria.test
+          EXPECT_ADMIN: "1"
           PORT: 3000
         run: |
           node .output/server/index.mjs > server.log 2>&1 &
           npm run test:smoke || { cat server.log; exit 1; }
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with: { name: coverage, path: coverage/lcov.info, retention-days: 7 }
+
+  # Playbook de déploiement : ansible-lint au profil le plus strict, et contrôle de syntaxe
+  ansible:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    defaults:
+      run: { working-directory: deploy/ansible }
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with: { persist-credentials: false }
+      - run: pipx install ansible-core && pipx inject ansible-core ansible-lint --include-apps
+      - run: ansible-galaxy collection install -r requirements.yml
+      - run: ansible-lint --profile production
+      - run: ansible-playbook site.yml --syntax-check -i inventories/production/hosts.yml.example
 
   # SonarQube : sans le secret SONAR_TOKEN l'étape est sautée (premier démarrage, forks)
   sonar:
@@ -58,14 +88,14 @@ jobs:
       # Serveur auto-hébergé si le secret existe, sinon SonarQube Cloud
       SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL || 'https://sonarcloud.io' }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with: { fetch-depth: 0, persist-credentials: false }
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with: { name: coverage, path: coverage }
       - name: Analyse SonarQube
         if: ${{ env.SONAR_TOKEN != '' }}
-        uses: SonarSource/sonarqube-scan-action@v5
+        uses: SonarSource/sonarqube-scan-action@59202af334b4ba7b5db01b701b8e79f8b3bef0f4 # v8.5.0
       - name: Porte qualité (bloquante)
         if: ${{ env.SONAR_TOKEN != '' }}
-        uses: SonarSource/sonarqube-quality-gate-action@v1
+        uses: SonarSource/sonarqube-quality-gate-action@7a5fffe8e523c40e0c740b6bc2712ab503e52efa # v1.2.1
         timeout-minutes: 5

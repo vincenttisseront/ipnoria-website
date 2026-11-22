@@ -1,0 +1,15 @@
+---
+# Copier en vault.yml, remplir, puis chiffrer :  ansible-vault encrypt inventories/production/group_vars/all/vault.yml
+# Générer chaque secret avec :  openssl rand -hex 32   (hexadécimal : sans caractère qui casserait une URL de connexion)
+vault_postgres_password: CHANGE-ME
+vault_ip_hash_salt: CHANGE-ME
+vault_session_password: CHANGE-ME-32-CARACTERES-AU-MOINS
+vault_oidc_client_secret: ""
+vault_smtp_user: ""
+vault_smtp_pass: ""
+# Jeton GitHub « read:packages » pour tirer l'image privée depuis ghcr.io
+vault_ghcr_user: vincenttisseront
+vault_ghcr_token: CHANGE-ME
+# Statistiques (si activées)
+vault_umami_db_password: CHANGE-ME
+vault_umami_app_secret: CHANGE-ME

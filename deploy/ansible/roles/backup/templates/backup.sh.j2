@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+# {{ ansible_managed }}
+# Sauvegarde des bases du site Ipnoria. Restauration :
+#   cd {{ website_dir }} && docker compose exec -T db pg_restore -U site -d site --clean --if-exists < FICHIER.dump
+set -euo pipefail
+umask 077
+cd {{ website_dir }}
+stamp=$(date +%Y%m%d-%H%M%S)
+dest={{ backup_dir }}
+
+dump() { # service base utilisateur
+  local out="$dest/$2-$stamp.dump"
+  docker compose exec -T "$1" pg_dump -U "$3" -d "$2" -Fc > "$out.part"
+  # Vérification : l'archive doit être lisible par pg_restore
+  docker compose exec -T "$1" pg_restore --list < "$out.part" > /dev/null
+  mv "$out.part" "$out"
+  echo "sauvegarde : $out ($(du -h "$out" | cut -f1))"
+}
+
+dump db site site
+{% if website_analytics_enabled %}
+dump umami-db umami umami
+{% endif %}
+
+find "$dest" -name '*.dump' -mtime +{{ backup_retention_days }} -delete
+find "$dest" -name '*.part' -mmin +60 -delete
+
+{% if backup_rsync_target %}
+rsync -a --delete "$dest/" "{{ backup_rsync_target }}/"
+echo "copie hors serveur : {{ backup_rsync_target }}"
+{% endif %}

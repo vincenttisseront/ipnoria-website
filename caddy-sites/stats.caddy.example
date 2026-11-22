@@ -1,0 +1,14 @@
+# Copier en stats.caddy pour publier Umami sur stats.<domaine> (le DNS doit pointer vers le serveur).
+stats.{$SITE_DOMAIN} {
+	encode zstd gzip
+	reverse_proxy umami:3000
+	header {
+		# Le script de mesure est chargé par le site principal (COEP require-corp)
+		Cross-Origin-Resource-Policy cross-origin
+		-Server
+	}
+	log {
+		output stdout
+		format json
+	}
+}

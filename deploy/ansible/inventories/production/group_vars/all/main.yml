@@ -1,0 +1,37 @@
+---
+# Réglages non secrets. Les secrets sont dans vault.yml (chiffré), voir vault.yml.example.
+
+# --- Site
+website_domain: ipnoria.com
+website_image: ghcr.io/vincenttisseront/ipnoria-website:latest
+website_dir: /opt/ipnoria-website
+website_contact_retention_days: 365
+website_admin_emails: []                     # ex. ["vous@ipnoria.com"] : accès à /admin via le SSO
+website_oidc_issuer: ""                      # ex. https://sso.exemple.com/realms/ipnoria
+website_oidc_client_id: ipnoria-website
+website_smtp_host: ""
+website_smtp_port: 587
+website_smtp_secure: false
+website_smtp_from: ""                        # ex. "Ipnoria <site@ipnoria.com>"
+website_smtp_to: ""
+website_legal_address: ""
+website_legal_email: ""
+website_legal_host: ""
+website_demo_url: ""
+website_demo_user: ""
+website_demo_password: ""
+
+# --- Statistiques sans cookie (Umami, sur stats.<domaine>)
+website_analytics_enabled: false
+website_analytics_website_id: ""             # identifiant du site, créé dans Umami après le premier démarrage
+
+# --- Socle
+common_timezone: Europe/Paris
+common_ssh_port: 22
+common_extra_allowed_ssh_sources: []         # vide = SSH ouvert à tous (clé seulement) ; sinon liste de réseaux CIDR
+
+# --- Sauvegardes
+backup_dir: /var/backups/ipnoria-website
+backup_retention_days: 14
+backup_time: "03:17"
+backup_rsync_target: ""                      # ex. backup@nas.exemple.lan:/srv/backups/ipnoria-website (copie hors serveur)

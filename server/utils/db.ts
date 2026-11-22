@@ -13,7 +13,7 @@ export function useDb(): pg.Pool {
     idleTimeoutMillis: 30_000,
     connectionTimeoutMillis: 5_000,
     statement_timeout: 10_000,
-    application_name: 'ddibuntu-site',
+    application_name: 'ipnoria-website',
   })
   pool.on('error', err => console.error('[db] connexion perdue :', err.message))
   return pool

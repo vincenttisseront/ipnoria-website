@@ -6,7 +6,7 @@ interface GithubRelease { tag_name?: string, html_url?: string, published_at?: s
 export default defineCachedEventHandler(async () => {
   try {
     const rel = await $fetch<GithubRelease>(`https://api.github.com/repos/${GITHUB_REPO}/releases/latest`, {
-      headers: { 'accept': 'application/vnd.github+json', 'user-agent': 'ddibuntu-site' },
+      headers: { 'accept': 'application/vnd.github+json', 'user-agent': 'ipnoria-website' },
       timeout: 4000,
     })
     const version = rel.tag_name?.replace(/^v/, '') ?? null

@@ -16,8 +16,10 @@ onMounted(() => { onScroll(); window.addEventListener('scroll', onScroll, { pass
 onBeforeUnmount(() => window.removeEventListener('scroll', onScroll))
 
 const items = computed(() => [
-  { to: `${localePath('/')}#fonctionnalites`, label: t('nav.features'), hash: true },
   { to: localePath('documentation'), label: t('nav.docs'), hash: false },
+  { to: localePath('guides'), label: t('nav.guides'), hash: false },
+  { to: localePath('comparatif'), label: t('nav.compare'), hash: false },
+  { to: localePath('nouveautes'), label: t('nav.releases'), hash: false },
   { to: localePath('contact'), label: t('nav.contact'), hash: false },
 ])
 </script>
@@ -30,10 +32,10 @@ const items = computed(() => [
     <div class="wrap flex h-16 items-center justify-between gap-6">
       <NuxtLink :to="localePath('/')" class="flex items-center gap-2.5 text-fg no-underline">
         <BrandMark />
-        <span class="text-[1.05rem] font-semibold tracking-tight">DDI-Buntu</span>
+        <span class="text-[1.05rem] font-semibold tracking-tight">Ipnoria</span>
       </NuxtLink>
 
-      <nav :aria-label="t('nav.menu')" class="hidden items-center gap-1 md:flex">
+      <nav :aria-label="t('nav.menu')" class="hidden items-center gap-0.5 lg:flex">
         <NuxtLink
           v-for="item in items"
           :key="item.to"
@@ -49,7 +51,7 @@ const items = computed(() => [
         </a>
       </nav>
 
-      <details ref="menu" class="relative md:hidden">
+      <details ref="menu" class="relative lg:hidden">
         <summary class="btn btn-secondary cursor-pointer list-none [&::-webkit-details-marker]:hidden">
           <AppIcon name="menu" /><span class="sr-only">{{ t('nav.menu') }}</span>
         </summary>

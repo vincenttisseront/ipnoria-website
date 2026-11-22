@@ -1,0 +1,14 @@
+# {{ ansible_managed }}
+[Unit]
+Description=Sauvegarde des bases du site Ipnoria
+Requires=docker.service
+After=docker.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/ipnoria-website-backup
+Nice=10
+IOSchedulingClass=idle
+PrivateTmp=true
+ProtectHome=true
+NoNewPrivileges=true

@@ -1,6 +1,6 @@
 import tailwindcss from '@tailwindcss/vite'
 
-// Site vitrine DDI-Buntu : rendu serveur (SSR) pour le référencement, API Nitro pour le formulaire de contact.
+// Site vitrine Ipnoria : rendu serveur (SSR) pour le référencement, API Nitro pour le formulaire de contact.
 export default defineNuxtConfig({
   compatibilityDate: '2026-11-01',
   devtools: { enabled: false },
@@ -25,6 +25,16 @@ export default defineNuxtConfig({
   // Toutes les valeurs sont surchargées à l'exécution par les variables NUXT_* (voir .env.example)
   runtimeConfig: {
     databaseUrl: '',                 // NUXT_DATABASE_URL
+    docsLocalDir: '',                // NUXT_DOCS_LOCAL_DIR : clone local du dépôt produit (tests, hors ligne) au lieu de GitHub
+    sessionPassword: '',             // NUXT_SESSION_PASSWORD : 32 caractères au moins, chiffre les cookies de session
+    adminEmails: '',                 // NUXT_ADMIN_EMAILS : adresses autorisées dans /admin, séparées par des virgules
+    oidc: {
+      issuer: '',                    // NUXT_OIDC_ISSUER : URL du fournisseur OpenID Connect
+      clientId: '',                  // NUXT_OIDC_CLIENT_ID
+      clientSecret: '',              // NUXT_OIDC_CLIENT_SECRET (vide = client public avec PKCE)
+      scopes: 'openid email profile',
+      allowInsecure: false,          // NUXT_OIDC_ALLOW_INSECURE : HTTP autorisé, pour un fournisseur de test local uniquement
+    },
     ipHashSalt: '',                  // NUXT_IP_HASH_SALT : l'adresse IP n'est jamais stockée en clair
     contactRetentionDays: 365,       // NUXT_CONTACT_RETENTION_DAYS : purge RGPD automatique
     smtp: {
@@ -35,10 +45,13 @@ export default defineNuxtConfig({
       pass: '',
       from: '',
       to: '',                        // NUXT_SMTP_TO : destinataire des notifications
+      allowPlain: false,             // NUXT_SMTP_ALLOW_PLAIN : relais local sans TLS (tests)
     },
     public: {
       siteUrl: 'http://localhost:3000', // NUXT_PUBLIC_SITE_URL
-      githubRepo: 'vincenttisseront/ddibuntu',
+      githubRepo: 'vincenttisseront/ipnoria',
+      demo: { url: '', user: '', password: '' },      // NUXT_PUBLIC_DEMO_URL / _USER / _PASSWORD : démo publique en lecture seule
+      analytics: { src: '', websiteId: '' },          // NUXT_PUBLIC_ANALYTICS_SRC / _WEBSITE_ID : Umami auto-hébergé
       legal: {
         // Mentions légales (LCEN, art. 6) : à compléter en production via NUXT_PUBLIC_LEGAL_*
         publisher: 'Vincent Tisseront',
@@ -59,7 +72,12 @@ export default defineNuxtConfig({
     detectBrowserLanguage: { useCookie: true, cookieKey: 'lang', redirectOn: 'root', alwaysRedirect: false },
     customRoutes: 'config',
     pages: {
-      'documentation': { fr: '/documentation', en: '/docs' },
+      'documentation/index': { fr: '/documentation', en: '/docs' },
+      'documentation/[slug]': { fr: '/documentation/[slug]', en: '/docs/[slug]' },
+      'nouveautes/index': { fr: '/nouveautes', en: '/releases' },
+      'nouveautes/[version]': { fr: '/nouveautes/[version]', en: '/releases/[version]' },
+      'comparatif': { fr: '/comparatif', en: '/comparison' },
+      'admin/index': false,
       'mentions-legales': { fr: '/mentions-legales', en: '/legal-notice' },
       'confidentialite': { fr: '/confidentialite', en: '/privacy' },
     },
@@ -107,7 +125,12 @@ export default defineNuxtConfig({
     // Formulaire : 5 envois par tranche de 10 minutes et par adresse IP
     // Le message n'est jamais rendu en HTML (texte brut en base et dans l'e-mail) : le filtre XSS générique refuserait à tort « a < b »
     '/api/contact': { security: { rateLimiter: { tokensPerInterval: 5, interval: 600000 }, xssValidator: false } },
+    '/api/newsletter': { security: { rateLimiter: { tokensPerInterval: 5, interval: 600000 } } },
+    '/auth/**': { security: { rateLimiter: { tokensPerInterval: 30, interval: 300000 } }, headers: { 'cache-control': 'no-store' } },
+    '/admin': { headers: { 'cache-control': 'no-store', 'x-robots-tag': 'noindex, nofollow' } },
+    '/api/admin/**': { headers: { 'cache-control': 'no-store' }, security: { xssValidator: false } },
     '/api/**': { headers: { 'cache-control': 'no-store' } },
+    '/og/**': { headers: { 'cache-control': 'public, max-age=86400' } },
     '/img/**': { headers: { 'cache-control': 'public, max-age=604800' } },
     '/_nuxt/**': { headers: { 'cache-control': 'public, max-age=31536000, immutable' } },
   },

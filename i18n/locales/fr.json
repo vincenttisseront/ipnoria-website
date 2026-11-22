@@ -1,7 +1,7 @@
 {
   "meta": {
-    "title": "DDI-Buntu — DNS, DHCP, IPAM, RADIUS et PKI dans une seule appliance",
-    "description": "Appliance DDI libre sur Ubuntu 24.04 : IPAM, DNS (BIND 9), DHCP (Kea), accès réseau 802.1X (FreeRADIUS) et PKI (EJBCA), installée depuis une ISO et pilotée depuis une console web."
+    "title": "Ipnoria — DNS, DHCP, IPAM, RADIUS et PKI dans une seule appliance",
+    "description": "Appliance DDI libre : IPAM, DNS (BIND 9), DHCP (Kea), accès réseau 802.1X (FreeRADIUS) et PKI (EJBCA), installée depuis une ISO et pilotée depuis une console web."
   },
   "nav": {
     "home": "Accueil",
@@ -11,11 +11,15 @@
     "github": "GitHub",
     "skip": "Aller au contenu",
     "menu": "Menu",
-    "language": "Langue"
+    "language": "Langue",
+    "guides": "Guides",
+    "compare": "Comparatif",
+    "releases": "Nouveautés",
+    "demo": "Démo"
   },
   "hero": {
     "title": "DNS, DHCP, IPAM, RADIUS et PKI. Une seule appliance.",
-    "lead": "DDI-Buntu s'installe depuis une ISO sur Ubuntu 24.04 et remplace le tableur d'adresses, les serveurs DNS et DHCP Windows, le NPS et l'AD CS. Une console web pilote le tout, Wi‑Fi d'entreprise compris.",
+    "lead": "Ipnoria s'installe depuis une ISO et remplace le tableur d'adresses, les serveurs DNS et DHCP Windows, le NPS et l'AD CS. Une console web pilote le tout, Wi‑Fi d'entreprise compris.",
     "ctaDownload": "Télécharger",
     "ctaGithub": "Code source",
     "badge": "Version {version} disponible",
@@ -43,7 +47,18 @@
     "stateGateway": "passerelle",
     "stateNetwork": "adresse de réseau",
     "stateBroadcast": "adresse de diffusion",
-    "gridLabel": "Grille des adresses du réseau"
+    "gridLabel": "Grille des adresses du réseau",
+    "pageTitle": "Démo",
+    "pageLead": "Essayez la console avec des données fictives, sans rien installer.",
+    "address": "Adresse",
+    "user": "Identifiant",
+    "password": "Mot de passe",
+    "nightlyReset": "Lecture seule. Les données sont remises à zéro chaque nuit.",
+    "open": "Ouvrir la démo",
+    "soonTitle": "La démo publique arrive",
+    "soonText": "En attendant, nous vous montrons la console en visio, sur vos propres cas : migration DHCP, Wi‑Fi 802.1X, cluster.",
+    "private": "Demander une démonstration",
+    "tour": "Voir la visite de la console"
   },
   "why": {
     "title": "Tout le réseau d'entreprise, au même endroit",
@@ -81,7 +96,7 @@
         "text": "Chaîne d'approvisionnement vérifiée, console sans privilège, pare-feu nftables, secrets chiffrés, journal d'audit complet, export SIEM, SSO OpenID Connect et jetons d'API."
       }
     ],
-    "lead": "Chaque service est un composant libre éprouvé. DDI-Buntu les relie, pour qu'un changement à un endroit soit juste partout."
+    "lead": "Chaque service est un composant libre éprouvé. Ipnoria les relie, pour qu'un changement à un endroit soit juste partout."
   },
   "gallery": {
     "title": "La console, telle qu'elle est",
@@ -159,7 +174,7 @@
   },
   "blocks": {
     "title": "Construit sur des composants libres éprouvés",
-    "lead": "DDI-Buntu ne réinvente pas les démons réseau : il les assemble, les configure et les surveille.",
+    "lead": "Ipnoria ne réinvente pas les démons réseau : il les assemble, les configure et les surveille.",
     "items": [
       {
         "name": "BIND 9",
@@ -196,10 +211,6 @@
       {
         "name": "nftables",
         "role": "Pare-feu"
-      },
-      {
-        "name": "Ubuntu 24.04 LTS",
-        "role": "Système"
       }
     ]
   },
@@ -211,14 +222,14 @@
       "Construire la console",
       "Produire l'ISO"
     ],
-    "alt": "Sans cloner le dépôt : téléchargez le fichier unique build-ddibuntu.sh (ou build-ddibuntu.ps1 sous Windows) depuis une release.",
+    "alt": "Sans cloner le dépôt : téléchargez le fichier unique build-ipnoria.sh (ou build-ipnoria.ps1 sous Windows) depuis une release.",
     "doc": "Guide d'installation complet",
     "copy": "Copier",
     "copied": "Copié"
   },
   "license": {
     "title": "Libre, et le reste",
-    "text": "DDI-Buntu est publié sous licence GNU AGPL v3 ou ultérieure. Le code, la feuille de route et le journal des modifications sont publics. Une version modifiée proposée à des utilisateurs doit leur donner accès à ses sources.",
+    "text": "Ipnoria est publié sous licence GNU AGPL v3 ou ultérieure. Le code, la feuille de route et le journal des modifications sont publics. Une version modifiée proposée à des utilisateurs doit leur donner accès à ses sources.",
     "read": "Lire la licence"
   },
   "cta": {
@@ -231,82 +242,23 @@
     "title": "Documentation",
     "lead": "La documentation vit avec le code, dans le dépôt GitHub. Elle décrit ce que le code fait aujourd'hui, limites comprises.",
     "langNote": "",
-    "open": "Ouvrir sur GitHub",
-    "groups": [
-      {
-        "title": "Démarrer",
-        "items": [
-          {
-            "key": "readme",
-            "title": "Présentation",
-            "text": "Ce que fait DDI-Buntu, la console en images, démarrage rapide."
-          },
-          {
-            "key": "install",
-            "title": "Générer l'ISO et l'installer",
-            "text": "Construction de l'ISO, proxys d'entreprise, essai sous VMware."
-          },
-          {
-            "key": "changelog",
-            "title": "Journal des modifications",
-            "text": "Le détail de chaque version, ce qui a été vérifié et ce qui ne l'a pas été."
-          }
-        ]
-      },
-      {
-        "title": "Comprendre",
-        "items": [
-          {
-            "key": "architecture",
-            "title": "Architecture",
-            "text": "Chaîne de livraison, séparation des privilèges, services de l'appliance."
-          },
-          {
-            "key": "cluster",
-            "title": "Architecture du cluster",
-            "text": "Rôles des nœuds, quorum, tolérance de panne, mise à jour, limites."
-          },
-          {
-            "key": "roadmap",
-            "title": "Feuille de route",
-            "text": "Ce qui est fait, partiel ou à faire, capacité par capacité."
-          }
-        ]
-      },
-      {
-        "title": "Contribuer",
-        "items": [
-          {
-            "key": "testing",
-            "title": "Tests",
-            "text": "Batteries shell, tests unitaires et de bout en bout de la console."
-          },
-          {
-            "key": "releasing",
-            "title": "Publier une version",
-            "text": "Publication automatique, signature des archives, mises à jour en ligne."
-          },
-          {
-            "key": "quality",
-            "title": "Qualité du code",
-            "text": "Analyse SonarQube et plan de remédiation."
-          },
-          {
-            "key": "opensource",
-            "title": "Composants libres",
-            "text": "Liste des composants embarqués et de leurs licences."
-          },
-          {
-            "key": "licenseDoc",
-            "title": "Licence",
-            "text": "Texte complet de la GNU AGPL v3."
-          }
-        ]
-      }
-    ],
     "help": "Une question que la documentation ne couvre pas ?",
     "helpIssue": "Ouvrir un ticket",
-    "helpContact": "Nous écrire"
+    "helpContact": "Nous écrire",
+    "searchLabel": "Rechercher dans la documentation",
+    "searchPlaceholder": "cluster, keytab, SCEP, sauvegarde…",
+    "searchCount": "{n} résultat(s)",
+    "searchEmpty": "Aucun passage ne contient ces mots. Essayez un terme plus court.",
+    "groups": {
+      "start": "Démarrer",
+      "understand": "Comprendre",
+      "contribute": "Contribuer"
+    },
+    "inFrench": "en français",
+    "back": "Toute la documentation",
+    "frenchOnlyNotice": "",
+    "viewSource": "Voir ce document sur GitHub",
+    "onThisPage": "Sur cette page"
   },
   "contact": {
     "title": "Contact",
@@ -355,7 +307,7 @@
     "hostTitle": "Hébergement",
     "host": "Hébergeur : {host}",
     "ipTitle": "Propriété intellectuelle",
-    "ip": "Le logiciel DDI-Buntu est distribué sous licence GNU AGPL v3 ou ultérieure. Les noms de logiciels tiers cités appartiennent à leurs titulaires respectifs.",
+    "ip": "Le logiciel Ipnoria est distribué sous licence GNU AGPL v3 ou ultérieure. Les noms de logiciels tiers cités appartiennent à leurs titulaires respectifs.",
     "todo": "À compléter avant la mise en ligne."
   },
   "privacy": {
@@ -367,17 +319,23 @@
     "form": "Les données saisies (nom, e-mail, organisation, sujet, message) servent uniquement à répondre à votre demande. Base légale : votre consentement. Elles sont conservées {days} jours puis supprimées automatiquement.",
     "ip": "Pour limiter les abus, une empreinte non réversible de votre adresse IP est enregistrée avec le message. L'adresse elle-même n'est jamais stockée.",
     "rightsTitle": "Vos droits",
-    "rights": "Vous pouvez demander l'accès, la rectification ou l'effacement de vos données en écrivant à l'adresse indiquée dans les mentions légales. Vous pouvez aussi saisir la CNIL."
+    "rights": "Vous pouvez demander l'accès, la rectification ou l'effacement de vos données en écrivant à l'adresse indiquée dans les mentions légales. Vous pouvez aussi saisir la CNIL.",
+    "newsletterTitle": "Alertes de version",
+    "newsletter": "Si vous vous inscrivez, votre adresse e-mail sert uniquement à annoncer les nouvelles versions. Elle n'est utilisée qu'après confirmation par un lien reçu par e-mail ; sans confirmation, elle est effacée au bout de 7 jours. La désinscription l'efface aussitôt.",
+    "analyticsTitle": "Statistiques de visite",
+    "analytics": "Si elles sont activées, les statistiques sont mesurées par un outil auto-hébergé (Umami), sans cookie ni identifiant personnel, et respectent le réglage « Ne pas me pister » de votre navigateur. Aucune donnée n'est transmise à un tiers."
   },
   "footer": {
-    "tagline": "Appliance DDI libre pour Ubuntu 24.04.",
+    "tagline": "Appliance DDI libre : IPAM, DNS, DHCP, RADIUS et PKI.",
     "project": "Projet",
     "site": "Site",
     "releases": "Versions publiées",
     "issues": "Tickets",
     "legal": "Mentions légales",
     "privacy": "Confidentialité",
-    "copyright": "© {year} Vincent Tisseront. DDI-Buntu est distribué sous licence AGPL-3.0-or-later."
+    "copyright": "© {year} Vincent Tisseront. Ipnoria est distribué sous licence AGPL-3.0-or-later.",
+    "resources": "Ressources",
+    "rss": "Flux RSS"
   },
   "error": {
     "notFoundTitle": "Cette page n'existe pas",
@@ -385,5 +343,66 @@
     "genericTitle": "Une erreur est survenue",
     "genericText": "Le serveur n'a pas pu afficher la page.",
     "back": "Revenir à l'accueil"
+  },
+  "releases": {
+    "title": "Nouveautés",
+    "lead": "Chaque version d'Ipnoria, ce qu'elle change, ce qui a été vérifié et ce qui ne l'a pas été.",
+    "rss": "Flux RSS",
+    "emailAlerts": "Être prévenu par e-mail",
+    "inFrench": "",
+    "pagination": "Pages des versions",
+    "newer": "Versions plus récentes",
+    "older": "Versions plus anciennes",
+    "back": "Toutes les versions",
+    "download": "Télécharger cette version",
+    "olderOne": "Version précédente : {v}",
+    "newerOne": "Version suivante : {v}"
+  },
+  "guides": {
+    "title": "Guides de migration",
+    "lead": "Quitter un DHCP Windows ou un NPS sans coupure : les commandes exactes, la coexistence, la bascule et le retour arrière.",
+    "steps": "{n} étapes",
+    "back": "Tous les guides",
+    "help": "Être accompagné pour la migration"
+  },
+  "compare": {
+    "title": "Ipnoria face à Windows Server",
+    "lead": "Les rôles DNS, DHCP, NPS et AD CS de Windows Server comparés à Ipnoria, y compris là où Windows fait mieux.",
+    "caption": "Comparaison des capacités entre Windows Server et Ipnoria",
+    "feature": "Capacité",
+    "windows": "Windows Server",
+    "mark": {
+      "yes": "Oui",
+      "partial": "En partie",
+      "no": "Non"
+    },
+    "footnote": "Comparaison établie sur les fonctions standard de Windows Server, sans produit tiers. Une erreur ? Écrivez-nous, nous corrigeons."
+  },
+  "newsletter": {
+    "title": "Être prévenu des nouvelles versions",
+    "lead": "Un e-mail par version, rien d'autre. Désinscription en un clic.",
+    "placeholder": "vous{'@'}exemple.fr",
+    "submit": "M'inscrire",
+    "consent": "J'accepte de recevoir un e-mail à chaque nouvelle version.",
+    "sent": "Vérifiez votre boîte : un lien de confirmation vient de partir. Sans confirmation, rien ne sera envoyé.",
+    "errors": {
+      "error": "L'inscription n'a pas abouti. Réessayez dans un instant.",
+      "rate": "Trop de tentatives depuis votre réseau. Réessayez dans dix minutes.",
+      "unavailable": "Les alertes par e-mail ne sont pas encore ouvertes. Suivez le flux RSS en attendant."
+    },
+    "state": {
+      "confirme": {
+        "title": "Inscription confirmée",
+        "text": "Vous recevrez un e-mail à chaque nouvelle version d'Ipnoria. Chaque e-mail contient un lien de désinscription."
+      },
+      "desinscrit": {
+        "title": "Désinscription faite",
+        "text": "Votre adresse a été effacée. Vous ne recevrez plus d'e-mail."
+      },
+      "invalide": {
+        "title": "Ce lien n'est plus valable",
+        "text": "Il a déjà servi, ou il a expiré au bout de 7 jours. Inscrivez-vous de nouveau depuis la page Nouveautés."
+      }
+    }
   }
 }

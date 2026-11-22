@@ -1,7 +1,7 @@
 {
   "meta": {
-    "title": "DDI-Buntu — DNS, DHCP, IPAM, RADIUS and PKI in a single appliance",
-    "description": "Free and open-source DDI appliance on Ubuntu 24.04: IPAM, DNS (BIND 9), DHCP (Kea), 802.1X network access (FreeRADIUS) and PKI (EJBCA), installed from an ISO and managed from a web console."
+    "title": "Ipnoria — DNS, DHCP, IPAM, RADIUS and PKI in a single appliance",
+    "description": "Free and open-source DDI appliance: IPAM, DNS (BIND 9), DHCP (Kea), 802.1X network access (FreeRADIUS) and PKI (EJBCA), installed from an ISO and managed from a web console."
   },
   "nav": {
     "home": "Home",
@@ -11,11 +11,15 @@
     "github": "GitHub",
     "skip": "Skip to content",
     "menu": "Menu",
-    "language": "Language"
+    "language": "Language",
+    "guides": "Guides",
+    "compare": "Comparison",
+    "releases": "Releases",
+    "demo": "Demo"
   },
   "hero": {
     "title": "DNS, DHCP, IPAM, RADIUS and PKI. One appliance.",
-    "lead": "DDI-Buntu installs from an ISO on Ubuntu 24.04 and replaces the address spreadsheet, the Windows DNS and DHCP servers, the NPS and AD CS. One web console drives it all, corporate Wi‑Fi included.",
+    "lead": "Ipnoria installs from an ISO and replaces the address spreadsheet, the Windows DNS and DHCP servers, the NPS and AD CS. One web console drives it all, corporate Wi‑Fi included.",
     "ctaDownload": "Download",
     "ctaGithub": "Source code",
     "badge": "Version {version} is out",
@@ -43,7 +47,18 @@
     "stateGateway": "gateway",
     "stateNetwork": "network address",
     "stateBroadcast": "broadcast address",
-    "gridLabel": "Address grid of the network"
+    "gridLabel": "Address grid of the network",
+    "pageTitle": "Demo",
+    "pageLead": "Try the console with fictitious data, without installing anything.",
+    "address": "Address",
+    "user": "Username",
+    "password": "Password",
+    "nightlyReset": "Read-only. Data is reset every night.",
+    "open": "Open the demo",
+    "soonTitle": "The public demo is coming",
+    "soonText": "Meanwhile, we'll show you the console on a video call, on your own cases: DHCP migration, 802.1X Wi‑Fi, cluster.",
+    "private": "Request a demo",
+    "tour": "See the console tour"
   },
   "why": {
     "title": "Your whole corporate network, in one place",
@@ -81,7 +96,7 @@
         "text": "Verified supply chain, unprivileged console, nftables firewall, encrypted secrets, full audit log, SIEM export, OpenID Connect SSO and API tokens."
       }
     ],
-    "lead": "Every service is a proven open-source component. DDI-Buntu ties them together, so a change in one place is right everywhere."
+    "lead": "Every service is a proven open-source component. Ipnoria ties them together, so a change in one place is right everywhere."
   },
   "gallery": {
     "title": "The console, as it is",
@@ -159,7 +174,7 @@
   },
   "blocks": {
     "title": "Built on proven open-source components",
-    "lead": "DDI-Buntu doesn't reinvent network daemons: it assembles, configures and monitors them.",
+    "lead": "Ipnoria doesn't reinvent network daemons: it assembles, configures and monitors them.",
     "items": [
       {
         "name": "BIND 9",
@@ -196,10 +211,6 @@
       {
         "name": "nftables",
         "role": "Firewall"
-      },
-      {
-        "name": "Ubuntu 24.04 LTS",
-        "role": "Operating system"
       }
     ]
   },
@@ -211,14 +222,14 @@
       "Build the console",
       "Produce the ISO"
     ],
-    "alt": "Without cloning: download the single build-ddibuntu.sh file (or build-ddibuntu.ps1 on Windows) from a release.",
+    "alt": "Without cloning: download the single build-ipnoria.sh file (or build-ipnoria.ps1 on Windows) from a release.",
     "doc": "Full installation guide",
     "copy": "Copy",
     "copied": "Copied"
   },
   "license": {
     "title": "Free, and it stays free",
-    "text": "DDI-Buntu is released under the GNU AGPL v3 or later. The code, the roadmap and the changelog are public. A modified version offered to users must give them access to its source.",
+    "text": "Ipnoria is released under the GNU AGPL v3 or later. The code, the roadmap and the changelog are public. A modified version offered to users must give them access to its source.",
     "read": "Read the license"
   },
   "cta": {
@@ -231,82 +242,23 @@
     "title": "Documentation",
     "lead": "The documentation lives with the code, in the GitHub repository. It describes what the code does today, limits included.",
     "langNote": "Most documents are written in French; the project overview is available in English.",
-    "open": "Open on GitHub",
-    "groups": [
-      {
-        "title": "Get started",
-        "items": [
-          {
-            "key": "readmeEn",
-            "title": "Overview",
-            "text": "What DDI-Buntu does, the console in pictures, quick start. In English."
-          },
-          {
-            "key": "install",
-            "title": "Build the ISO and install",
-            "text": "Building the ISO, corporate proxies, trying it on VMware."
-          },
-          {
-            "key": "changelog",
-            "title": "Changelog",
-            "text": "Every release in detail, what was verified and what wasn't."
-          }
-        ]
-      },
-      {
-        "title": "Understand",
-        "items": [
-          {
-            "key": "architecture",
-            "title": "Architecture",
-            "text": "Delivery chain, privilege separation, appliance services."
-          },
-          {
-            "key": "cluster",
-            "title": "Cluster architecture",
-            "text": "Node roles, quorum, fault tolerance, upgrades, limits."
-          },
-          {
-            "key": "roadmap",
-            "title": "Roadmap",
-            "text": "What is done, partial or still to do, capability by capability."
-          }
-        ]
-      },
-      {
-        "title": "Contribute",
-        "items": [
-          {
-            "key": "testing",
-            "title": "Tests",
-            "text": "Shell test suites, unit and end-to-end tests of the console."
-          },
-          {
-            "key": "releasing",
-            "title": "Publishing a release",
-            "text": "Automatic publishing, archive signing, online updates."
-          },
-          {
-            "key": "quality",
-            "title": "Code quality",
-            "text": "SonarQube analysis and remediation plan."
-          },
-          {
-            "key": "opensource",
-            "title": "Open-source components",
-            "text": "Embedded components and their licenses."
-          },
-          {
-            "key": "licenseDoc",
-            "title": "License",
-            "text": "Full text of the GNU AGPL v3."
-          }
-        ]
-      }
-    ],
     "help": "A question the documentation doesn't answer?",
     "helpIssue": "Open an issue",
-    "helpContact": "Write to us"
+    "helpContact": "Write to us",
+    "searchLabel": "Search the documentation",
+    "searchPlaceholder": "cluster, keytab, SCEP, backup…",
+    "searchCount": "{n} result(s)",
+    "searchEmpty": "No passage contains these words. Try a shorter term.",
+    "groups": {
+      "start": "Get started",
+      "understand": "Understand",
+      "contribute": "Contribute"
+    },
+    "inFrench": "in French",
+    "back": "All documentation",
+    "frenchOnlyNotice": "This document is only available in French for now. Your browser can translate the page.",
+    "viewSource": "View this document on GitHub",
+    "onThisPage": "On this page"
   },
   "contact": {
     "title": "Contact",
@@ -355,7 +307,7 @@
     "hostTitle": "Hosting",
     "host": "Host: {host}",
     "ipTitle": "Intellectual property",
-    "ip": "The DDI-Buntu software is distributed under the GNU AGPL v3 or later. Third-party software names belong to their respective owners.",
+    "ip": "The Ipnoria software is distributed under the GNU AGPL v3 or later. Third-party software names belong to their respective owners.",
     "todo": "To be completed before going live."
   },
   "privacy": {
@@ -367,17 +319,23 @@
     "form": "The data you enter (name, email, organization, topic, message) is used only to answer your request. Legal basis: your consent. It is kept for {days} days and then deleted automatically.",
     "ip": "To limit abuse, a non-reversible fingerprint of your IP address is stored with the message. The address itself is never stored.",
     "rightsTitle": "Your rights",
-    "rights": "You can request access to, correction or deletion of your data by writing to the address given in the legal notice. You can also lodge a complaint with the CNIL."
+    "rights": "You can request access to, correction or deletion of your data by writing to the address given in the legal notice. You can also lodge a complaint with the CNIL.",
+    "newsletterTitle": "Release alerts",
+    "newsletter": "If you subscribe, your email address is used only to announce new releases. It is used only after you confirm through a link sent by email; unconfirmed addresses are deleted after 7 days. Unsubscribing deletes it at once.",
+    "analyticsTitle": "Visit statistics",
+    "analytics": "If enabled, statistics are measured by a self-hosted tool (Umami), without cookies or personal identifiers, and they honour your browser's Do Not Track setting. No data is passed to third parties."
   },
   "footer": {
-    "tagline": "Open-source DDI appliance for Ubuntu 24.04.",
+    "tagline": "Open-source DDI appliance: IPAM, DNS, DHCP, RADIUS and PKI.",
     "project": "Project",
     "site": "Site",
     "releases": "Releases",
     "issues": "Issues",
     "legal": "Legal notice",
     "privacy": "Privacy",
-    "copyright": "© {year} Vincent Tisseront. DDI-Buntu is distributed under AGPL-3.0-or-later."
+    "copyright": "© {year} Vincent Tisseront. Ipnoria is distributed under AGPL-3.0-or-later.",
+    "resources": "Resources",
+    "rss": "RSS feed"
   },
   "error": {
     "notFoundTitle": "This page doesn't exist",
@@ -385,5 +343,66 @@
     "genericTitle": "Something went wrong",
     "genericText": "The server couldn't display the page.",
     "back": "Back to the home page"
+  },
+  "releases": {
+    "title": "Releases",
+    "lead": "Every Ipnoria release, what it changes, what was verified and what wasn't.",
+    "rss": "RSS feed",
+    "emailAlerts": "Get email alerts",
+    "inFrench": "Release notes are written in French.",
+    "pagination": "Release pages",
+    "newer": "Newer releases",
+    "older": "Older releases",
+    "back": "All releases",
+    "download": "Download this release",
+    "olderOne": "Previous release: {v}",
+    "newerOne": "Next release: {v}"
+  },
+  "guides": {
+    "title": "Migration guides",
+    "lead": "Leave a Windows DHCP or an NPS without downtime: the exact commands, coexistence, switchover and rollback.",
+    "steps": "{n} steps",
+    "back": "All guides",
+    "help": "Get help with the migration"
+  },
+  "compare": {
+    "title": "Ipnoria vs Windows Server",
+    "lead": "The DNS, DHCP, NPS and AD CS roles of Windows Server compared with Ipnoria, including where Windows does better.",
+    "caption": "Capability comparison between Windows Server and Ipnoria",
+    "feature": "Capability",
+    "windows": "Windows Server",
+    "mark": {
+      "yes": "Yes",
+      "partial": "Partly",
+      "no": "No"
+    },
+    "footnote": "Based on standard Windows Server features, without third-party products. Spotted a mistake? Write to us and we'll fix it."
+  },
+  "newsletter": {
+    "title": "Get notified of new releases",
+    "lead": "One email per release, nothing else. Unsubscribe in one click.",
+    "placeholder": "you{'@'}example.com",
+    "submit": "Subscribe",
+    "consent": "I agree to receive an email for each new release.",
+    "sent": "Check your inbox: a confirmation link is on its way. Nothing is sent without confirmation.",
+    "errors": {
+      "error": "The subscription didn't go through. Try again in a moment.",
+      "rate": "Too many attempts from your network. Try again in ten minutes.",
+      "unavailable": "Email alerts aren't open yet. Follow the RSS feed meanwhile."
+    },
+    "state": {
+      "confirme": {
+        "title": "Subscription confirmed",
+        "text": "You'll get an email for every new Ipnoria release. Each email has an unsubscribe link."
+      },
+      "desinscrit": {
+        "title": "Unsubscribed",
+        "text": "Your address has been deleted. You won't get any more emails."
+      },
+      "invalide": {
+        "title": "This link is no longer valid",
+        "text": "It was already used, or it expired after 7 days. Subscribe again from the Releases page."
+      }
+    }
   }
 }

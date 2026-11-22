@@ -1,0 +1,10 @@
+---
+# try-reload-or-restart : n'agit que si sshd tourne (Ubuntu récent le démarre à la demande, par socket)
+- name: Recharger ssh
+  ansible.builtin.command: systemctl try-reload-or-restart ssh.service # noqa: command-instead-of-module (le module systemd n'a pas cette action)
+  changed_when: true
+
+- name: Redémarrer fail2ban
+  ansible.builtin.service:
+    name: fail2ban
+    state: restarted

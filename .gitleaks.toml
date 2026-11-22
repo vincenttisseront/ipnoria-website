@@ -1,5 +1,5 @@
 # gitleaks : règles par défaut + règles propres au site. Lancé en pre-commit (lefthook) et en CI sur tout l'historique.
-title = "ddibuntu-site"
+title = "ipnoria-website"
 
 [extend]
 useDefault = true

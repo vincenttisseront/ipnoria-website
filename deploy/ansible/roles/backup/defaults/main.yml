@@ -1,0 +1,5 @@
+---
+backup_dir: /var/backups/ipnoria-website
+backup_retention_days: 14
+backup_time: "03:17"
+backup_rsync_target: ""

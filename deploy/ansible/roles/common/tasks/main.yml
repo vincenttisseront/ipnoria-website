@@ -1,0 +1,90 @@
+---
+- name: Paquets du socle
+  ansible.builtin.apt:
+    name: [ca-certificates, curl, gnupg, ufw, unattended-upgrades, fail2ban, rsync, jq, python3-debian]
+    state: present
+    update_cache: true
+    cache_valid_time: 3600
+
+- name: Fuseau horaire
+  community.general.timezone:
+    name: "{{ common_timezone }}"
+
+- name: Mises à jour de sécurité automatiques
+  ansible.builtin.copy:
+    dest: /etc/apt/apt.conf.d/20auto-upgrades
+    content: |
+      APT::Periodic::Update-Package-Lists "1";
+      APT::Periodic::Unattended-Upgrade "1";
+      APT::Periodic::AutocleanInterval "7";
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Dossier d'exécution de sshd (absent tant que le service activé par socket n'a pas démarré)
+  ansible.builtin.file:
+    path: /run/sshd
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: "SSH : clé uniquement, pas de root par mot de passe"
+  ansible.builtin.copy:
+    dest: /etc/ssh/sshd_config.d/10-ipnoria.conf
+    content: |
+      PasswordAuthentication no
+      KbdInteractiveAuthentication no
+      PermitRootLogin prohibit-password
+      X11Forwarding no
+      MaxAuthTries 4
+    owner: root
+    group: root
+    mode: "0644"
+    validate: /usr/sbin/sshd -t -f %s
+  notify: Recharger ssh
+
+- name: Surveillance de SSH par fail2ban
+  ansible.builtin.copy:
+    dest: /etc/fail2ban/jail.d/sshd.local
+    content: |
+      [sshd]
+      enabled = true
+      port = {{ common_ssh_port }}
+      maxretry = 5
+      bantime = 1h
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Redémarrer fail2ban
+
+- name: "Pare-feu : SSH (tout le monde)"
+  community.general.ufw:
+    rule: limit
+    port: "{{ common_ssh_port | string }}"
+    proto: tcp
+  when: common_extra_allowed_ssh_sources | length == 0
+
+- name: "Pare-feu : SSH (réseaux autorisés)"
+  community.general.ufw:
+    rule: allow
+    port: "{{ common_ssh_port | string }}"
+    proto: tcp
+    src: "{{ item }}"
+  loop: "{{ common_extra_allowed_ssh_sources }}"
+
+- name: "Pare-feu : HTTP, HTTPS et HTTP/3"
+  community.general.ufw:
+    rule: allow
+    port: "{{ item.port }}"
+    proto: "{{ item.proto }}"
+  loop:
+    - { port: "80", proto: tcp }
+    - { port: "443", proto: tcp }
+    - { port: "443", proto: udp }
+
+- name: "Pare-feu : tout le reste refusé en entrée, puis activation"
+  community.general.ufw:
+    state: enabled
+    policy: deny
+    direction: incoming

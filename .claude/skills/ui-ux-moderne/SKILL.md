@@ -1,9 +1,9 @@
 ---
 name: ui-ux-moderne
-description: Règles de design et d'UX du site vitrine DDI-Buntu (style « produit sombre »). À suivre pour toute page, composant ou retouche visuelle du site.
+description: Règles de design et d'UX du site vitrine Ipnoria (style « produit sombre »). À suivre pour toute page, composant ou retouche visuelle du site.
 ---
 
-# Design et UX du site DDI-Buntu
+# Design et UX du site Ipnoria
 
 Le site présente un produit d'infrastructure à des administrateurs systèmes et réseau. Il doit avoir l'allure d'un produit logiciel sérieux et récent (familles Linear, Tailscale, Vercel), pas d'un gabarit généré. Le produit se montre : captures réelles, démonstration interactive, commandes exactes.
 

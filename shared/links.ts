@@ -1,5 +1,5 @@
 // Liens vers le dépôt public du produit. Le site lui-même vit dans un dépôt privé distinct.
-export const GITHUB_REPO = 'vincenttisseront/ddibuntu'
+export const GITHUB_REPO = 'vincenttisseront/ipnoria'
 export const GITHUB_URL = `https://github.com/${GITHUB_REPO}`
 
 export const githubLinks = {

@@ -1,0 +1,10 @@
+---
+- name: Relancer le site
+  community.docker.docker_compose_v2:
+    project_src: "{{ website_dir }}"
+    profiles: "{{ ['analytics'] if website_analytics_enabled else [] }}"
+    pull: never
+    recreate: always
+    wait: true
+    wait_timeout: 300
+    state: present

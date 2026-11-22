@@ -1,0 +1,36 @@
+---
+# Sauvegarde nocturne des bases (site, et statistiques si activées) : pg_dump au format personnalisé, rotation, copie hors serveur facultative
+- name: Dossier des sauvegardes
+  ansible.builtin.file:
+    path: "{{ backup_dir }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "0700"
+
+- name: Script de sauvegarde
+  ansible.builtin.template:
+    src: backup.sh.j2
+    dest: /usr/local/sbin/ipnoria-website-backup
+    owner: root
+    group: root
+    mode: "0750"
+
+- name: Service et minuteur systemd
+  ansible.builtin.template:
+    src: "{{ item }}.j2"
+    dest: "/etc/systemd/system/{{ item }}"
+    owner: root
+    group: root
+    mode: "0644"
+  loop: [ipnoria-website-backup.service, ipnoria-website-backup.timer]
+  notify: Recharger systemd
+
+- name: Prise en compte des unités
+  ansible.builtin.meta: flush_handlers
+
+- name: Minuteur actif
+  ansible.builtin.systemd_service:
+    name: ipnoria-website-backup.timer
+    state: started
+    enabled: true

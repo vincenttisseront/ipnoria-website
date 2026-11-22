@@ -8,11 +8,11 @@ const year = new Date().getFullYear()
 
 <template>
   <footer class="mt-32 border-t border-line">
-    <div class="wrap grid gap-10 py-14 md:grid-cols-[1.6fr_1fr_1fr]">
+    <div class="wrap grid gap-10 py-14 md:grid-cols-[1.6fr_1fr_1fr_1fr]">
       <div>
         <p class="flex items-center gap-2.5">
           <BrandMark />
-          <span class="font-semibold tracking-tight">DDI-Buntu</span>
+          <span class="font-semibold tracking-tight">Ipnoria</span>
         </p>
         <p class="mt-3 max-w-xs text-sm text-muted">{{ t('footer.tagline') }}</p>
       </div>
@@ -25,10 +25,20 @@ const year = new Date().getFullYear()
           <li><a :href="docLinks.licenseDoc" class="hover:text-fg" rel="noopener">AGPL-3.0</a></li>
         </ul>
       </nav>
+      <nav :aria-label="t('footer.resources')">
+        <h2 class="text-sm font-medium">{{ t('footer.resources') }}</h2>
+        <ul class="mt-4 space-y-2.5 text-sm text-muted">
+          <li><NuxtLink :to="localePath('documentation')" class="hover:text-fg">{{ t('nav.docs') }}</NuxtLink></li>
+          <li><NuxtLink :to="localePath('guides')" class="hover:text-fg">{{ t('nav.guides') }}</NuxtLink></li>
+          <li><NuxtLink :to="localePath('comparatif')" class="hover:text-fg">{{ t('nav.compare') }}</NuxtLink></li>
+          <li><NuxtLink :to="localePath('nouveautes')" class="hover:text-fg">{{ t('nav.releases') }}</NuxtLink></li>
+          <li><a href="/rss.xml" class="hover:text-fg">{{ t('footer.rss') }}</a></li>
+        </ul>
+      </nav>
       <nav :aria-label="t('footer.site')">
         <h2 class="text-sm font-medium">{{ t('footer.site') }}</h2>
         <ul class="mt-4 space-y-2.5 text-sm text-muted">
-          <li><NuxtLink :to="localePath('documentation')" class="hover:text-fg">{{ t('nav.docs') }}</NuxtLink></li>
+          <li><NuxtLink :to="localePath('demo')" class="hover:text-fg">{{ t('nav.demo') }}</NuxtLink></li>
           <li><NuxtLink :to="localePath('contact')" class="hover:text-fg">{{ t('nav.contact') }}</NuxtLink></li>
           <li><NuxtLink :to="localePath('mentions-legales')" class="hover:text-fg">{{ t('footer.legal') }}</NuxtLink></li>
           <li><NuxtLink :to="localePath('confidentialite')" class="hover:text-fg">{{ t('footer.privacy') }}</NuxtLink></li>

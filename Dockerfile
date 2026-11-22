@@ -14,9 +14,9 @@ COPY . .
 RUN npx nuxt prepare && npm run build
 
 FROM ${NODE_IMAGE} AS runtime
-LABEL org.opencontainers.image.title="ddibuntu-site" \
-      org.opencontainers.image.description="Site vitrine de DDI-Buntu" \
-      org.opencontainers.image.source="https://github.com/vincenttisseront/ddibuntu-site"
+LABEL org.opencontainers.image.title="ipnoria-website" \
+      org.opencontainers.image.description="Site vitrine d'Ipnoria" \
+      org.opencontainers.image.source="https://github.com/vincenttisseront/ipnoria-website"
 ENV NODE_ENV=production \
     HOST=0.0.0.0 \
     PORT=3000 \

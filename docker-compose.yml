@@ -1,7 +1,7 @@
 # Déploiement de production : Caddy (HTTPS automatique) → application Nuxt → PostgreSQL.
 # Seul Caddy est exposé. La base est sur un réseau interne sans accès à Internet.
 # Utilisation : cp .env.example .env ; éditer .env ; docker compose up -d
-name: ddibuntu-site
+name: ipnoria-website
 
 x-hardening: &hardening
   restart: unless-stopped
@@ -22,6 +22,7 @@ services:
       SITE_DOMAIN: ${SITE_DOMAIN:?SITE_DOMAIN requis}
     volumes:
       - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./caddy-sites:/etc/caddy/sites:ro
       - caddy_data:/data
       - caddy_config:/config
     read_only: true
@@ -34,7 +35,7 @@ services:
 
   app:
     <<: *hardening
-    image: ${APP_IMAGE:-ghcr.io/vincenttisseront/ddibuntu-site:latest}
+    image: ${APP_IMAGE:-ghcr.io/vincenttisseront/ipnoria-website:latest}
     build: .
     environment:
       NUXT_DATABASE_URL: postgres://site:${POSTGRES_PASSWORD:?POSTGRES_PASSWORD requis}@db:5432/site
@@ -51,6 +52,16 @@ services:
       NUXT_PUBLIC_LEGAL_ADDRESS: ${LEGAL_ADDRESS:-}
       NUXT_PUBLIC_LEGAL_EMAIL: ${LEGAL_EMAIL:-}
       NUXT_PUBLIC_LEGAL_HOST: ${LEGAL_HOST:-}
+      NUXT_SESSION_PASSWORD: ${SESSION_PASSWORD:-}
+      NUXT_ADMIN_EMAILS: ${ADMIN_EMAILS:-}
+      NUXT_OIDC_ISSUER: ${OIDC_ISSUER:-}
+      NUXT_OIDC_CLIENT_ID: ${OIDC_CLIENT_ID:-}
+      NUXT_OIDC_CLIENT_SECRET: ${OIDC_CLIENT_SECRET:-}
+      NUXT_PUBLIC_DEMO_URL: ${DEMO_URL:-}
+      NUXT_PUBLIC_DEMO_USER: ${DEMO_USER:-}
+      NUXT_PUBLIC_DEMO_PASSWORD: ${DEMO_PASSWORD:-}
+      NUXT_PUBLIC_ANALYTICS_SRC: ${ANALYTICS_SRC:-}
+      NUXT_PUBLIC_ANALYTICS_WEBSITE_ID: ${ANALYTICS_WEBSITE_ID:-}
     read_only: true
     tmpfs: [/tmp]
     cap_drop: [ALL]
@@ -83,12 +94,55 @@ services:
       retries: 10
     networks: [backend]
 
+  # Statistiques sans cookie (facultatif) : docker compose --profile analytics up -d
+  # Servi par Caddy sur stats.<domaine> (fichier caddy-sites/stats.caddy, voir stats.caddy.example)
+  umami:
+    <<: *hardening
+    profiles: [analytics]
+    image: ghcr.io/umami-software/umami:3.5.0@sha256:b64f40400d77bcadd39cf5c62a1e368c99524ca442024f96e1133355a19a5dbc
+    environment:
+      DATABASE_URL: postgresql://umami:${UMAMI_DB_PASSWORD:-}@umami-db:5432/umami
+      APP_SECRET: ${UMAMI_APP_SECRET:-}
+      DISABLE_TELEMETRY: "1"
+      DISABLE_UPDATES: "1"
+    cap_drop: [ALL]
+    pids_limit: 200
+    mem_limit: 512m
+    depends_on:
+      umami-db: { condition: service_healthy }
+    networks: [edge, analytics]
+
+  umami-db:
+    <<: *hardening
+    profiles: [analytics]
+    image: postgres:17-alpine@sha256:f9cf3e1f0066f0eb0c48707d864f0ac5941e9ff454a072077d97a4d278d07d73
+    environment:
+      POSTGRES_DB: umami
+      POSTGRES_USER: umami
+      POSTGRES_PASSWORD: ${UMAMI_DB_PASSWORD:-}
+      POSTGRES_INITDB_ARGS: --auth-host=scram-sha-256
+    volumes:
+      - umami_db_data:/var/lib/postgresql/data
+    tmpfs: [/tmp, /var/run/postgresql]
+    read_only: true
+    cap_drop: [ALL]
+    cap_add: [CHOWN, DAC_OVERRIDE, FOWNER, SETGID, SETUID]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U umami -d umami"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks: [analytics]
+
 networks:
   edge: {}
   backend:
+    internal: true
+  analytics:
     internal: true
 
 volumes:
   caddy_data: {}
   caddy_config: {}
   db_data: {}
+  umami_db_data: {}
