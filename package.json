@@ -31,7 +31,7 @@
     "markdown-it-anchor": "^10.1.0",
     "nodemailer": "^10.6.1",
     "nuxt": "^4.6.4",
-    "nuxt-security": "^2.5.1",
+    "nuxt-security": "^2.7.0",
     "openid-client": "^6.9.1",
     "pdf-lib": "^1.17.1",
     "pg": "^8.23.1",
