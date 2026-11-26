@@ -3,7 +3,7 @@
 
 # --- Site
 website_domain: www.ipnoria.tech          # externe
-website_internal_domain: ipnoria.ar-systems # interne (DNS privé)
+website_internal_domain: ipnoria.ar-systems.fr # interne (DNS privé)
 website_image: ghcr.io/vincenttisseront/ipnoria-website:latest
 website_dir: /opt/ipnoria-website
 website_contact_retention_days: 365

@@ -14,7 +14,7 @@ website_admin_emails: []
 website_domain: www.ipnoria.tech
 # Interne : nom du DNS privé. Certificat local de Caddy. Vide = pas de second nom.
 # Le contrôle de santé passe par lui quand il est renseigné.
-website_internal_domain: ipnoria.ar-systems
+website_internal_domain: ipnoria.ar-systems.fr
 
 # Page de maintenance (503) servie par Caddy à la place du site : -e website_maintenance=true
 website_maintenance: false
