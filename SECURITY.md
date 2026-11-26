@@ -29,6 +29,6 @@ Politique complète, engagements et remerciements : page `/securite` du site ; c
 | Idées et commentaires | adresse vérifiée exigée, quotas par compte, texte brut jamais rendu en HTML, modération (masquage, fusion) | `server/api/ideas/`, `server/api/admin/ideas/` |
 | Alertes de version | double opt-in, jetons à usage unique conservés seulement en empreinte SHA-256, expiration à 7 jours, désinscription en un clic (RFC 8058) qui efface l'adresse, aucune énumération des inscrits | `server/api/newsletter/` |
 | Documentation affichée | Markdown rendu sans HTML brut, liens javascript: refusés, liste fermée de fichiers lisibles dans le dépôt produit, images servies par le site | `server/utils/markdown.ts`, `server/utils/github.ts` |
-| Serveur | SSH par clé seulement, fail2ban, pare-feu (22 limité, 80, 443), mises à jour de sécurité automatiques, Docker du dépôt officiel signé, sauvegardes vérifiées chaque nuit | `deploy/ansible/` |
+| Serveur | SSH par mot de passe (pas de connexion root), fail2ban, pare-feu (22 limité, 80, 443), mises à jour de sécurité automatiques, Docker du dépôt officiel signé, sauvegardes vérifiées chaque nuit | `deploy/ansible/` |
 | Supervision | test externe horaire (santé, accueil, échéance du certificat) avec ticket d'incident | `uptime.yml` |
 | Données personnelles | IP jamais stockée (empreinte salée), purge automatique après la durée de conservation, aucun cookie tiers, polices auto-hébergées | `server/plugins/database.ts` |

@@ -1,6 +1,6 @@
 # Déploiement
 
-Le déploiement passe par Ansible (`deploy/ansible`) : socle système, Docker, site, sauvegardes. Un serveur Debian ou Ubuntu récent, joignable en SSH par clé, avec un compte sudo.
+Le déploiement passe par Ansible (`deploy/ansible`) : socle système, Docker, site, sauvegardes. Un serveur Debian ou Ubuntu récent, joignable en SSH par mot de passe, avec un compte sudo.
 
 ## Première installation
 
@@ -20,7 +20,7 @@ Le nom DNS du site (et `stats.<domaine>` si les statistiques sont activées) doi
 
 | Rôle | Ce qu'il fait |
 |---|---|
-| `common` | paquets de base, fuseau horaire, mises à jour de sécurité automatiques, SSH par clé seulement, fail2ban, pare-feu (22 limité, 80, 443 TCP/UDP) |
+| `common` | paquets de base, fuseau horaire, mises à jour de sécurité automatiques, SSH par mot de passe (pas de root), fail2ban, pare-feu (22 limité, 80, 443 TCP/UDP) |
 | `docker` | Docker Engine et Compose depuis le dépôt officiel signé, journaux bornés, `no-new-privileges` par défaut |
 | `website` | `/opt/ipnoria-website` : compose, Caddyfile, `.env` (0600), connexion à ghcr.io, démarrage, contrôle de santé à travers Caddy |
 | `backup` | `pg_dump` vérifié chaque nuit (minuteur systemd), rotation 14 jours, copie `rsync` hors serveur facultative |

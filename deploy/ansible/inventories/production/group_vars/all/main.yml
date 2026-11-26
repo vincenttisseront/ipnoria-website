@@ -36,7 +36,7 @@ website_analytics_website_id: ""             # identifiant du site, créé dans 
 # --- Socle
 common_timezone: Europe/Paris
 common_ssh_port: 22
-common_extra_allowed_ssh_sources: []         # vide = SSH ouvert à tous (clé seulement) ; sinon liste de réseaux CIDR
+common_extra_allowed_ssh_sources: []         # vide = SSH ouvert à tous (mot de passe) ; sinon liste de réseaux CIDR
 
 # --- Sauvegardes
 backup_dir: /var/backups/ipnoria-website
