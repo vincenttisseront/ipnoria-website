@@ -7,7 +7,7 @@
 #   ansible-playbook site.yml --tags website        # mise à jour du site seulement
 #   ansible-playbook site.yml --check --diff        # voir ce qui changerait, sans rien changer
 - name: Serveur du site Ipnoria
-  hosts: website
+  hosts: all
   become: true
   roles:
     - role: common
