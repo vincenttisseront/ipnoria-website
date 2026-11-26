@@ -39,7 +39,7 @@
 	}
 }
 
-{$SITE_DOMAIN} {
+(application) {
 	encode zstd gzip
 	import pages_erreur
 
@@ -60,8 +60,10 @@
 	}
 }
 
-# SITE_DOMAIN est le nom public exact (www.ipnoria.tech, ou localhost pour un essai).
-# Ne pas préfixer www ici : le nom canonique l'inclut déjà.
+# Nom externe (Let's Encrypt). Le nom interne, s'il existe, est un fichier déposé dans /etc/caddy/sites/.
+{$SITE_DOMAIN} {
+	import application
+}
 
 # Sites additionnels (statistiques…) : un fichier .caddy par site, déposé par Ansible selon les options choisies
 import /etc/caddy/sites/*.caddy

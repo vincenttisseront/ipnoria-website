@@ -10,8 +10,11 @@ website_analytics_enabled: false
 # Liste vide : pas d'accès /admin, le mot de passe de session n'est pas exigé.
 # L'inventaire (group_vars) remplace cette valeur.
 website_admin_emails: []
-# Nom public exact, tel qu'il est dans le DNS (avec www s'il est canonique).
+# Externe : nom public (DNS, certificat Let's Encrypt, adresses du site).
 website_domain: www.ipnoria.tech
+# Interne : nom du DNS privé. Certificat local de Caddy. Vide = pas de second nom.
+# Le contrôle de santé passe par lui quand il est renseigné.
+website_internal_domain: ipnoria.ar-systems
 
 # Page de maintenance (503) servie par Caddy à la place du site : -e website_maintenance=true
 website_maintenance: false

@@ -30,6 +30,7 @@ website:
 EOF
 cat > "$WORK/vars.yml" <<EOF
 website_domain: localhost
+website_internal_domain: ""
 website_image: $IMAGE
 website_pull: missing
 docker_daemon_extra: { "storage-driver": "vfs" }

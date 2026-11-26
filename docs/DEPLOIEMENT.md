@@ -16,7 +16,7 @@ ansible-playbook site.yml --ask-vault-pass --check --diff    # voir ce qui va ch
 ansible-playbook site.yml --ask-vault-pass
 ```
 
-Le nom DNS du site (et `stats.<domaine>` si les statistiques sont activées) doit pointer vers le serveur avant le premier passage : Caddy obtient alors le certificat Let's Encrypt.
+Deux noms : `website_domain` (externe, `www.ipnoria.tech`, certificat Let's Encrypt) et `website_internal_domain` (interne, `ipnoria.ar-systems`, certificat local de Caddy). Le nom externe, et `stats.<apex>` si les statistiques sont activées, doit pointer vers le serveur avant le premier passage. Le contrôle de santé utilise le nom interne.
 
 | Rôle | Ce qu'il fait |
 |---|---|
