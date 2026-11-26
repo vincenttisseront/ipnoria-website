@@ -1,5 +1,5 @@
-# Copier en stats.caddy pour publier Umami sur stats.<domaine> (le DNS doit pointer vers le serveur).
-stats.{$SITE_DOMAIN} {
+# Copier en stats.caddy pour publier Umami sur stats.<apex> (SITE_APEX, sans www). Le DNS doit pointer vers le serveur.
+stats.{$SITE_APEX} {
 	encode zstd gzip
 	reverse_proxy umami:3000
 	header {

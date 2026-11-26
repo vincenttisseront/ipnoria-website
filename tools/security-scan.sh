@@ -57,7 +57,7 @@ config() {
   local tmp; tmp="$(mktemp -d)"; cp caddy-sites/stats.caddy.example "$tmp/stats.caddy"
   docker run --rm -e SITE_DOMAIN=exemple.test -v "$ROOT/Caddyfile:/etc/caddy/Caddyfile:ro" "$CADDY" \
     sh -c 'mkdir -p /etc/caddy/sites && caddy validate --config /etc/caddy/Caddyfile --adapter caddyfile'
-  docker run --rm -e SITE_DOMAIN=exemple.test -v "$ROOT/Caddyfile:/etc/caddy/Caddyfile:ro" -v "$tmp:/etc/caddy/sites:ro" "$CADDY" \
+  docker run --rm -e SITE_DOMAIN=exemple.test -e SITE_APEX=exemple.test -v "$ROOT/Caddyfile:/etc/caddy/Caddyfile:ro" -v "$tmp:/etc/caddy/sites:ro" "$CADDY" \
     caddy validate --config /etc/caddy/Caddyfile --adapter caddyfile
   rm -rf "$tmp"
   docker run --rm -i "$CADDY" caddy fmt - < Caddyfile | diff -u Caddyfile - || { echo "Caddyfile mal formaté : caddy fmt --overwrite Caddyfile"; return 1; }

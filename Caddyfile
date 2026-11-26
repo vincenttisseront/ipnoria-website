@@ -60,9 +60,8 @@
 	}
 }
 
-www.{$SITE_DOMAIN} {
-	redir https://{$SITE_DOMAIN}{uri} permanent
-}
+# SITE_DOMAIN est le nom public exact (www.ipnoria.tech, ou localhost pour un essai).
+# Ne pas préfixer www ici : le nom canonique l'inclut déjà.
 
 # Sites additionnels (statistiques…) : un fichier .caddy par site, déposé par Ansible selon les options choisies
 import /etc/caddy/sites/*.caddy
