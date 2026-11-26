@@ -123,6 +123,11 @@
     state: present
   register: website_compose
 
+# Le fichier du nom interne est monté dans Caddy, mais le processus ne le relit qu'au redémarrage.
+# Sans cela, le contrôle interroge l'ancienne configuration et la poignée de main TLS échoue.
+- name: Appliquer le rechargement du site avant le contrôle
+  ansible.builtin.meta: flush_handlers
+
 - name: Le site répond (santé, via le nom interne s'il existe, sinon le nom externe)
   vars:
     website_health_host: "{{ website_internal_domain | default(website_domain, true) }}"
