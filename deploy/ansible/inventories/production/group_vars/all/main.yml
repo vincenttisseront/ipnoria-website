@@ -2,7 +2,7 @@
 # Réglages non secrets. Les secrets sont dans vault.yml (chiffré), voir vault.yml.example.
 
 # --- Site
-website_domain: ipnoria.com
+website_domain: www.ipnoria.tech
 website_image: ghcr.io/vincenttisseront/ipnoria-website:latest
 website_dir: /opt/ipnoria-website
 website_contact_retention_days: 365

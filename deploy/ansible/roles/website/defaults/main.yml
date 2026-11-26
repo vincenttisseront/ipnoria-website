@@ -10,7 +10,8 @@ website_analytics_enabled: false
 # Liste vide : pas d'accès /admin, le mot de passe de session n'est pas exigé.
 # L'inventaire (group_vars) remplace cette valeur.
 website_admin_emails: []
-website_domain: ipnoria.tech
+# Nom public exact, tel qu'il est dans le DNS (avec www s'il est canonique).
+website_domain: www.ipnoria.tech
 
 # Page de maintenance (503) servie par Caddy à la place du site : -e website_maintenance=true
 website_maintenance: false
