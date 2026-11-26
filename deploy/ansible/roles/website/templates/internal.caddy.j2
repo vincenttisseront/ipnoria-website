@@ -1,5 +1,48 @@
 # Nom interne. Let's Encrypt ne peut pas le signer : certificat de l'autorité locale de Caddy.
+# Bloc autonome : un fichier importé ne voit pas les snippets du Caddyfile principal.
 {{ website_internal_domain }} {
 	tls internal
-	import application
+	encode zstd gzip
+
+	@maintenance file {
+		root /srv/errors
+		try_files /maintenance.on
+	}
+	handle @maintenance {
+		root * /srv/errors
+		@en_m path /en /en/*
+		rewrite @en_m /en/maintenance.html
+		rewrite * /maintenance.html
+		header Retry-After 300
+		header Cache-Control no-store
+		header Content-Security-Policy "default-src 'none'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'"
+		file_server {
+			status 503
+		}
+	}
+	handle_errors 502 503 504 {
+		root * /srv/errors
+		@en path /en /en/*
+		rewrite @en /en/50x.html
+		rewrite * /50x.html
+		header Retry-After 60
+		header Cache-Control no-store
+		header Content-Security-Policy "default-src 'none'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'"
+		templates
+		file_server
+	}
+
+	handle {
+		reverse_proxy app:3000
+	}
+
+	header {
+		-Server
+		-Via
+	}
+
+	log {
+		output stdout
+		format json
+	}
 }
