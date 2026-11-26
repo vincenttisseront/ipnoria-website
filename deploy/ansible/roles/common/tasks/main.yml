@@ -29,12 +29,12 @@
     group: root
     mode: "0755"
 
-- name: "SSH : clé uniquement, pas de root par mot de passe"
+- name: "SSH : mot de passe autorisé, pas de connexion root par mot de passe"
   ansible.builtin.copy:
     dest: /etc/ssh/sshd_config.d/10-ipnoria.conf
     content: |
-      PasswordAuthentication no
-      KbdInteractiveAuthentication no
+      PasswordAuthentication yes
+      KbdInteractiveAuthentication yes
       PermitRootLogin prohibit-password
       X11Forwarding no
       MaxAuthTries 4
