@@ -60,7 +60,7 @@
 	}
 }
 
-# Nom externe (Let's Encrypt). Le nom interne, s'il existe, est un fichier déposé dans /etc/caddy/sites/.
+# Nom externe (Let's Encrypt). Le nom interne est un fichier autonome dans /etc/caddy/sites/.
 {$SITE_DOMAIN} {
 	import application
 }
