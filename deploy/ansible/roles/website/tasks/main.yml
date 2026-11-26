@@ -10,6 +10,14 @@
     fail_msg: "Secret manquant ou trop court dans group_vars/all/vault.yml (voir vault.yml.example)."
     quiet: true
 
+- name: Les noms interne et externe sont distincts
+  ansible.builtin.assert:
+    that:
+      - website_internal_domain != website_domain
+    fail_msg: "Le domaine interne et le domaine externe doivent être différents."
+    quiet: true
+  when: (website_internal_domain | default('')) | length > 0
+
 - name: Dossier du site
   ansible.builtin.file:
     path: "{{ item }}"
@@ -62,6 +70,23 @@
   when: website_analytics_enabled
   notify: Relancer le site
 
+- name: Site interne (certificat local, Let's Encrypt ne signe pas ce nom)
+  ansible.builtin.template:
+    src: internal.caddy.j2
+    dest: "{{ website_dir }}/caddy-sites/internal.caddy"
+    owner: root
+    group: root
+    mode: "0644"
+  when: (website_internal_domain | default('')) | length > 0
+  notify: Relancer le site
+
+- name: Pas de site interne s'il n'est pas défini
+  ansible.builtin.file:
+    path: "{{ website_dir }}/caddy-sites/internal.caddy"
+    state: absent
+  when: (website_internal_domain | default('')) | length == 0
+  notify: Relancer le site
+
 - name: Pas de site des statistiques s'il est désactivé
   ansible.builtin.file:
     path: "{{ website_dir }}/caddy-sites/stats.caddy"
@@ -98,10 +123,13 @@
     state: present
   register: website_compose
 
-- name: Le site répond (santé de l'application, à travers Caddy)
+- name: Le site répond (santé, via le nom interne s'il existe, sinon le nom externe)
+  vars:
+    website_health_host: "{{ website_internal_domain | default(website_domain, true) }}"
   ansible.builtin.uri:
-    url: "https://{{ website_domain }}/api/health"
-    validate_certs: "{{ website_domain != 'localhost' }}"
+    url: "https://{{ website_health_host }}/api/health"
+    # Le certificat interne est signé par Caddy, pas par une autorité publique.
+    validate_certs: "{{ website_health_host != 'localhost' and website_health_host != (website_internal_domain | default('')) }}"
     status_code: 200
   register: website_health
   retries: 20
