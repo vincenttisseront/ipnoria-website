@@ -3,7 +3,9 @@ import { describe, expect, it } from 'vitest'
 import { previewDhcpExport } from '#shared/dhcp-preview'
 import { cidrDetails, cidrToString, freeBlocks, maskToPrefix, normMac, parseCidr, planVlsm, prefixForHosts, splitEqual } from '#shared/ipv4'
 import { size } from '#shared/sizing'
-import { candidateSlots, parseIcsBusy, zonedToUtc } from '../server/utils/booking-core'
+import { candidateSlots, localDay, parseIcsBusy, zonedToUtc } from '../server/utils/booking-core'
+import { inboxWhere } from '../server/utils/admin-inbox'
+import { toCsv } from '../server/utils/csv'
 
 describe('calculs IPv4', () => {
   it('normalise un bloc sur sa frontière', () => {
@@ -104,6 +106,10 @@ describe('dimensionnement', () => {
 })
 
 describe('créneaux de démonstration', () => {
+  it('donne le jour calendaire dans le fuseau, pas en UTC', () => {
+    expect(localDay(new Date('2026-11-23T22:30:00Z'), 'Europe/Paris')).toBe('2026-11-23')
+    expect(localDay(new Date('2026-11-23T23:30:00Z'), 'Europe/Paris')).toBe('2026-11-24')
+  })
   it('convertit l\'heure de Paris en UTC, heure d\'été comprise', () => {
     expect(zonedToUtc(2026, 1, 15, 10, 0, 'Europe/Paris').toISOString()).toBe('2026-01-15T09:00:00.000Z')
     expect(zonedToUtc(2026, 7, 15, 10, 0, 'Europe/Paris').toISOString()).toBe('2026-07-15T08:00:00.000Z')
@@ -124,5 +130,19 @@ describe('créneaux de démonstration', () => {
       { start: Date.parse('2026-11-23T09:00:00Z'), end: Date.parse('2026-11-23T10:00:00Z') },
       { start: Date.parse('2026-11-24T13:00:00Z'), end: Date.parse('2026-11-24T14:00:00Z') },
     ])
+  })
+})
+
+describe('administration', () => {
+  it('laisse le terme de recherche en paramètre et échappe les jokers', () => {
+    expect(inboxWhere('ouverts', 'a%_b')).toEqual({
+      sql: `handled_at IS NULL AND (name ILIKE $1 ESCAPE '\\' OR email ILIKE $1 ESCAPE '\\' OR company ILIKE $1 ESCAPE '\\')`,
+      args: ['%a\\%\\_b%'],
+    })
+    expect(inboxWhere('tous', '  ')).toEqual({ sql: 'TRUE', args: [] })
+    expect(inboxWhere('n’importe', '').sql).toBe('handled_at IS NULL')
+  })
+  it('neutralise une formule de tableur dans le CSV', () => {
+    expect(toCsv([['=1+1', 'a,b']])).toBe('\uFEFF\'=1+1,"a,b"\r\n')
   })
 })

@@ -18,6 +18,14 @@ export function tzOffsetMinutes(at: Date, timeZone: string): number {
   return Math.round((asUtc - at.getTime()) / 60000)
 }
 
+/** Jour calendaire YYYY-MM-DD dans un fuseau. */
+export function localDay(at: Date, timeZone: string): string {
+  const parts = Object.fromEntries(new Intl.DateTimeFormat('en-US', {
+    timeZone, year: 'numeric', month: '2-digit', day: '2-digit',
+  }).formatToParts(at).map(p => [p.type, p.value]))
+  return `${parts.year}-${parts.month}-${parts.day}`
+}
+
 /** Heure locale d'un fuseau → instant UTC. */
 export function zonedToUtc(y: number, m: number, d: number, hh: number, mm: number, timeZone: string): Date {
   const guess = new Date(Date.UTC(y, m - 1, d, hh, mm))

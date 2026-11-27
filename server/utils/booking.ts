@@ -1,4 +1,4 @@
-import { candidateSlots, parseIcsBusy, type BookingSettings, type BusyRange } from './booking-core'
+import { candidateSlots, localDay, parseIcsBusy, type BookingSettings, type BusyRange } from './booking-core'
 
 // Créneaux de démonstration : réglages, occupations de l'agenda, créneaux encore libres.
 export function bookingSettings(): BookingSettings & { enabled: boolean, busyIcsUrl: string, meetingUrl: string, feedKey: string } {
@@ -19,6 +19,13 @@ export function bookingSettings(): BookingSettings & { enabled: boolean, busyIcs
   }
 }
 
+/** Fuseau des démonstrations, ou Paris si la valeur configurée n'est pas un fuseau. */
+export function bookingZone(): string {
+  const tz = bookingSettings().timezone
+  try { Intl.DateTimeFormat(undefined, { timeZone: tz }); return tz }
+  catch { return 'Europe/Paris' }
+}
+
 export const fetchBusy = defineCachedFunction(async (url: string, tz: string): Promise<BusyRange[]> => {
   try {
     const res = await fetch(url, { signal: AbortSignal.timeout(8000), headers: { 'user-agent': 'ipnoria-website' } })
@@ -33,13 +40,18 @@ export async function availableSlots(now = new Date()) {
   const s = bookingSettings()
   if (!s.enabled) return { enabled: false, slots: [] as string[], durationMin: s.durationMin, timezone: s.timezone }
   const candidates = candidateSlots(s, now)
-  const { rows } = await useDb().query<{ starts_at: Date }>(`SELECT starts_at FROM bookings WHERE status = 'confirmed' AND starts_at > now()`)
+  const db = useDb()
+  const { rows } = await db.query<{ starts_at: Date }>(`SELECT starts_at FROM bookings WHERE status = 'confirmed' AND starts_at > now()`)
+  const closedRows = await db.query<{ day: string }>(`SELECT to_char(day, 'YYYY-MM-DD') AS day FROM booking_closures`)
+    .then(r => r.rows)
+    .catch(() => [] as Array<{ day: string }>)
   const taken = new Set(rows.map(r => new Date(r.starts_at).getTime()))
+  const closed = new Set(closedRows.map(r => r.day))
   const busy = s.busyIcsUrl ? await fetchBusy(s.busyIcsUrl, s.timezone) : []
   const dur = s.durationMin * 60000
   const slots = candidates.filter((d) => {
     const a = d.getTime(), b = a + dur
-    return !taken.has(a) && !busy.some(r => r.start < b && r.end > a)
+    return !closed.has(localDay(d, s.timezone)) && !taken.has(a) && !busy.some(r => r.start < b && r.end > a)
   })
   return { enabled: true, slots: slots.map(d => d.toISOString()), durationMin: s.durationMin, timezone: s.timezone }
 }

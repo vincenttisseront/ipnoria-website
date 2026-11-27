@@ -38,8 +38,15 @@ const decisionNote = ref('')
 const decide = (status: string) => run(`app-${status}`, async () => {
   await $fetch(`/api/admin/beta/applications/${selApp.value!.id}`, { method: 'PATCH', body: { status, note: decisionNote.value } })
   await refreshApps(); selApp.value = apps.value.applications.find(a => a.id === selApp.value!.id) ?? null; decisionNote.value = ''
-}, `Décision enregistrée (${APP[status]}), e-mail envoyé.`)
+}, status === 'pending' ? 'Candidature rouverte.' : `Décision enregistrée (${APP[status]}), e-mail envoyé.`)
 const saveQuotas = () => run('quotas', async () => { await $fetch('/api/admin/beta/quotas', { method: 'PUT', body: { ...quotas } }); await refreshApps() }, 'Objectifs enregistrés.')
+const remind = () => run('remind', () => $fetch<{ sent: number, pending: number, version: string | null, mailed: boolean }>('/api/admin/beta/remind', { method: 'POST' }), (r) => {
+  const x = r as { sent: number, pending: number, version: string | null, mailed: boolean }
+  if (!x.version) return 'Aucune version publiée.'
+  if (!x.mailed) return 'Les messages n’ont pas pu partir.'
+  if (!x.pending) return 'Tout le monde a déjà téléchargé cette version.'
+  return x.sent ? `${x.sent} personne(s) relancée(s) pour la version ${x.version}.` : 'Les messages n’ont pas pu partir.'
+})
 
 // Versions
 type Rel = { id: string, version: string, title: Record<string, string>, notes: Record<string, string>, fileName: string, size: number | null, sha256: string | null, published: boolean, downloads: number, testers: number }
@@ -145,13 +152,22 @@ const replyRep = () => run('reply', async () => { await $fetch(`/api/admin/beta/
             <button type="button" class="btn btn-primary" :disabled="!!busy" @click="decide('accepted')">Accepter</button>
             <button type="button" class="btn btn-secondary" :disabled="!!busy" @click="decide('waitlist')">Liste d'attente</button>
             <button type="button" class="btn btn-secondary" :disabled="!!busy" @click="decide('declined')">Refuser</button>
+            <button v-if="selApp.status !== 'pending'" type="button" class="btn btn-secondary" :disabled="!!busy" @click="decide('pending')">Rouvrir</button>
           </div>
         </article>
       </div>
     </div>
 
     <!-- Versions -->
-    <div v-else-if="tab === 'releases'" class="mt-6 grid gap-6 lg:grid-cols-[22rem_1fr]">
+    <div v-else-if="tab === 'releases'" class="mt-6 space-y-6">
+      <div class="panel flex flex-wrap items-center justify-between gap-3 p-5">
+        <p class="max-w-xl text-sm text-muted">Relancer les testeurs qui n’ont pas téléchargé la dernière version publiée.</p>
+        <button type="button" class="btn btn-secondary" :disabled="!!busy" @click="remind">
+          <span v-if="busy === 'remind'" class="size-4 animate-spin rounded-full border-2 border-line-strong border-t-fg" aria-hidden="true" />
+          Relancer
+        </button>
+      </div>
+      <div class="grid gap-6 lg:grid-cols-[22rem_1fr]">
       <ul class="panel divide-y divide-line">
         <li><button type="button" class="w-full px-4 py-3 text-left text-accent hover:bg-raised" @click="editRel(null)">Nouvelle version</button></li>
         <li v-for="r in rels.releases" :key="r.id">
@@ -174,6 +190,7 @@ const replyRep = () => run('reply', async () => { await $fetch(`/api/admin/beta/
         <label class="flex items-center gap-2"><input v-model="relForm.published" type="checkbox" class="size-4 accent-[#5b8cff]">Publiée (les testeurs sont prévenus à la première publication)</label>
         <button type="submit" class="btn btn-primary" :disabled="!!busy"><span v-if="busy === 'rel'" class="size-4 animate-spin rounded-full border-2 border-bg/30 border-t-bg" aria-hidden="true" />Enregistrer la version</button>
       </form>
+      </div>
     </div>
 
     <!-- Campagnes -->

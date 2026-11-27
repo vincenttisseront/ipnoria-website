@@ -35,7 +35,16 @@ const sessionOptions = (name: string, maxAge: number) => {
   }
 }
 
-export interface AdminData { email?: string, name?: string, userId?: string }
+export interface AdminData { email?: string, name?: string, userId?: string, epoch?: number }
+
+/** Génération de session pour cette adresse. 0 si aucune clôture n'a eu lieu. */
+export async function adminEpoch(email: string): Promise<number> {
+  try {
+    const r = await useDb().query<{ epoch: number }>('SELECT epoch FROM admin_session_epoch WHERE email = $1', [email.toLowerCase()])
+    return Number(r.rows[0]?.epoch ?? 0)
+  }
+  catch { return 0 }
+}
 interface PendingData { userId?: string, email?: string }
 
 export const useAdminSession = (event: H3Event) => useSession<AdminData>(event, sessionOptions('ipn_admin', ADMIN_SECONDS))
@@ -56,7 +65,8 @@ export async function openAdminSession(event: H3Event, user: AdminIdentity): Pro
   const pending = await useAdminPending(event)
   await pending.clear()
   const session = await useAdminSession(event)
-  await session.update({ email: user.email, name: user.displayName || user.email, userId: user.userId })
+  const epoch = await adminEpoch(user.email)
+  await session.update({ email: user.email, name: user.displayName || user.email, userId: user.userId, epoch })
 }
 
 export async function clearAdminLogin(event: H3Event): Promise<void> {
@@ -103,7 +113,7 @@ export async function requireAdmin(event: H3Event): Promise<{ email: string, nam
   if (!adminEnabled()) throw createError({ statusCode: 404 })
   if (event.method !== 'GET' && event.method !== 'HEAD') assertSameOrigin(event)
   const session = await useAdminSession(event)
-  const { email, name, userId } = session.data
+  const { email, name, userId, epoch } = session.data
   if (!email || !userId || !allowedAdmin(email)) throw createError({ statusCode: 401, statusMessage: 'Unauthorized' })
   const row = (await useDb().query(
     `SELECT lower(email) AS email,
@@ -112,6 +122,10 @@ export async function requireAdmin(event: H3Event): Promise<{ email: string, nam
     [userId],
   )).rows[0]
   if (!row || row.email !== email.toLowerCase() || !row.mfa || !allowedAdmin(row.email)) {
+    await session.clear()
+    throw createError({ statusCode: 401, statusMessage: 'Unauthorized' })
+  }
+  if (Number(epoch ?? 0) !== await adminEpoch(email)) {
     await session.clear()
     throw createError({ statusCode: 401, statusMessage: 'Unauthorized' })
   }
