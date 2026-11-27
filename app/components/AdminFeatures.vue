@@ -32,7 +32,7 @@ async function toggle(key: string) {
 
 <template>
   <section aria-labelledby="feat-title">
-    <h2 id="feat-title" class="text-h2">Éléments du site</h2>
+    <h2 id="feat-title" class="text-xl font-semibold tracking-tight">Éléments du site</h2>
     <p class="mt-2 max-w-2xl text-muted">Masquez une partie du site public. Le changement est immédiat.</p>
     <p v-if="notice" :role="notice.kind === 'error' ? 'alert' : 'status'" class="mt-6 rounded-lg px-4 py-3 text-sm" :class="notice.kind === 'error' ? 'border-l-4 border-alert bg-surface text-alert' : 'border-l-4 border-ok bg-surface text-ok'">{{ notice.text }}</p>
     <ul class="mt-8 divide-y divide-line rounded-2xl border border-line">
