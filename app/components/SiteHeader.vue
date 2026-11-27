@@ -34,6 +34,7 @@ onMounted(() => { isMac.value = /Mac|iPhone|iPad/.test(navigator.platform) })
     class="sticky top-0 z-40 border-b transition-colors duration-200"
     :class="scrolled ? 'border-line bg-bg/80 backdrop-blur-xl' : 'border-transparent bg-transparent'"
   >
+    <SiteBanner />
     <div class="wrap flex h-16 items-center justify-between gap-6">
       <NuxtLink :to="localePath('/')" class="flex items-center gap-2.5 text-fg no-underline">
         <BrandMark />

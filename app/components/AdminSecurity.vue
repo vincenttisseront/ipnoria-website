@@ -3,9 +3,12 @@
 type Entry = { id: string, admin: string, action: string, targetType: string, targetId: string | null, details: Record<string, unknown>, at: string }
 type Ack = { id: string, name: string, url: string | null, summary: Record<string, string>, month: string }
 const filterAdmin = ref('')
+const adminDraft = ref('')
 const filterType = ref('')
 const { data: log, refresh: refreshLog } = await useFetch<Entry[]>('/api/admin/audit', { query: computed(() => ({ admin: filterAdmin.value || undefined, type: filterType.value || undefined })), default: () => [] })
 const { data: sec, refresh: refreshSec } = await useFetch<{ acknowledgments: Ack[] }>('/api/security', { default: () => ({ acknowledgments: [] }) })
+type Operator = { email: string, account: boolean, mfa: boolean, lastLogin: string | null, self: boolean }
+const { data: people, refresh: refreshPeople } = await useFetch<{ operators: Operator[] }>('/api/admin/operators', { default: () => ({ operators: [] }) })
 const ACTIONS: Record<string, string> = {
   login: 'Connexion',
   'mfa.enable': 'Second facteur activé',
@@ -14,6 +17,14 @@ const ACTIONS: Record<string, string> = {
   'message.update': 'Message mis à jour',
   'message.delete': 'Message supprimé',
   'message.reply': 'Réponse envoyée',
+  'template.create': 'Texte enregistré',
+  'template.delete': 'Texte retiré',
+  'booking.cancel': 'Démonstration annulée',
+  'booking.close': 'Jour fermé',
+  'booking.open': 'Jour rouvert',
+  'announcement.update': 'Annonce mise à jour',
+  'session.revoke': 'Session clôturée',
+  'beta.remind': 'Testeurs relancés',
   'beta.quotas': 'Objectifs enregistrés',
   'beta.decision': 'Candidature mise à jour',
   'beta.campaign.update': 'Campagne mise à jour',
@@ -37,6 +48,10 @@ const TARGETS: Record<string, string> = {
   user: 'Compte',
   feature: 'Élément du site',
   contact_message: 'Message',
+  reply_template: 'Réponse type',
+  booking: 'Démonstration',
+  booking_closure: 'Jour fermé',
+  announcement: 'Annonce',
   beta_settings: 'Objectifs',
   beta_application: 'Candidature',
   beta_campaign: 'Campagne',
@@ -48,9 +63,23 @@ const TARGETS: Record<string, string> = {
 }
 const FEATURES: Record<string, string> = { contact: 'Contact', booking: 'Rendez-vous', demo: 'Démo', newsletter: 'Alertes de version' }
 const actionLabel = (action: string) => ACTIONS[action] ?? 'Action'
-const objectLabel = (e: Entry) => (e.targetType === 'feature' && e.targetId && FEATURES[e.targetId]) || TARGETS[e.targetType] || 'Élément'
-const admins = computed(() => [...new Set((log.value ?? []).map(e => e.admin))])
-const types = computed(() => [...new Set((log.value ?? []).map(e => e.targetType))])
+const objectLabel = (e: Entry) => {
+  if (e.targetType === 'feature' && e.targetId && FEATURES[e.targetId]) return FEATURES[e.targetId]
+  if (e.targetType === 'session' && e.targetId?.includes('@')) return e.targetId
+  if (e.targetType === 'booking_closure' && e.targetId) return e.targetId
+  return TARGETS[e.targetType] || 'Élément'
+}
+function objectHref(e: Entry): string | null {
+  if (e.targetType === 'contact_message' && e.targetId) return `/admin?section=messages&message=${encodeURIComponent(e.targetId)}`
+  if (e.targetType === 'customer_reference') return '/admin?section=references'
+  if (e.targetType === 'feature' || e.targetType === 'announcement') return '/admin?section=elements'
+  if (e.targetType === 'beta_application' || e.targetType === 'beta_release' || e.targetType === 'beta_campaign') return '/admin?section=beta'
+  if (e.targetType === 'idea' || e.targetType === 'idea_comment') return '/admin?section=idees'
+  if (e.targetType === 'booking' || e.targetType === 'booking_closure') return '/admin?section=activite'
+  if (e.targetType === 'reply_template') return '/admin?section=messages'
+  return null
+}
+function applyPerson() { filterAdmin.value = adminDraft.value.trim().toLowerCase() }
 const fmt = (d: string) => new Date(d).toLocaleString('fr-FR', { dateStyle: 'short', timeStyle: 'medium' })
 const form = reactive({ name: '', url: '', summaryFr: '', summaryEn: '', reportedOn: '' })
 const busy = ref(false)
@@ -65,24 +94,71 @@ async function addAck() {
   finally { busy.value = false }
 }
 const confirmId = ref<string | null>(null)
+const revokeEmail = ref<string | null>(null)
+const busyOp = ref(false)
+const opNotice = ref('')
 async function removeAck(id: string) {
   await $fetch(`/api/admin/security/acknowledgments/${id}`, { method: 'DELETE' }); confirmId.value = null; await Promise.all([refreshSec(), refreshLog()])
+}
+async function revoke(person: Operator) {
+  busyOp.value = true
+  opNotice.value = ''
+  try {
+    const r = await $fetch<{ self: boolean }>('/api/admin/operators/revoke', { method: 'POST', body: { email: person.email } })
+    if (r.self) { await navigateTo('/admin', { external: true }); return }
+    revokeEmail.value = null
+    await Promise.all([refreshPeople(), refreshLog()])
+    opNotice.value = 'Session clôturée. La personne devra se reconnecter.'
+  }
+  catch (e: unknown) {
+    const code = (e as { statusCode?: number }).statusCode
+    opNotice.value = code === 401 ? 'Reconnectez-vous.' : 'La session n’a pas pu être clôturée. Réessayez.'
+  }
+  finally { busyOp.value = false }
 }
 </script>
 
 <template>
   <section aria-labelledby="as-title">
     <h2 id="as-title" class="text-xl font-semibold tracking-tight">Sécurité</h2>
+    <section class="panel mt-6 p-5" aria-labelledby="op-title">
+      <h3 id="op-title" class="font-semibold">Personnes</h3>
+      <p class="mt-1 max-w-2xl text-sm text-muted">Dernière connexion et second facteur. Clôturer une session oblige à se reconnecter.</p>
+      <p v-if="opNotice" role="status" class="mt-3 text-sm">{{ opNotice }}</p>
+      <ul class="mt-4 divide-y divide-line">
+        <li v-for="p in people?.operators ?? []" :key="p.email" class="flex flex-wrap items-center justify-between gap-3 py-3">
+          <div class="min-w-0">
+            <p class="truncate font-medium">{{ p.email }}<span v-if="p.self" class="text-muted">, vous</span></p>
+            <p class="text-sm text-muted">
+              <template v-if="!p.account">Pas de compte sur le site</template>
+              <template v-else>{{ p.mfa ? 'Second facteur actif' : 'Pas encore activé' }}</template>,
+              {{ p.lastLogin ? `dernière connexion le ${fmt(p.lastLogin)}` : 'jamais connecté' }}
+            </p>
+          </div>
+          <div v-if="revokeEmail === p.email" class="flex flex-wrap items-center gap-2">
+            <p class="text-sm text-muted">{{ p.self ? 'Vous devrez vous reconnecter.' : 'Cette personne devra se reconnecter.' }}</p>
+            <button type="button" class="btn btn-secondary text-sm" :disabled="busyOp" @click="revokeEmail = null">Garder</button>
+            <button type="button" class="btn bg-alert text-sm text-bg hover:opacity-90" :disabled="busyOp" @click="revoke(p)">Clôturer</button>
+          </div>
+          <button v-else type="button" class="btn btn-secondary text-sm" @click="revokeEmail = p.email">Clôturer la session</button>
+        </li>
+        <li v-if="!(people?.operators ?? []).length" class="py-3 text-sm text-muted">Aucune personne autorisée.</li>
+      </ul>
+    </section>
     <div class="mt-6 grid gap-6 lg:grid-cols-[1fr_24rem]">
       <div class="panel p-5">
         <div class="flex flex-wrap items-center justify-between gap-3">
           <h3 class="font-semibold">Journal d'administration</h3>
-          <div class="flex gap-2 text-sm">
-            <label class="sr-only" for="au-a">Administrateur</label>
-            <select id="au-a" v-model="filterAdmin" class="field !w-auto py-1.5 text-sm"><option value="">Tous les administrateurs</option><option v-for="a in admins" :key="a" :value="a">{{ a }}</option></select>
+          <form class="flex flex-col gap-2 text-sm sm:flex-row sm:flex-wrap sm:items-center" @submit.prevent="applyPerson">
+            <label class="sr-only" for="au-a">Personne</label>
+            <input id="au-a" v-model="adminDraft" class="field min-h-11 w-full text-sm sm:w-56" placeholder="Adresse exacte" autocomplete="off" spellcheck="false">
+            <button type="submit" class="btn btn-secondary text-sm">Filtrer</button>
             <label class="sr-only" for="au-t">Objet</label>
-            <select id="au-t" v-model="filterType" class="field !w-auto py-1.5 text-sm"><option value="">Tous les objets</option><option v-for="x in types" :key="x" :value="x">{{ TARGETS[x] ?? 'Élément' }}</option></select>
-          </div>
+            <select id="au-t" v-model="filterType" class="field min-h-11 !w-auto text-sm">
+              <option value="">Tous les objets</option>
+              <option v-for="(label, key) in TARGETS" :key="key" :value="key">{{ label }}</option>
+            </select>
+          </form>
         </div>
         <div class="mt-4 max-h-[28rem] overflow-auto">
           <table class="w-full min-w-[40rem] text-sm">
@@ -92,7 +168,10 @@ async function removeAck(id: string) {
                 <td class="whitespace-nowrap py-1.5 pr-3">{{ fmt(e.at) }}</td>
                 <td class="pr-3">{{ e.admin }}</td>
                 <td class="pr-3">{{ actionLabel(e.action) }}</td>
-                <td class="pr-3">{{ objectLabel(e) }}</td>
+                <td class="py-1 pr-3">
+                  <NuxtLink v-if="objectHref(e)" :to="objectHref(e)!" class="link inline-flex min-h-11 items-center">{{ objectLabel(e) }}</NuxtLink>
+                  <span v-else class="inline-flex min-h-11 items-center">{{ objectLabel(e) }}</span>
+                </td>
               </tr>
               <tr v-if="!log?.length"><td colspan="4" class="py-4 text-muted">Aucune action enregistrée.</td></tr>
             </tbody>
