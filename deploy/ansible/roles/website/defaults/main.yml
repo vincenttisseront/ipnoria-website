@@ -7,7 +7,8 @@ website_image: ghcr.io/vincenttisseront/ipnoria-website:latest
 website_pull: always
 website_check_health: true
 website_analytics_enabled: false
-# Liste vide : pas d'accès /admin, le mot de passe de session n'est pas exigé.
+# Vide : pas d'accès /admin, le mot de passe de session n'est pas exigé.
+# Une adresse : "vous@ipnoria.com". Plusieurs : ["a@ipnoria.com", "b@ipnoria.com"].
 # L'inventaire (group_vars) remplace cette valeur.
 website_admin_emails: []
 # Externe : nom public (DNS, certificat Let's Encrypt, adresses du site).
