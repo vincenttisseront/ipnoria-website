@@ -1,4 +1,22 @@
 ---
+# Une adresse seule est une chaîne. join sur une chaîne découpe lettre par lettre.
+- name: Une adresse d'administration seule est complète
+  ansible.builtin.assert:
+    that:
+      - website_admin_emails is match('^[^@\s,]+@[^@\s,]+\.[^@\s,]+(\s*,\s*[^@\s,]+@[^@\s,]+\.[^@\s,]+)*$')
+    fail_msg: "website_admin_emails doit contenir des adresses complètes. Une seule adresse peut être écrite telle quelle ; plusieurs adresses forment une liste."
+    quiet: true
+  when: website_admin_emails is string and website_admin_emails | length > 0
+
+- name: Chaque adresse d'administration de la liste est complète
+  ansible.builtin.assert:
+    that:
+      - item is match('^[^@\s,]+@[^@\s,]+\.[^@\s,]+$')
+    fail_msg: "website_admin_emails doit contenir des adresses complètes. Une seule adresse peut être écrite telle quelle ; plusieurs adresses forment une liste."
+    quiet: true
+  loop: "{{ website_admin_emails }}"
+  when: website_admin_emails is not string and (website_admin_emails | default([])) | length > 0
+
 - name: Contrôle des secrets obligatoires
   ansible.builtin.assert:
     that:
@@ -129,6 +147,14 @@
     wait_timeout: 300
     state: present
   register: website_compose
+
+# Un passage précédent a pu créer un compte dont l'adresse est une seule lettre.
+- name: Retirer un compte créé par une adresse découpée
+  ansible.builtin.command:
+    cmd: docker compose exec -T db psql -U site -d site -c "DELETE FROM users WHERE position('@' in email) = 0"
+    chdir: "{{ website_dir }}"
+  register: website_removed_broken_admin
+  changed_when: "'DELETE 0' not in website_removed_broken_admin.stdout"
 
 # Le fichier du nom interne est monté dans Caddy, mais le processus ne le relit qu'au redémarrage.
 # Sans cela, le contrôle interroge l'ancienne configuration et la poignée de main TLS échoue.

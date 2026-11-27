@@ -7,7 +7,7 @@ website_internal_domain: ipnoria.ar-systems.fr # interne (DNS privé)
 website_image: ghcr.io/vincenttisseront/ipnoria-website:latest
 website_dir: /opt/ipnoria-website
 website_contact_retention_days: 365
-website_admin_emails: []                     # ex. ["vous@ipnoria.com"] : comptes autorisés dans /admin
+website_admin_emails: []                     # "vous@ipnoria.com" ou ["a@ipnoria.com", "b@ipnoria.com"]
 website_smtp_host: ""
 website_smtp_port: 587
 website_smtp_secure: false

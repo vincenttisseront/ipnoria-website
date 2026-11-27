@@ -60,7 +60,7 @@ Sans Ansible : créer ou supprimer `caddy-errors/maintenance.on` à côté de `d
 
 ## Espace d'administration (`/admin`)
 
-1. Renseigner `website_admin_emails` et, dans le vault, `vault_session_password` et `vault_accounts_secret` (32 caractères au moins chacun).
+1. Renseigner `website_admin_emails` (une adresse telle quelle, ou une liste pour plusieurs) et, dans le vault, `vault_session_password` et `vault_accounts_secret` (32 caractères au moins chacun).
 2. Premier compte : `vault_admin_password` (12 caractères ou plus, pas un mot de passe déjà vu dans une fuite). Il crée uniquement la première adresse de la liste, et seulement si elle n'a pas encore de mot de passe. Au premier passage sur `/admin`, l'application d'authentification est obligatoire. Retirez ensuite `vault_admin_password`.
 3. Autre compte : la personne crée d'abord son compte sur le site, puis son adresse est ajoutée à `website_admin_emails`. Une adresse déjà listée ne peut pas s'inscrire par le formulaire public.
 4. Chaque connexion exige le mot de passe puis un second facteur du compte (application d'authentification, code de secours ou clé d'accès). La liste d'adresses est relue à chaque requête. La session dure 8 heures. Les actions sont journalisées (rubrique « Sécurité » de `/admin`).
