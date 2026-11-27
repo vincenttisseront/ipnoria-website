@@ -3,6 +3,7 @@ import { COMPARISON, type Mark } from '#shared/comparison'
 
 const { t, locale } = useI18n()
 const localePath = useLocalePath()
+const { on } = useSiteFeatures()
 const rows = computed(() => COMPARISON[locale.value === 'en' ? 'en' : 'fr'])
 useSeoMeta({ title: () => t('compare.title'), description: () => t('compare.lead') })
 
@@ -48,7 +49,7 @@ const markIcon: Record<Mark, string> = { yes: 'text-ok', partial: 'text-warn', n
 
     <div class="mt-12 flex flex-wrap gap-3">
       <NuxtLink :to="localePath('guides')" class="btn btn-primary"><AppIcon name="book" :size="16" />{{ t('guides.title') }}</NuxtLink>
-      <NuxtLink :to="localePath('contact')" class="btn btn-secondary"><AppIcon name="mail" :size="16" />{{ t('cta.button') }}</NuxtLink>
+      <NuxtLink v-if="on('contact')" :to="localePath('contact')" class="btn btn-secondary"><AppIcon name="mail" :size="16" />{{ t('cta.button') }}</NuxtLink>
     </div>
   </div>
 </template>

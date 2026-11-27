@@ -5,6 +5,7 @@ import type { PublicReference } from '#shared/references'
 // Étude de cas d'un client : contexte et résultat (paragraphes), témoignage, fiche synthétique.
 const { t, locale } = useI18n()
 const localePath = useLocalePath()
+const { on } = useSiteFeatures()
 const route = useRoute()
 const { data: r, error } = await useFetch<PublicReference>(() => `/api/references/${route.params.slug}`)
 if (error.value || !r.value) throw createError({ statusCode: 404, fatal: true })
@@ -50,7 +51,7 @@ useBreadcrumbs(() => [{ name: t('refs.title'), path: localePath('references') },
       </aside>
     </div>
     <div class="mt-16 flex flex-wrap gap-3 border-t border-line pt-10">
-      <NuxtLink :to="localePath('rendez-vous')" class="btn btn-primary">{{ t('booking.cta') }}</NuxtLink>
+      <NuxtLink v-if="on('booking')" :to="localePath('rendez-vous')" class="btn btn-primary">{{ t('booking.cta') }}</NuxtLink>
       <NuxtLink :to="localePath('references')" class="btn btn-secondary">{{ t('refs.others') }}</NuxtLink>
     </div>
   </div>

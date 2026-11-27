@@ -6,6 +6,49 @@ const filterAdmin = ref('')
 const filterType = ref('')
 const { data: log, refresh: refreshLog } = await useFetch<Entry[]>('/api/admin/audit', { query: computed(() => ({ admin: filterAdmin.value || undefined, type: filterType.value || undefined })), default: () => [] })
 const { data: sec, refresh: refreshSec } = await useFetch<{ acknowledgments: Ack[] }>('/api/security', { default: () => ({ acknowledgments: [] }) })
+const ACTIONS: Record<string, string> = {
+  login: 'Connexion',
+  'mfa.enable': 'Second facteur activé',
+  'feature.enable': 'Élément affiché',
+  'feature.disable': 'Élément masqué',
+  'message.update': 'Message mis à jour',
+  'message.delete': 'Message supprimé',
+  'message.reply': 'Réponse envoyée',
+  'beta.quotas': 'Objectifs enregistrés',
+  'beta.decision': 'Candidature mise à jour',
+  'beta.campaign.update': 'Campagne mise à jour',
+  'beta.campaign.create': 'Campagne créée',
+  'beta.release.update': 'Version mise à jour',
+  'beta.release.create': 'Version créée',
+  'reference.create': 'Référence créée',
+  'reference.update': 'Référence mise à jour',
+  'reference.delete': 'Référence retirée',
+  'reference.logo': 'Logo enregistré',
+  'reference.logo.delete': 'Logo retiré',
+  'security.ack.create': 'Remerciement ajouté',
+  'security.ack.delete': 'Remerciement retiré',
+  'social.carousel': 'Visuel préparé',
+  'idea.update': 'Idée mise à jour',
+  'idea.reply': 'Réponse publiée',
+  'idea.comment.hide': 'Commentaire masqué',
+}
+const TARGETS: Record<string, string> = {
+  session: 'Connexion',
+  user: 'Compte',
+  feature: 'Élément du site',
+  contact_message: 'Message',
+  beta_settings: 'Objectifs',
+  beta_application: 'Candidature',
+  beta_campaign: 'Campagne',
+  beta_release: 'Version',
+  customer_reference: 'Référence',
+  security_acknowledgment: 'Remerciement',
+  idea: 'Idée',
+  idea_comment: 'Commentaire',
+}
+const FEATURES: Record<string, string> = { contact: 'Contact', booking: 'Rendez-vous', demo: 'Démo', newsletter: 'Alertes de version' }
+const actionLabel = (action: string) => ACTIONS[action] ?? 'Action'
+const objectLabel = (e: Entry) => (e.targetType === 'feature' && e.targetId && FEATURES[e.targetId]) || TARGETS[e.targetType] || 'Élément'
 const admins = computed(() => [...new Set((log.value ?? []).map(e => e.admin))])
 const types = computed(() => [...new Set((log.value ?? []).map(e => e.targetType))])
 const fmt = (d: string) => new Date(d).toLocaleString('fr-FR', { dateStyle: 'short', timeStyle: 'medium' })
@@ -18,7 +61,7 @@ async function addAck() {
     await $fetch('/api/admin/security/acknowledgments', { method: 'POST', body: { name: form.name, url: form.url, summary: { fr: form.summaryFr, en: form.summaryEn }, reportedOn: form.reportedOn } })
     Object.assign(form, { name: '', url: '', summaryFr: '', summaryEn: '', reportedOn: '' }); await Promise.all([refreshSec(), refreshLog()]); notice.value = 'Ajouté à la page de divulgation.'
   }
-  catch { notice.value = 'Échec : vérifiez le nom, l\'adresse (https://) et la date.' }
+  catch { notice.value = 'Vérifiez le nom, l’adresse et la date, puis réessayez.' }
   finally { busy.value = false }
 }
 const confirmId = ref<string | null>(null)
@@ -38,21 +81,20 @@ async function removeAck(id: string) {
             <label class="sr-only" for="au-a">Administrateur</label>
             <select id="au-a" v-model="filterAdmin" class="field !w-auto py-1.5 text-sm"><option value="">Tous les administrateurs</option><option v-for="a in admins" :key="a" :value="a">{{ a }}</option></select>
             <label class="sr-only" for="au-t">Objet</label>
-            <select id="au-t" v-model="filterType" class="field !w-auto py-1.5 text-sm"><option value="">Tous les objets</option><option v-for="x in types" :key="x" :value="x">{{ x }}</option></select>
+            <select id="au-t" v-model="filterType" class="field !w-auto py-1.5 text-sm"><option value="">Tous les objets</option><option v-for="x in types" :key="x" :value="x">{{ TARGETS[x] ?? 'Élément' }}</option></select>
           </div>
         </div>
         <div class="mt-4 max-h-[28rem] overflow-auto">
           <table class="w-full min-w-[40rem] text-sm">
-            <thead class="sticky top-0 bg-surface text-left text-muted"><tr><th class="py-1.5 font-medium">Quand</th><th class="font-medium">Qui</th><th class="font-medium">Action</th><th class="font-medium">Objet</th><th class="font-medium">Détails</th></tr></thead>
+            <thead class="sticky top-0 bg-surface text-left text-muted"><tr><th class="py-1.5 font-medium">Quand</th><th class="font-medium">Qui</th><th class="font-medium">Action</th><th class="font-medium">Objet</th></tr></thead>
             <tbody>
               <tr v-for="e in log" :key="e.id" class="border-t border-line align-top">
-                <td class="whitespace-nowrap py-1.5 pr-3 font-mono text-[0.78rem]">{{ fmt(e.at) }}</td>
+                <td class="whitespace-nowrap py-1.5 pr-3">{{ fmt(e.at) }}</td>
                 <td class="pr-3">{{ e.admin }}</td>
-                <td class="pr-3 font-mono text-[0.78rem]">{{ e.action }}</td>
-                <td class="pr-3 font-mono text-[0.78rem]">{{ e.targetType }}<template v-if="e.targetId"> n° {{ e.targetId }}</template></td>
-                <td class="font-mono text-[0.72rem] text-muted">{{ Object.keys(e.details ?? {}).length ? JSON.stringify(e.details) : '' }}</td>
+                <td class="pr-3">{{ actionLabel(e.action) }}</td>
+                <td class="pr-3">{{ objectLabel(e) }}</td>
               </tr>
-              <tr v-if="!log?.length"><td colspan="5" class="py-4 text-muted">Aucune action enregistrée.</td></tr>
+              <tr v-if="!log?.length"><td colspan="4" class="py-4 text-muted">Aucune action enregistrée.</td></tr>
             </tbody>
           </table>
         </div>
@@ -68,7 +110,7 @@ async function removeAck(id: string) {
         </ul>
         <form class="space-y-3" @submit.prevent="addAck">
           <div><label for="ak-n" class="field-label">Nom ou pseudonyme</label><input id="ak-n" v-model="form.name" class="field" maxlength="80" required></div>
-          <div><label for="ak-u" class="field-label">Lien (https://…, facultatif)</label><input id="ak-u" v-model="form.url" class="field" maxlength="200"></div>
+          <div><label for="ak-u" class="field-label">Lien (facultatif)</label><input id="ak-u" v-model="form.url" class="field" maxlength="200" inputmode="url"></div>
           <div><label for="ak-sf" class="field-label">Résumé (FR)</label><input id="ak-sf" v-model="form.summaryFr" class="field" maxlength="200" placeholder="Contournement de la limite de débit"></div>
           <div><label for="ak-se" class="field-label">Résumé (EN)</label><input id="ak-se" v-model="form.summaryEn" class="field" maxlength="200"></div>
           <div><label for="ak-d" class="field-label">Date du signalement</label><input id="ak-d" v-model="form.reportedOn" type="date" class="field" required></div>

@@ -60,10 +60,10 @@ Sans Ansible : créer ou supprimer `caddy-errors/maintenance.on` à côté de `d
 
 ## Espace d'administration (`/admin`)
 
-1. Déclarer un client OpenID Connect chez votre fournisseur d'identité : type confidentiel (ou public avec PKCE), URL de retour `https://<domaine>/auth/callback`, portées `openid email profile`.
-2. Renseigner `website_oidc_issuer`, `website_oidc_client_id`, `website_admin_emails` et, dans le vault, `vault_oidc_client_secret` et `vault_session_password` (32 caractères au moins).
-3. Seules les adresses listées (e-mail vérifié par le fournisseur) entrent ; la liste est relue à chaque requête.
-4. Un second facteur est exigé : le fournisseur doit le signaler dans le jeton (claim `amr` avec `mfa`, `otp`, `hwk`…). S'il l'exprime par un niveau `acr`, renseignez `website_oidc_mfa_acr` (ce niveau est alors demandé à chaque connexion). Toutes les actions d'administration sont journalisées (rubrique « Sécurité » de `/admin`).
+1. Renseigner `website_admin_emails` et, dans le vault, `vault_session_password` et `vault_accounts_secret` (32 caractères au moins chacun).
+2. Premier compte : `vault_admin_password` (12 caractères ou plus, pas un mot de passe déjà vu dans une fuite). Il crée uniquement la première adresse de la liste, et seulement si elle n'a pas encore de mot de passe. Au premier passage sur `/admin`, l'application d'authentification est obligatoire. Retirez ensuite `vault_admin_password`.
+3. Autre compte : la personne crée d'abord son compte sur le site, puis son adresse est ajoutée à `website_admin_emails`. Une adresse déjà listée ne peut pas s'inscrire par le formulaire public.
+4. Chaque connexion exige le mot de passe puis un second facteur du compte (application d'authentification, code de secours ou clé d'accès). La liste d'adresses est relue à chaque requête. La session dure 8 heures. Les actions sont journalisées (rubrique « Sécurité » de `/admin`).
 
 ## Réservation de démonstrations (`/rendez-vous`)
 

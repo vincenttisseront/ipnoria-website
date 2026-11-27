@@ -5,6 +5,7 @@ import { PROFILE_SECTOR } from '#shared/references'
 const { t, locale } = useI18n()
 const route = useRoute()
 const localePath = useLocalePath()
+const { on } = useSiteFeatures()
 const lang = computed(() => (locale.value === 'en' ? 'en' : 'fr') as 'fr' | 'en')
 const profile = computed(() => profileBySlug(lang.value, String(route.params.profil)))
 if (!profile.value) throw createError({ statusCode: 404, fatal: true })
@@ -49,7 +50,7 @@ const others = computed(() => PROFILES[lang.value].filter(p => p.id !== profile.
       <h2 class="text-lg font-semibold">{{ t('profiles.start') }}</h2>
       <div class="mt-4 flex flex-wrap gap-3">
         <NuxtLink v-for="s in profile.start" :key="s.label" :to="localePath(s.route)" class="btn btn-secondary">{{ s.label }}</NuxtLink>
-        <NuxtLink :to="localePath('rendez-vous')" class="btn btn-primary"><AppIcon name="mail" :size="16" />{{ t('booking.cta') }}</NuxtLink>
+        <NuxtLink v-if="on('booking')" :to="localePath('rendez-vous')" class="btn btn-primary"><AppIcon name="mail" :size="16" />{{ t('booking.cta') }}</NuxtLink>
       </div>
     </section>
 

@@ -30,7 +30,7 @@ export default defineEventHandler(async (event) => {
   if (!userId) {
     if (!gh.email) return sendRedirect(event, `${signIn}?github=sans-email`, 303)
     const byEmail = await db.query('SELECT 1 FROM users WHERE lower(email) = $1', [gh.email])
-    if (byEmail.rowCount) return sendRedirect(event, `${signIn}?github=compte-existant`, 303)
+    if (byEmail.rowCount || allowedAdmin(gh.email)) return sendRedirect(event, `${signIn}?github=compte-existant`, 303)
     const r = await db.query(
       `INSERT INTO users (email, email_verified_at, display_name, locale, github_id) VALUES ($1, now(), $2, $3, $4) RETURNING id::text`,
       [gh.email, gh.name.length >= 2 ? gh.name : `${gh.name}__`, locale, gh.id],

@@ -6,6 +6,7 @@ import { bookingSchema } from '#shared/forms'
 export default defineEventHandler(async (event) => {
   assertSameOrigin(event)
   if (!getRequestHeader(event, 'content-type')?.startsWith('application/json')) throw createError({ statusCode: 415 })
+  await assertFeature('booking')
   const s = bookingSettings()
   if (!s.enabled) throw createError({ statusCode: 503, statusMessage: 'Booking unavailable' })
 

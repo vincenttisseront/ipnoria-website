@@ -31,7 +31,13 @@ const PAGES: Array<[fr: string, en: string, priority: string]> = [
 
 export default defineEventHandler(async (event) => {
   const site = useRuntimeConfig().public.siteUrl.replace(/\/$/, '')
-  const pairs: Array<[string, string, string]> = [...PAGES]
+  const features = await siteFeatures()
+  const hidden = new Set<string>([
+    ...(!features.contact ? ['/contact'] : []),
+    ...(!features.booking ? ['/rendez-vous'] : []),
+    ...(!features.demo ? ['/demo'] : []),
+  ])
+  const pairs: Array<[string, string, string]> = PAGES.filter(([fr]) => !hidden.has(fr))
   for (const d of DOCS) pairs.push([`/documentation/${d.slug}`, `/en/docs/${d.slug}`, '0.6'])
   for (const x of GLOSSARY.fr) pairs.push([`/glossaire/${x.id}`, `/en/glossary/${x.id}`, '0.5'])
   for (const a of ARTICLES) pairs.push([`/articles/${a.slug.fr}`, `/en/articles/${a.slug.en}`, '0.7'])

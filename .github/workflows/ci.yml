@@ -52,8 +52,7 @@ jobs:
           NUXT_SMTP_PORT: 1025
           NUXT_SMTP_ALLOW_PLAIN: "true"
           NUXT_SMTP_FROM: site@ipnoria.test
-          NUXT_OIDC_ISSUER: https://login.ipnoria.test
-          NUXT_OIDC_CLIENT_ID: ci
+          NUXT_ACCOUNTS_SECRET: ci-only-accounts-secret-0123456789ab
           NUXT_SESSION_PASSWORD: ci-only-session-password-0123456789
           NUXT_ADMIN_EMAILS: admin@ipnoria.test
           EXPECT_ADMIN: "1"

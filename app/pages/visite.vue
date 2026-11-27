@@ -5,6 +5,7 @@ const { t, locale } = useI18n()
 const route = useRoute()
 const router = useRouter()
 const localePath = useLocalePath()
+const { on } = useSiteFeatures()
 useSeoMeta({ title: () => t('tour.title'), description: () => t('tour.lead') })
 
 const scenarios = computed(() => TOUR[locale.value === 'en' ? 'en' : 'fr'])
@@ -64,7 +65,9 @@ function onKey(e: KeyboardEvent) {
         <div class="mt-auto flex gap-2 pt-6">
           <button type="button" class="btn btn-secondary flex-1" :disabled="step === 0" @click="prev">{{ t('tour.prev') }}</button>
           <button v-if="step < scenario.steps.length - 1" type="button" class="btn btn-primary flex-1" @click="next">{{ t('tour.next') }}</button>
-          <NuxtLink v-else :to="localePath('rendez-vous')" class="btn btn-primary flex-1">{{ t('tour.book') }}</NuxtLink>
+          <NuxtLink v-else-if="on('booking')" :to="localePath('rendez-vous')" class="btn btn-primary flex-1">{{ t('tour.book') }}</NuxtLink>
+          <NuxtLink v-else-if="on('contact')" :to="localePath('contact')" class="btn btn-primary flex-1">{{ t('cta.button') }}</NuxtLink>
+          <NuxtLink v-else :to="localePath('documentation')" class="btn btn-primary flex-1">{{ t('cta.docs') }}</NuxtLink>
         </div>
         <p class="mt-4 text-[0.8rem] text-muted">{{ t('tour.keys') }}</p>
       </div>

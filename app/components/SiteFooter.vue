@@ -3,6 +3,7 @@ import { githubLinks, docLinks } from '#shared/links'
 
 const { t } = useI18n()
 const localePath = useLocalePath()
+const { on } = useSiteFeatures()
 const year = new Date().getFullYear()
 </script>
 
@@ -45,9 +46,9 @@ const year = new Date().getFullYear()
       <nav :aria-label="t('footer.site')">
         <h2 class="text-sm font-medium">{{ t('footer.site') }}</h2>
         <ul class="mt-4 space-y-2.5 text-sm text-muted">
-          <li><NuxtLink :to="localePath('rendez-vous')" class="hover:text-fg">{{ t('booking.title') }}</NuxtLink></li>
-          <li><NuxtLink :to="localePath('demo')" class="hover:text-fg">{{ t('nav.demo') }}</NuxtLink></li>
-          <li><NuxtLink :to="localePath('contact')" class="hover:text-fg">{{ t('nav.contact') }}</NuxtLink></li>
+          <li v-if="on('booking')"><NuxtLink :to="localePath('rendez-vous')" class="hover:text-fg">{{ t('booking.title') }}</NuxtLink></li>
+          <li v-if="on('demo')"><NuxtLink :to="localePath('demo')" class="hover:text-fg">{{ t('nav.demo') }}</NuxtLink></li>
+          <li v-if="on('contact')"><NuxtLink :to="localePath('contact')" class="hover:text-fg">{{ t('nav.contact') }}</NuxtLink></li>
           <li><NuxtLink :to="localePath('mentions-legales')" class="hover:text-fg">{{ t('footer.legal') }}</NuxtLink></li>
           <li><NuxtLink :to="localePath('confidentialite')" class="hover:text-fg">{{ t('footer.privacy') }}</NuxtLink></li>
           <li><NuxtLink :to="localePath('securite')" class="hover:text-fg">{{ t('disclosure.title') }}</NuxtLink></li>

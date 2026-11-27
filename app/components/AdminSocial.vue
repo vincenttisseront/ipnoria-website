@@ -99,10 +99,10 @@ async function copyLink() {
 
     <div class="panel mt-6 p-6">
       <h3 class="font-semibold">Lien de campagne</h3>
-      <p class="mt-1 text-sm text-muted">Un lien par publication ou par annonce : les statistiques (sans cookie) comptent visites, candidatures bêta, inscriptions et rendez-vous par campagne.</p>
+      <p class="mt-1 text-sm text-muted">Un lien par publication ou par annonce. Les statistiques comptent les visites, les candidatures, les inscriptions et les rendez-vous de chaque campagne.</p>
       <div class="mt-4 grid gap-4 sm:grid-cols-3">
         <div><label for="lk-p" class="field-label">Page</label><select id="lk-p" v-model="link.path" class="field"><option v-for="[p, l] in PAGES" :key="p" :value="p">{{ l }}</option></select></div>
-        <div><label for="lk-c" class="field-label">ou chemin précis</label><input id="lk-c" v-model="link.custom" class="field font-mono" placeholder="/articles/…"></div>
+        <div><label for="lk-c" class="field-label">Autre page</label><input id="lk-c" v-model="link.custom" class="field font-mono" placeholder="/articles/…"></div>
         <label class="flex items-end gap-2 pb-3"><input v-model="link.en" type="checkbox" class="size-4 accent-[#5b8cff]">Version anglaise</label>
         <div><label for="lk-s" class="field-label">Source</label><input id="lk-s" v-model="link.source" class="field" list="lk-sources"><datalist id="lk-sources"><option value="linkedin" /><option value="mastodon" /><option value="bluesky" /><option value="newsletter" /><option value="salon" /></datalist></div>
         <div><label for="lk-m" class="field-label">Support</label><select id="lk-m" v-model="link.medium" class="field"><option value="social">Publication</option><option value="paid">Annonce payante</option><option value="email">E-mail</option><option value="event">Événement</option></select></div>

@@ -5,6 +5,7 @@ import { newsletterSchema } from '#shared/newsletter'
 export default defineEventHandler(async (event) => {
   assertSameOrigin(event)
   if (!getRequestHeader(event, 'content-type')?.startsWith('application/json')) throw createError({ statusCode: 415 })
+  await assertFeature('newsletter')
   if (!hasDb() || !hasSmtp()) throw createError({ statusCode: 503, statusMessage: 'Newsletter unavailable' })
 
   const raw = (await readBody(event)) ?? {}

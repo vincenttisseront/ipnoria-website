@@ -4,6 +4,7 @@ import { bookingSchema } from '#shared/forms'
 const { t, locale } = useI18n()
 const route = useRoute()
 const localePath = useLocalePath()
+const { on } = useSiteFeatures()
 useSeoMeta({ title: () => t('booking.title'), description: () => t('booking.lead') })
 
 interface Slots { enabled: boolean, slots: string[], durationMin: number, timezone: string }
@@ -90,7 +91,7 @@ async function cancelBooking() {
     <div v-else-if="data && !data.enabled" class="panel mt-10 max-w-xl p-7">
       <p class="font-semibold">{{ t('booking.closedTitle') }}</p>
       <p class="mt-2 text-muted">{{ t('booking.closedText') }}</p>
-      <NuxtLink :to="localePath('contact')" class="btn btn-primary mt-5"><AppIcon name="mail" :size="16" />{{ t('cta.button') }}</NuxtLink>
+      <NuxtLink v-if="on('contact')" :to="localePath('contact')" class="btn btn-primary mt-5"><AppIcon name="mail" :size="16" />{{ t('cta.button') }}</NuxtLink>
     </div>
 
     <div v-else-if="data" class="mt-10 grid gap-8 lg:grid-cols-[1.1fr_1fr]">

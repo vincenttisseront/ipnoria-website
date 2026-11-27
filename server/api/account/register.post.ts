@@ -18,6 +18,11 @@ export default defineEventHandler(async (event) => {
 
   const db = useDb()
   const existing = await db.query('SELECT id, locale FROM users WHERE lower(email) = $1', [email])
+  // Une adresse d'administration ne se crée pas par le formulaire public.
+  if (!existing.rowCount && allowedAdmin(email)) {
+    await hashPassword(password)
+    return { ok: true }
+  }
   if (existing.rowCount) {
     await hashPassword(password) // même durée de traitement qu'une vraie inscription
     await mailAlreadyRegistered(email, existing.rows[0].locale).catch(err => console.error('[account]', err.message))

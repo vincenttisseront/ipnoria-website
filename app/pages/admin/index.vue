@@ -7,8 +7,7 @@ interface Message {
   id: string, created_at: string, locale: string, name: string, email: string, company: string, topic: string,
   message: string, handled_at: string | null, replied_at: string | null, reply_body: string | null
 }
-const route = useRoute()
-const { data: me } = await useFetch<{ enabled: boolean, user: { email: string, name: string } | null }>('/api/admin/me')
+const { data: me, refresh: refreshMe } = await useFetch<{ enabled: boolean, user: { email: string, name: string } | null, pending: 'mfa' | 'setup' | null, passkey: boolean }>('/api/admin/me')
 
 const filter = ref<'ouverts' | 'traites' | 'tous'>('ouverts')
 const { data: list, refresh, status } = await useFetch<{ messages: Message[], stats: { open: number, total: number, subscribers: number } }>(
@@ -26,14 +25,6 @@ const reply = ref('')
 const confirmDelete = ref(false)
 const confirmBtn = ref<HTMLButtonElement | null>(null)
 
-const errors: Record<string, string> = {
-  session: 'La connexion a expiré avant la fin. Reconnectez-vous.',
-  fournisseur: 'Le fournisseur d\'identité a refusé la connexion. Réessayez, ou vérifiez la configuration OIDC.',
-  refuse: 'Ce compte n\'est pas autorisé. Ajoutez son adresse à NUXT_ADMIN_EMAILS.',
-  mfa: 'Connexion refusée : l\'administration exige un second facteur. Activez-le chez votre fournisseur d\'identité (ou réglez NUXT_OIDC_MFA_ACR).',
-}
-const loginError = computed(() => errors[String(route.query.erreur ?? '')] ?? '')
-
 const topics: Record<string, string> = { demo: 'Démonstration', question: 'Question technique', feedback: 'Retour d\'essai', partnership: 'Partenariat', other: 'Autre' }
 const fmt = (d: string) => new Date(d).toLocaleString('fr-FR', { dateStyle: 'medium', timeStyle: 'short' })
 
@@ -43,7 +34,7 @@ async function act(kind: typeof busy.value, fn: () => Promise<unknown>, ok: stri
   try { await fn(); notice.value = { kind: 'ok', text: ok }; await refresh() }
   catch (e: unknown) {
     const code = (e as { statusCode?: number }).statusCode
-    notice.value = { kind: 'error', text: code === 503 ? 'Envoi impossible : le serveur SMTP n\'est pas configuré.' : code === 401 ? 'Session expirée : reconnectez-vous.' : 'L\'action a échoué. Réessayez.' }
+    notice.value = { kind: 'error', text: code === 401 ? 'Reconnectez-vous.' : 'L\'action a échoué. Réessayez.' }
   }
   finally { busy.value = '' }
 }
@@ -72,19 +63,15 @@ watch(confirmDelete, async (open) => { if (open) { await nextTick(); confirmBtn.
 
     <main class="wrap py-10">
       <div v-if="!me?.enabled" class="panel max-w-xl p-7">
-        <h1 class="text-xl font-semibold">Administration désactivée</h1>
-        <p class="mt-2 text-muted">Renseignez NUXT_OIDC_ISSUER, NUXT_OIDC_CLIENT_ID, NUXT_SESSION_PASSWORD (32 caractères au moins) et NUXT_ADMIN_EMAILS, puis redémarrez le site.</p>
+        <h1 class="text-xl font-semibold">Administration</h1>
+        <p class="mt-2 text-muted">Cette page n’est pas disponible.</p>
       </div>
 
-      <div v-else-if="!me.user" class="panel max-w-xl p-7">
-        <h1 class="text-xl font-semibold">Connexion</h1>
-        <p class="mt-2 text-muted">L'accès passe par votre fournisseur d'identité (SSO).</p>
-        <p v-if="loginError" role="alert" class="mt-4 rounded-lg border-l-4 border-alert bg-bg px-4 py-3 text-alert">{{ loginError }}</p>
-        <a href="/auth/login" class="btn btn-primary mt-6">Se connecter avec le SSO</a>
-      </div>
+      <AdminLogin v-else-if="!me.user" :resume="me.pending" :passkey="me.passkey" @ready="refreshMe()" />
 
       <template v-else>
-        <div class="flex flex-wrap items-end justify-between gap-6">
+        <AdminFeatures />
+        <div class="mt-14 flex flex-wrap items-end justify-between gap-6">
           <div>
             <h1 class="text-h2">Messages</h1>
             <p v-if="list" class="mt-2 text-muted">{{ list.stats.open }} à traiter sur {{ list.stats.total }}, {{ list.stats.subscribers }} abonné(s) aux alertes de version</p>

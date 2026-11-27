@@ -37,7 +37,7 @@ watch(canPublish, (ok) => { if (!ok) form.published = false })
 async function save() {
   notice.value = null
   const p = referenceSchema.safeParse(form)
-  if (!p.success) { notice.value = { ok: false, text: `Champs à revoir : ${[...new Set(p.error.issues.map(i => String(i.path[0])))].join(', ')}` }; return }
+  if (!p.success) { notice.value = { ok: false, text: 'Certains champs sont à revoir.' }; return }
   busy.value = 'save'
   try {
     if (editing.value === 'new') {
@@ -47,7 +47,7 @@ async function save() {
     else await $fetch(`/api/admin/references/${editing.value}`, { method: 'PUT', body: p.data })
     await refresh(); notice.value = { ok: true, text: form.published ? 'Enregistrée et publiée.' : 'Enregistrée (non publiée).' }
   }
-  catch (e) { notice.value = { ok: false, text: (e as { data?: { data?: { code?: string } } }).data?.data?.code === 'slug_taken' ? 'Cette adresse (slug) est déjà prise.' : 'Échec de l\'enregistrement.' } }
+  catch (e) { notice.value = { ok: false, text: (e as { data?: { data?: { code?: string } } }).data?.data?.code === 'slug_taken' ? 'Cette adresse est déjà prise.' : 'L’enregistrement a échoué. Réessayez.' } }
   finally { busy.value = '' }
 }
 async function uploadLogo(e: Event) {
@@ -62,7 +62,7 @@ async function uploadLogo(e: Event) {
   }
   catch (err) {
     const code = (err as { data?: { data?: { code?: string } } }).data?.data?.code
-    notice.value = { ok: false, text: code === 'logo_type' ? 'Format refusé : PNG, WebP ou JPEG seulement (pas de SVG).' : code === 'logo_too_large' ? 'Logo trop lourd : 300 Ko au plus.' : 'Échec de l\'envoi du logo.' }
+    notice.value = { ok: false, text: code === 'logo_type' ? 'Format refusé : PNG, WebP ou JPEG.' : code === 'logo_too_large' ? 'Logo trop lourd : 300 Ko au plus.' : 'L’envoi du logo a échoué. Réessayez.' }
   }
   finally { busy.value = ''; (e.target as HTMLInputElement).value = '' }
 }
@@ -74,7 +74,7 @@ async function removeLogo() {
 async function remove() {
   busy.value = 'delete'
   try { await $fetch(`/api/admin/references/${current.value!.id}`, { method: 'DELETE' }); editing.value = null; await refresh() }
-  catch { notice.value = { ok: false, text: 'Échec de la suppression.' } }
+  catch { notice.value = { ok: false, text: 'La suppression a échoué. Réessayez.' } }
   finally { busy.value = ''; confirmDelete.value = false }
 }
 </script>
@@ -105,7 +105,7 @@ async function remove() {
           <div><label for="ar-loc" class="field-label">Lieu</label><input id="ar-loc" v-model="form.location" class="field" maxlength="80" placeholder="Bretagne"></div>
           <div><label for="ar-sfr" class="field-label">Taille (FR)</label><input id="ar-sfr" v-model="form.size.fr" class="field" maxlength="60" placeholder="800 postes, 12 sites"></div>
           <div><label for="ar-sen" class="field-label">Taille (EN)</label><input id="ar-sen" v-model="form.size.en" class="field" maxlength="60" placeholder="800 devices, 12 sites"></div>
-          <div class="sm:col-span-2"><label for="ar-web" class="field-label">Site web (https://…)</label><input id="ar-web" v-model="form.website" class="field" maxlength="200" inputmode="url"></div>
+          <div class="sm:col-span-2"><label for="ar-web" class="field-label">Site web</label><input id="ar-web" v-model="form.website" class="field" maxlength="200" inputmode="url"></div>
         </div>
         <fieldset>
           <legend class="field-label">Services utilisés</legend>

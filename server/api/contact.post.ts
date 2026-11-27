@@ -5,6 +5,7 @@ export default defineEventHandler(async (event) => {
   if (!getRequestHeader(event, 'content-type')?.startsWith('application/json')) {
     throw createError({ statusCode: 415, statusMessage: 'Unsupported Media Type' })
   }
+  await assertFeature('contact')
   if (!hasDb()) throw createError({ statusCode: 503, statusMessage: 'Contact form unavailable' })
 
   const raw = await readBody(event)
