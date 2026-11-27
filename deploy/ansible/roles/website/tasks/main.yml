@@ -1,21 +1,12 @@
 ---
-# Une adresse seule est une chaîne. join sur une chaîne découpe lettre par lettre.
-- name: Une adresse d'administration seule est complète
-  ansible.builtin.assert:
-    that:
-      - website_admin_emails is match('^[^@\s,]+@[^@\s,]+\.[^@\s,]+(\s*,\s*[^@\s,]+@[^@\s,]+\.[^@\s,]+)*$')
-    fail_msg: "website_admin_emails doit contenir des adresses complètes. Une seule adresse peut être écrite telle quelle ; plusieurs adresses forment une liste."
-    quiet: true
-  when: website_admin_emails is string and website_admin_emails | length > 0
-
-- name: Chaque adresse d'administration de la liste est complète
+# Une adresse seule est une chaîne. La boucle est calculée avant when : elle doit toujours recevoir une liste.
+- name: Les adresses d'administration sont des adresses complètes
   ansible.builtin.assert:
     that:
       - item is match('^[^@\s,]+@[^@\s,]+\.[^@\s,]+$')
     fail_msg: "website_admin_emails doit contenir des adresses complètes. Une seule adresse peut être écrite telle quelle ; plusieurs adresses forment une liste."
     quiet: true
-  loop: "{{ website_admin_emails }}"
-  when: website_admin_emails is not string and (website_admin_emails | default([])) | length > 0
+  loop: "{{ (((website_admin_emails | default([])) | string).split(',') if ((website_admin_emails | default([])) | type_debug) not in ['list', 'AnsibleSequence'] else (website_admin_emails | default([]))) | map('trim') | reject('equalto', '') | list }}"
 
 - name: Contrôle des secrets obligatoires
   ansible.builtin.assert:
