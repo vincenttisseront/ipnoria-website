@@ -15,13 +15,14 @@ const onScroll = () => { scrolled.value = window.scrollY > 8 }
 onMounted(() => { onScroll(); window.addEventListener('scroll', onScroll, { passive: true }) })
 onBeforeUnmount(() => window.removeEventListener('scroll', onScroll))
 
+const { on } = useSiteFeatures()
 const items = computed(() => [
   { to: localePath('documentation'), label: t('nav.docs'), hash: false },
   { to: localePath('guides'), label: t('nav.guides'), hash: false },
   { to: localePath('outils'), label: t('nav.tools'), hash: false },
   { to: localePath('feuille-de-route'), label: t('nav.roadmap'), hash: false },
   { to: localePath('beta'), label: t('nav.beta'), hash: false },
-  { to: localePath('contact'), label: t('nav.contact'), hash: false },
+  ...(on('contact') ? [{ to: localePath('contact'), label: t('nav.contact'), hash: false }] : []),
 ])
 const searchOpen = useState('search-open', () => false)
 const isMac = ref(false)

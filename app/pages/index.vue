@@ -4,6 +4,7 @@ import { PROFILES } from '#shared/profiles'
 
 const { t, tm, rt, locale } = useI18n()
 const localePath = useLocalePath()
+const { on } = useSiteFeatures()
 const { data: release } = await useRelease()
 
 useSeoMeta({ title: '', ogTitle: () => t('meta.title'), ogDescription: () => t('meta.description') })
@@ -219,7 +220,7 @@ const terminal = computed(() => [
       </div>
     </section>
 
-    <section class="wrap pb-8">
+    <section v-if="on('newsletter')" class="wrap pb-8">
       <NewsletterSignup />
     </section>
 
@@ -228,11 +229,11 @@ const terminal = computed(() => [
       <div class="panel relative overflow-hidden px-6 py-16 text-center sm:px-12">
         <div class="glow" aria-hidden="true" />
         <div class="relative">
-          <h2 class="text-h2">{{ t('cta.title') }}</h2>
-          <p class="mx-auto mt-4 max-w-xl text-lg text-muted">{{ t('cta.text') }}</p>
+          <h2 v-if="on('contact') || on('booking')" class="text-h2">{{ t('cta.title') }}</h2>
+          <p v-if="on('contact') || on('booking')" class="mx-auto mt-4 max-w-xl text-lg text-muted">{{ t('cta.text') }}</p>
           <div class="mt-8 flex flex-wrap justify-center gap-3">
-            <NuxtLink :to="localePath('rendez-vous')" class="btn btn-primary"><AppIcon name="mail" :size="16" />{{ t('booking.cta') }}</NuxtLink>
-            <NuxtLink :to="localePath('contact')" class="btn btn-secondary">{{ t('cta.button') }}</NuxtLink>
+            <NuxtLink v-if="on('booking')" :to="localePath('rendez-vous')" class="btn btn-primary"><AppIcon name="mail" :size="16" />{{ t('booking.cta') }}</NuxtLink>
+            <NuxtLink v-if="on('contact')" :to="localePath('contact')" class="btn btn-secondary">{{ t('cta.button') }}</NuxtLink>
             <NuxtLink :to="localePath('documentation')" class="btn btn-secondary"><AppIcon name="book" :size="16" />{{ t('cta.docs') }}</NuxtLink>
           </div>
           <p class="mx-auto mt-10 max-w-2xl border-t border-line pt-6 text-sm text-muted">

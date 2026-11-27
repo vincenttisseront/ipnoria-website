@@ -4,6 +4,7 @@ import { guideBySlug } from '#shared/guides'
 const { t, locale } = useI18n()
 const route = useRoute()
 const localePath = useLocalePath()
+const { on } = useSiteFeatures()
 const guide = computed(() => guideBySlug(locale.value === 'en' ? 'en' : 'fr', String(route.params.slug)))
 if (!guide.value) throw createError({ statusCode: 404, fatal: true })
 useSeoMeta({ title: () => guide.value?.title ?? '', description: () => guide.value?.summary ?? '' })
@@ -51,7 +52,7 @@ async function copy(i: number, code: string) {
     </ol>
     <p class="mt-12 border-t border-line pt-6 text-muted">{{ guide.outro }}</p>
     <div class="mt-8 flex flex-wrap gap-3">
-      <NuxtLink :to="localePath('contact')" class="btn btn-primary"><AppIcon name="mail" :size="16" />{{ t('guides.help') }}</NuxtLink>
+      <NuxtLink v-if="on('contact')" :to="localePath('contact')" class="btn btn-primary"><AppIcon name="mail" :size="16" />{{ t('guides.help') }}</NuxtLink>
       <NuxtLink :to="localePath('comparatif')" class="btn btn-secondary">{{ t('compare.title') }}</NuxtLink>
     </div>
   </div>

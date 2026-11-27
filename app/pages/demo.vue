@@ -2,6 +2,7 @@
 // Démo publique : s'affiche dès que NUXT_PUBLIC_DEMO_URL est défini (instance en lecture seule, remise à zéro chaque nuit).
 const { t } = useI18n()
 const localePath = useLocalePath()
+const { on } = useSiteFeatures()
 const { demo } = useRuntimeConfig().public
 useSeoMeta({ title: () => t('demo.pageTitle'), description: () => t('demo.pageLead') })
 </script>
@@ -30,7 +31,7 @@ useSeoMeta({ title: () => t('demo.pageTitle'), description: () => t('demo.pageLe
       <p class="font-semibold">{{ t('demo.soonTitle') }}</p>
       <p class="mt-2 text-muted">{{ t('demo.soonText') }}</p>
       <div class="mt-6 flex flex-wrap gap-3">
-        <NuxtLink :to="localePath('rendez-vous')" class="btn btn-primary"><AppIcon name="mail" :size="16" />{{ t('demo.private') }}</NuxtLink>
+        <NuxtLink v-if="on('booking')" :to="localePath('rendez-vous')" class="btn btn-primary"><AppIcon name="mail" :size="16" />{{ t('demo.private') }}</NuxtLink>
         <NuxtLink :to="localePath('visite')" class="btn btn-secondary">{{ t('demo.tour') }}</NuxtLink>
       </div>
     </div>

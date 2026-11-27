@@ -4,7 +4,9 @@
 vault_postgres_password: CHANGE-ME
 vault_ip_hash_salt: CHANGE-ME
 vault_session_password: CHANGE-ME-32-CARACTERES-AU-MOINS
-vault_oidc_client_secret: ""
+# Mot de passe du premier compte /admin (12 caractères ou plus). Ignoré dès que ce compte a un mot de passe.
+# Retirez-le après avoir activé le second facteur. Vide si le compte existe déjà.
+vault_admin_password: ""
 vault_smtp_user: ""
 vault_smtp_pass: ""
 # Jeton GitHub « read:packages » pour tirer l'image privée depuis ghcr.io

@@ -6,6 +6,7 @@ import type { PublicReference } from '#shared/references'
 // « Ils utilisent Ipnoria » : références publiées avec l'accord des clients, filtrables par secteur.
 const { t, locale } = useI18n()
 const localePath = useLocalePath()
+const { on } = useSiteFeatures()
 const route = useRoute()
 const router = useRouter()
 useSeoMeta({ title: () => t('refs.title'), description: () => t('refs.lead') })
@@ -60,7 +61,7 @@ const pick = (o: Record<string, string>) => o?.[locale.value] || o?.[locale.valu
       <p class="mt-2 text-muted">{{ t('refs.emptyText') }}</p>
     </div>
 
-    <section class="mt-16 flex flex-wrap items-center justify-between gap-6 border-t border-line pt-10">
+    <section v-if="on('contact')" class="mt-16 flex flex-wrap items-center justify-between gap-6 border-t border-line pt-10">
       <div class="max-w-xl">
         <h2 class="text-lg font-semibold tracking-tight">{{ t('refs.joinTitle') }}</h2>
         <p class="mt-1 text-muted">{{ t('refs.joinText') }}</p>

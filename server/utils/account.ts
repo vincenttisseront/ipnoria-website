@@ -1,6 +1,7 @@
 import type { H3Event } from 'h3'
 import { deriveKey, randomToken, seal, sha256, unseal } from './account-crypto'
-import { breachCount, deviceLabel, passwordProblem } from './account-password'
+import { recordEvent } from './account-mail'
+import { breachCount, deviceLabel, passwordProblem, verifyPassword } from './account-password'
 
 // Sessions des comptes utilisateurs : jeton aléatoire dans un cookie HttpOnly, empreinte en base.
 // Une session « mfa_pending » n'a passé que le premier facteur : elle ne donne accès qu'à l'étape MFA.
@@ -43,6 +44,20 @@ const secureCookie = () => useRuntimeConfig().public.siteUrl.startsWith('https:/
 function device(event: H3Event) {
   const ua = getRequestHeader(event, 'user-agent') ?? ''
   return { label: deviceLabel(ua), hash: sha256(`${useRuntimeConfig().ipHashSalt}:ua:${ua}`) }
+}
+
+/** Journalise une connexion et prévient le titulaire si l'appareil est inconnu (sans ouvrir de session publique). */
+export async function noteLoginDevice(event: H3Event, user: { id: string, email: string, locale: 'fr' | 'en' }, kind: 'login' | 'login_passkey' | 'login_recovery'): Promise<void> {
+  const d = device(event)
+  const db = useDb()
+  const seen = await db.query('SELECT 1 FROM user_sessions WHERE user_id = $1 AND device_hash = $2 LIMIT 1', [user.id, d.hash])
+  const known = await db.query(
+    `SELECT 1 FROM user_events WHERE user_id = $1 AND device = $2
+        AND kind IN ('register', 'register_github', 'login', 'login_passkey', 'login_github', 'login_recovery') LIMIT 1`,
+    [user.id, d.label],
+  )
+  await recordEvent(event, user, kind)
+  if (!seen.rowCount && !known.rowCount) await recordEvent(event, user, 'login_new_device')
 }
 
 /** Ouvre une session (nouveau jeton à chaque connexion : pas de fixation de session). */
@@ -110,6 +125,35 @@ export async function getAccountSession(event: H3Event): Promise<AccountSession 
   const session: AccountSession = { id: sid, user, mfaPending: mfa_pending, reauthAt: reauth_at }
   event.context.account = session
   return session
+}
+
+/**
+ * Vérifie le mot de passe. Même erreur pour une adresse inconnue ou un mot de passe faux.
+ * Verrou progressif après 5 échecs (1, 2, 4… minutes, 60 au plus).
+ */
+export async function checkPasswordLogin(event: H3Event, email: string, password: string): Promise<{ id: string, email: string, locale: 'fr' | 'en', displayName: string }> {
+  const db = useDb()
+  const r = await db.query(
+    `SELECT id::text, email, locale, display_name AS "displayName", password_hash, failed_logins, locked_until > now() AS locked,
+            ceil(extract(epoch FROM locked_until - now()) / 60)::int AS wait
+       FROM users WHERE lower(email) = $1`, [email],
+  )
+  const u = r.rows[0]
+  if (u?.locked) throw fail(429, 'locked', { minutes: Math.max(1, u.wait) })
+  const ok = await verifyPassword(u?.password_hash ?? null, password)
+  if (!u || !ok) {
+    if (u) {
+      await db.query(
+        `UPDATE users SET failed_logins = failed_logins + 1,
+           locked_until = CASE WHEN failed_logins + 1 >= 5 THEN now() + make_interval(mins => LEAST(60, power(2, failed_logins + 1 - 5)::int)) END
+         WHERE id = $1`, [u.id],
+      )
+      await recordEvent(event, { id: u.id, email: u.email, locale: u.locale === 'en' ? 'en' : 'fr' }, 'login_failed')
+    }
+    throw fail(401, 'invalid_credentials')
+  }
+  await db.query('UPDATE users SET failed_logins = 0, locked_until = NULL WHERE id = $1', [u.id])
+  return { id: u.id, email: u.email, locale: u.locale === 'en' ? 'en' : 'fr', displayName: u.displayName }
 }
 
 /** Exige une session complète ; pour les écritures, exige aussi la même origine. */

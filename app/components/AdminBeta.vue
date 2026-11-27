@@ -16,7 +16,7 @@ const fmt = (d: string) => new Date(d).toLocaleString('fr-FR', { dateStyle: 'med
 async function run(kind: string, fn: () => Promise<unknown>, ok: string | ((r: unknown) => string)) {
   busy.value = kind; notice.value = null
   try { const r = await fn(); notice.value = { ok: true, text: typeof ok === 'string' ? ok : ok(r) } }
-  catch (e) { notice.value = { ok: false, text: `Échec : ${(e as { data?: { data?: { code?: string }, statusMessage?: string } }).data?.data?.code ?? (e as { data?: { statusMessage?: string } }).data?.statusMessage ?? 'erreur serveur'}` } }
+  catch (e) { notice.value = { ok: false, text: (e as { statusCode?: number }).statusCode === 401 ? 'Reconnectez-vous.' : 'L’action a échoué. Réessayez.' } }
   finally { busy.value = '' }
 }
 
@@ -51,7 +51,7 @@ function editRel(r: Rel | null) {
 const saveRel = () => run('rel', async () => {
   const r = await $fetch<{ notified: number, sha256: string }>('/api/admin/beta/releases', { method: 'POST', body: { version: relForm.version, title: { fr: relForm.titleFr, en: relForm.titleEn }, notes: { fr: relForm.notesFr, en: relForm.notesEn }, fileName: relForm.fileName, published: relForm.published } })
   await refreshRels(); return r
-}, r => `Version enregistrée (SHA-256 ${(r as { sha256: string }).sha256.slice(0, 12)}…)${(r as { notified: number }).notified ? `, ${(r as { notified: number }).notified} testeur(s) prévenu(s)` : ''}.`)
+}, r => `Version enregistrée${(r as { notified: number }).notified ? `. ${(r as { notified: number }).notified} testeur(s) prévenu(s).` : '.'}`)
 
 // Campagnes
 type Camp = { id: string, title: Record<string, string>, body: Record<string, string>, steps: Array<Record<string, string>>, version: string | null, startsOn: string | null, endsOn: string | null, published: boolean, participants: number, outcomes: Record<string, number>, stepResults: Array<{ ok: number, ko: number, notes: string[] }>, comments: Array<{ name: string, comment: string }> }
@@ -162,17 +162,17 @@ const replyRep = () => run('reply', async () => { await $fetch(`/api/admin/beta/
         </li>
       </ul>
       <form class="panel space-y-4 p-6" @submit.prevent="saveRel">
-        <p v-if="!rels.filesDir" class="rounded-lg border border-warn/40 bg-warn/10 px-4 py-2.5 text-sm">Aucun dossier bêta configuré (NUXT_BETA_FILES_DIR) : les fichiers ne peuvent pas être distribués.</p>
+        <p v-if="!rels.filesDir" class="rounded-lg border border-warn/40 bg-warn/10 px-4 py-2.5 text-sm">Les fichiers ne peuvent pas être distribués pour le moment.</p>
         <div class="grid gap-4 sm:grid-cols-2">
           <div><label for="rv-v" class="field-label">Numéro de version</label><input id="rv-v" v-model="relForm.version" class="field font-mono" required></div>
-          <div><label for="rv-f" class="field-label">Fichier (dans le dossier bêta)</label><input id="rv-f" v-model="relForm.fileName" class="field font-mono" required placeholder="ipnoria-0.24.0-beta1.iso"></div>
+          <div><label for="rv-f" class="field-label">Nom du fichier</label><input id="rv-f" v-model="relForm.fileName" class="field font-mono" required placeholder="ipnoria-0.24.0-beta1.iso"></div>
           <div><label for="rv-tfr" class="field-label">Titre (FR)</label><input id="rv-tfr" v-model="relForm.titleFr" class="field"></div>
           <div><label for="rv-ten" class="field-label">Titre (EN)</label><input id="rv-ten" v-model="relForm.titleEn" class="field"></div>
           <div><label for="rv-nfr" class="field-label">Notes (FR)</label><textarea id="rv-nfr" v-model="relForm.notesFr" class="field min-h-32" /></div>
           <div><label for="rv-nen" class="field-label">Notes (EN)</label><textarea id="rv-nen" v-model="relForm.notesEn" class="field min-h-32" /></div>
         </div>
         <label class="flex items-center gap-2"><input v-model="relForm.published" type="checkbox" class="size-4 accent-[#5b8cff]">Publiée (les testeurs sont prévenus à la première publication)</label>
-        <button type="submit" class="btn btn-primary" :disabled="!!busy"><span v-if="busy === 'rel'" class="size-4 animate-spin rounded-full border-2 border-bg/30 border-t-bg" aria-hidden="true" />Enregistrer (calcule le SHA-256)</button>
+        <button type="submit" class="btn btn-primary" :disabled="!!busy"><span v-if="busy === 'rel'" class="size-4 animate-spin rounded-full border-2 border-bg/30 border-t-bg" aria-hidden="true" />Enregistrer la version</button>
       </form>
     </div>
 

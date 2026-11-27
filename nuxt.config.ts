@@ -28,6 +28,7 @@ export default defineNuxtConfig({
     docsLocalDir: '',                // NUXT_DOCS_LOCAL_DIR : clone local du dépôt produit (tests, hors ligne) au lieu de GitHub
     sessionPassword: '',             // NUXT_SESSION_PASSWORD : 32 caractères au moins, chiffre les cookies de session
     adminEmails: '',                 // NUXT_ADMIN_EMAILS : adresses autorisées dans /admin, séparées par des virgules
+    adminPassword: '',               // NUXT_ADMIN_PASSWORD : mot de passe du premier compte, ignoré dès qu'un mot de passe existe
     // Démonstrations sur rendez-vous (NUXT_BOOKING_*) : actif seulement avec la base et le SMTP
     booking: {
       enabled: false,                // NUXT_BOOKING_ENABLED
@@ -55,15 +56,6 @@ export default defineNuxtConfig({
     powDisabled: false,              // NUXT_POW_DISABLED : désactive la preuve de travail (tests automatisés seulement)
     beta: {
       filesDir: '',                  // NUXT_BETA_FILES_DIR : dossier (lecture seule) des images bêta à distribuer
-    },
-    oidc: {
-      issuer: '',                    // NUXT_OIDC_ISSUER : URL du fournisseur OpenID Connect
-      clientId: '',                  // NUXT_OIDC_CLIENT_ID
-      clientSecret: '',              // NUXT_OIDC_CLIENT_SECRET (vide = client public avec PKCE)
-      requireMfa: true,              // NUXT_OIDC_REQUIRE_MFA : refuse une connexion sans second facteur (claim amr ou acr)
-      mfaAcr: '',                    // NUXT_OIDC_MFA_ACR : valeur acr exigée et demandée au fournisseur (sinon : amr contenant mfa, otp, hwk…)
-      scopes: 'openid email profile',
-      allowInsecure: false,          // NUXT_OIDC_ALLOW_INSECURE : HTTP autorisé, pour un fournisseur de test local uniquement
     },
     ipHashSalt: '',                  // NUXT_IP_HASH_SALT : l'adresse IP n'est jamais stockée en clair
     contactRetentionDays: 365,       // NUXT_CONTACT_RETENTION_DAYS : purge RGPD automatique
@@ -215,6 +207,10 @@ export default defineNuxtConfig({
     '/api/booking/cancel': { security: { rateLimiter: { tokensPerInterval: 10, interval: 600000 } } },
     '/auth/**': { security: { rateLimiter: { tokensPerInterval: 30, interval: 300000 } }, headers: { 'cache-control': 'no-store' } },
     '/admin': { headers: { 'cache-control': 'no-store', 'x-robots-tag': 'noindex, nofollow' } },
+    '/api/admin/login': { security: { rateLimiter: { tokensPerInterval: 10, interval: 300000 }, xssValidator: false } },
+    '/api/admin/login/**': { security: { rateLimiter: { tokensPerInterval: 10, interval: 300000 }, xssValidator: false } },
+    '/api/admin/totp/**': { security: { rateLimiter: { tokensPerInterval: 10, interval: 300000 }, xssValidator: false } },
+    '/api/admin/passkeys/**': { security: { rateLimiter: { tokensPerInterval: 30, interval: 300000 }, xssValidator: false } },
     '/api/admin/**': { headers: { 'cache-control': 'no-store' }, security: { xssValidator: false } },
     // Logos des références : jusqu'à 300 Ko (le contenu est contrôlé par le serveur)
     '/api/admin/references/*/logo': { security: { requestSizeLimiter: { maxRequestSizeInBytes: 320_000, maxUploadFileRequestInBytes: 320_000 }, xssValidator: false } },

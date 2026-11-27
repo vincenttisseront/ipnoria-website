@@ -4,6 +4,7 @@ import { githubLinks } from '#shared/links'
 
 const { t, locale } = useI18n()
 const localePath = useLocalePath()
+const { on } = useSiteFeatures()
 useSeoMeta({ title: () => t('docs.title'), description: () => t('docs.lead') })
 
 const lang = computed(() => (locale.value === 'en' ? 'en' : 'fr') as 'fr' | 'en')
@@ -98,7 +99,7 @@ onBeforeUnmount(() => clearTimeout(timer))
       <p class="font-semibold">{{ t('docs.help') }}</p>
       <div class="mt-4 flex flex-wrap gap-3">
         <a :href="githubLinks.newIssue" class="btn btn-secondary" rel="noopener"><AppIcon name="bug" :size="16" />{{ t('docs.helpIssue') }}</a>
-        <NuxtLink :to="localePath('contact')" class="btn btn-primary"><AppIcon name="mail" :size="16" />{{ t('docs.helpContact') }}</NuxtLink>
+        <NuxtLink v-if="on('contact')" :to="localePath('contact')" class="btn btn-primary"><AppIcon name="mail" :size="16" />{{ t('docs.helpContact') }}</NuxtLink>
       </div>
     </div>
   </div>

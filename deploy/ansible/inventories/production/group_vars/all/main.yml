@@ -7,9 +7,7 @@ website_internal_domain: ipnoria.ar-systems.fr # interne (DNS privé)
 website_image: ghcr.io/vincenttisseront/ipnoria-website:latest
 website_dir: /opt/ipnoria-website
 website_contact_retention_days: 365
-website_admin_emails: []                     # ex. ["vous@ipnoria.com"] : accès à /admin via le SSO
-website_oidc_issuer: ""                      # ex. https://sso.exemple.com/realms/ipnoria
-website_oidc_client_id: ipnoria-website
+website_admin_emails: []                     # ex. ["vous@ipnoria.com"] : comptes autorisés dans /admin
 website_smtp_host: ""
 website_smtp_port: 587
 website_smtp_secure: false
@@ -49,9 +47,6 @@ backup_rsync_target: ""                      # ex. backup@nas.exemple.lan:/srv/b
 website_accounts_breach_check: true
 website_accounts_github_client_id: ""
 
-# Administration : second facteur exigé au SSO ; niveau acr si votre fournisseur l'utilise
-website_oidc_require_mfa: true
-website_oidc_mfa_acr: ""
 # Signalement des vulnérabilités (security.txt) ; vide = adresse des mentions légales
 website_disclosure_contact: ""
 website_disclosure_encryption_url: ""

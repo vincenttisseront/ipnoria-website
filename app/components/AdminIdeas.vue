@@ -32,7 +32,7 @@ async function run(kind: string, fn: () => Promise<unknown>, ok: string) {
     if (notice.value === before) notice.value = { ok: true, text: ok }
     await refresh(); if (selectedId.value) await open(selectedId.value, true)
   }
-  catch (e) { notice.value = { ok: false, text: `Échec : ${(e as { data?: { statusMessage?: string } }).data?.statusMessage ?? 'erreur serveur'}` } }
+  catch (e) { notice.value = { ok: false, text: (e as { statusCode?: number }).statusCode === 401 ? 'Reconnectez-vous.' : 'L’action a échoué. Réessayez.' } }
   finally { busy.value = '' }
 }
 const save = () => run('save', async () => {

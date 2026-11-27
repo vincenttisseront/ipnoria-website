@@ -6,6 +6,7 @@ import type { NuxtError } from '#app'
 const props = defineProps<{ error: NuxtError }>()
 const { t, locale } = useI18n()
 const localePath = useLocalePath()
+const { on } = useSiteFeatures()
 const route = useRoute()
 const searchOpen = useState('search-open', () => false)
 
@@ -57,7 +58,7 @@ function openSearch() {
           <button v-if="retryable" type="button" class="btn btn-primary" :disabled="retrying" @click="retry">
             <span v-if="retrying" class="size-4 animate-spin rounded-full border-2 border-bg/30 border-t-bg" aria-hidden="true" /><AppIcon v-else name="refresh" :size="16" />{{ t('error.retry') }}
           </button>
-          <a v-if="code === 401" href="/auth/login" class="btn btn-primary"><AppIcon name="lock" :size="16" />{{ t('error.login') }}</a>
+          <a v-if="code === 401" href="/admin" class="btn btn-primary"><AppIcon name="lock" :size="16" />{{ t('error.login') }}</a>
           <button type="button" class="btn" :class="retryable || code === 401 ? 'btn-secondary' : 'btn-primary'" @click="leave(localePath('/'))">
             <AppIcon name="home" :size="16" />{{ t('error.back') }}
           </button>
@@ -80,7 +81,7 @@ function openSearch() {
 
         <p class="mt-10 text-sm text-muted">
           {{ isServer ? t('error.persist') : t('error.report') }}
-          <NuxtLink :to="localePath('contact')" class="link" @click="clearError()">{{ t('error.contact') }}</NuxtLink>
+          <NuxtLink v-if="on('contact')" :to="localePath('contact')" class="link" @click="clearError()">{{ t('error.contact') }}</NuxtLink>
         </p>
       </div>
 

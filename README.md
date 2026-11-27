@@ -25,7 +25,7 @@ Site vitrine d'[Ipnoria](https://github.com/vincenttisseront/ipnoria), en franç
 | Thème | Sombre, clair ou celui du système (cookie de préférence, sans flash) ; styles d'impression et PDF |
 | Démo | S'active dès que `NUXT_PUBLIC_DEMO_URL` est défini |
 | Contact | Formulaire protégé (origine, débit, piège à robots), stockage PostgreSQL, notification SMTP, purge RGPD |
-| Administration | `/admin` : connexion OpenID Connect (PKCE), lecture, réponse par e-mail, marquage, effacement |
+| Administration | `/admin` : compte local et second facteur (application d'authentification, code de secours ou clé d'accès), lecture, réponse par e-mail, marquage, effacement |
 | Référencement | `sitemap.xml` avec hreflang, `robots.txt` ; données structurées (logiciel, fil d'Ariane, HowTo pour les guides, FAQ, article, glossaire) ; images d'aperçu PNG générées par contenu (`/og/<type>/<clé>.png`, polices Geist statiques dans `server/assets/fonts`, `tools/og_fonts.py`) ; glossaire DDI et articles techniques FR/EN |
 | Réseaux sociaux | Kit de publication dans `/admin` : textes FR/EN par réseau (LinkedIn, Mastodon, Bluesky) pour versions, articles, idées livrées, références et recrutement bêta, avec liens de campagne ; carrousels PDF (documents LinkedIn) ; générateur de liens UTM ; conversions mesurées sans cookie (inscription, candidature bêta, vote, idée, contact, rendez-vous, téléchargement) |
 | Statistiques | Umami auto-hébergé, sans cookie, « Ne pas me pister » respecté (facultatif) |
@@ -59,7 +59,7 @@ Toutes les variables sont décrites dans `nuxt.config.ts` (bloc `runtimeConfig`)
 ```
 app/              pages, composants, styles (jetons dans assets/css/main.css)
 i18n/locales/     textes FR et EN
-server/           API Nitro (contact, docs, versions, newsletter, admin), routes (auth OIDC, RSS, sitemap), migrations SQL
+server/           API Nitro (contact, docs, versions, newsletter, admin), routes (RSS, sitemap), migrations SQL
 shared/           schémas partagés client/serveur, liste des documents, guides, comparatif
 deploy/ansible/   playbook : socle, Docker, site, sauvegardes
 tests/            vitest (schémas, rendu Markdown, migrations sur base réelle) et test de fumée
